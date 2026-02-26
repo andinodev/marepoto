@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dus8xfr4b64e5"]
+
+[ext_resource type="Script" uid="uid://dmnridt8gpvwv" path="res://scripts/ChallengeManager.gd" id="1"]
+[ext_resource type="Theme" uid="uid://b8qv0ch4halr" path="res://sprites/ui/theme.tres" id="1_nb70k"]
+
+[node name="ChallengeManager" type="Control" unique_id=1842486923]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_nb70k")
+script = ExtResource("1")

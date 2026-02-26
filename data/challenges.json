@@ -1,0 +1,1125 @@
+
+{
+  "player": [
+    {
+      "id": 101,
+      "title": "Posesión",
+      "story": "Ohhh weón, algo raro pasó en el carrete... {J1} quedó mirando fijo a {J2} y de repente empezó a hablar con la voz del otro. ¡Se le metió el espíritu! Ahora son prácticamente la misma persona.",
+      "action": "Cámbiense una prenda de ropa entre los dos, ¡al tiro! Si se ponen choros y no quieren, ambos se mandan 3 sorbos por cobardes.",
+      "sips": [
+        {
+          "amount": 3,
+          "condition": "Si no se cambian ropa",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 207,
+      "title": "Dios de la Lluvia",
+      "story": "Los cielos del carrete se abrieron y una lluvia de copete cayó sobre la mesa. {J1} fue nombrado/a Dios de la Lluvia y ahora decide quién se moja (toma) y cuánto. ¡Poder absoluto!",
+      "action": "{J1} reparte 5 sorbos entre los weones como quiera. ¡A discreción, sin piedad!",
+      "sips": [
+        { "amount": 5, "condition": "Reparte {J1}", "target": "DISTRIBUTE" }
+      ]
+    },
+    {
+      "id": 210,
+      "title": "Inmunidad",
+      "story": "¡Bacán! {J1} encontró un amuleto de inmunidad escondido en el carrete. Es una tarjeta mágica que le permite salvarse de tomar UNA sola vez. ¡Guárdala bien y úsala con sabiduría!",
+      "action": "Te ganaste una tarjeta de 'Salvarse de Tomar'. Úsala cuando querái, pero es de un solo uso.",
+      "sips": []
+    },
+    {
+      "id": 216,
+      "title": "La Foto",
+      "story": "¡Foto grupal! Los espíritus del carrete quieren un recuerdo de esta noche. {J1} abre la galería de su celu y la última foto decide quién paga... el que salga más feo, toma.",
+      "action": "{J1} abre su galería: el que salga peor en la última foto grupal toma 3 sorbos por poco fotogénico.",
+      "sips": [
+        { "amount": 3, "condition": "El que salga peor", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 218,
+      "title": "Duelo de Tallas",
+      "story": "¡Duelo de tallas en el carrete! Dos weones se van a enfrentar en un combate de chistes. El grupo decide cuál fue más mala y el perdedor paga con copete.",
+      "action": "{J1} y {J2} se tiran una talla cada uno. Todos votan cuál fue más mala. El más fome toma 3. Si empatan, toman los dos.",
+      "sips": [
+        {
+          "amount": 3,
+          "condition": "Al perdedor",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 223,
+      "title": "El Francotirador",
+      "story": "Los espíritus del carrete le dieron a {J1} un arma invisible: un dedo francotirador. Apunta a alguien, esa persona toma y 'dispara' a otro. La cadena sigue hasta que alguien se niegue.",
+      "action": "En cualquier momento de la partida, y una sola vez; {J1} simula disparar a alguien. Esa persona toma y 'dispara' a otro. Sigue hasta que alguien arrugue.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Cada victima toma 1",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 204,
+      "title": "Compañeros de Viaje",
+      "story": "El camino por el carrete es peligroso y {J1} necesita un yunta que lo/la acompañe. Elige a un compinche: desde ahora, cada vez que {J1} tome, el compañero también toma. Dura 3 turnos.",
+      "action": "{J1} elige a un compinche. Cada vez que {J1} tome, el compinche toma igual. Dura 3 turnos, sin escapatoria.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Compinche toma cuando {J1} toma",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "title": "Un Mimo en Hollywood",
+      "story": "¡Chuta! Una maldición cuática le cayó a {J1}... se quedó mudo/a de un segundo pa' otro. Lo único que le queda es mover las manos como mimo gringo loqueao. ¡Veamos si alguien cacha qué película está actuando!",
+      "action": "Actúa una peli sin decir ni una palabra. El primero que cache reparte 2 tragos a quien quiera. Si nadie pesca en 30 segundos, te mandai 4 sorbos por mal actor.",
+      "timer": 30,
+      "sips": [
+        {
+          "amount": 2,
+          "condition": "Repartir (Al que adivine)",
+          "target": "SPECIFIC"
+        },
+        {
+          "amount": 4,
+          "condition": "Castigo (Si nadie adivina)",
+          "target": "SELF"
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "title": "Cockbig-19",
+      "story": "¡ALERTA SANITARIA! Se detectó un brote del temido Cockbig-19 en el carrete. Los síntomas incluyen caras desfiguradas, gemidos raros y una necesidad incontrolable de hacer el ridículo. {J1} es el primer contagiado.",
+      "action": "¡Pégate el show! Ponle cara de enfermo grave a todo el grupo, la más horrorosa que podai. Todos votan: si no da risa, te tomai 3 al seco por fome.",
+      "sips": [{ "amount": 3, "condition": "Si no da risa", "target": "SELF" }]
+    },
+    {
+      "id": 104,
+      "title": "El llamado de la selva",
+      "story": "La tierra está más seca que galleta de soda, weón. Los espíritus del carrete necesitan una danza de la lluvia pa' salvar la noche... pero no cualquier bailecito, necesitan un PERREO RITUAL contra la pared. {J1}, la tribu te necesita.",
+      "action": "Dale perreo intenso contra la pared por 15 segundos. Todos votan: si no te movís rico, tomai 3 copetes por bailarín penca.",
+      "timer": 15,
+      "sips": [{ "amount": 3, "condition": "No se mueve rico", "target": "SELF" }]
+    },
+    {
+      "id": 105,
+      "title": "Estatua de Piedra",
+      "story": "¡CUIDADO! Medusa anda suelta por el carrete y le echó el ojo a {J1}. Un rayo verde le llegó directo a la cara y ahora está quedando duro/a como monumento de la plaza. Ni un músculo se puede mover, ni la lengua, ni na'.",
+      "action": "Quedai tieso como palo hasta tu próximo turno. Si te movís, hablai o te cagái de la risa, tomai 2 sorbos cada vez que te pillen.",
+      "sips": [
+        {
+          "amount": 2,
+          "condition": "Por cada movimiento/habla",
+          "target": "SELF"
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "title": "El Perkin",
+      "story": "{J1} iba caminando tranqui y cayó en una trampa cuática. Quedó colgando de una liana cuando {J2} apareció como héroe de película y lo/la salvó. Ahora le debe la vida, y en este carrete eso se paga con servidumbre total.",
+      "action": "Erís el perkin de {J2} por 2 rondas. Sirvele el copete, abanícalo, hazle masajitos... lo que pida. Cada vez que no obezcai, te mandai 5 sorbos.",
+      "sips": [
+        { "amount": 5, "condition": "Si desobedece", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 107,
+      "title": "Llamada de Auxilio",
+      "story": "{J1} se fue de mochilero y terminó perdido/a en medio de la nada. Sin señal, sin agua, rodeado de bichos raros. Milagrosamente le queda una rayita de señal en el celu... es ahora o nunca.",
+      "action": "Llama a un contacto random de tu celu y dile que estái perdido/a en la selva, que mande ayuda. ¡Y cuelga al tiro sin explicar na'! Si no te atrevís, sírvete 4 sorbos por cobarde.",
+      "sips": [{ "amount": 4, "condition": "Si no llama", "target": "SELF" }]
+    },
+    {
+      "id": 108,
+      "title": "Pelea de enanos",
+      "story": "Se armó la tole tole, weón. {J1} y {J2} llevan toda la noche mirándose feo y llegó la hora de arreglar las weas como se debe: con un duelo a muerte... ¡de enanos! El honor del carrete está en juego y los jugadores le pidieron ayuda al Kike.",
+      "action": "¡Pelea de pulgares! El que pierda se manda 3 sorbos al seco por malo.",
+      "sips": [
+        { "amount": 3, "condition": "Al perdedor", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 109,
+      "title": "El Piso es Lava",
+      "story": "¡TERREMOTOOO! Bueno, no... ¡peor! ¡EL PISO ES LAVA! Un volcán cuático hizo erupción debajo del carrete y la lava viene subiendo. El que no se suba a algo, se derrite como helado al sol.",
+      "action": "¡Súbanse a una silla, sofá o lo que pillen! El último weón que se suba toma 3 sorbos por lento.",
+      "sips": [
+        { "amount": 3, "condition": "El último en subir", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 110,
+      "title": "Gemelos Siameses",
+      "story": "Una liana mágica salió de la nada y amarró a {J1} con alguien del carrete. Ahora están pegados como chicle en zapato y no se pueden separar hasta que pase el hechizo. ¡Qué incómodo!",
+      "action": "Elegí a un weón o weona. Tienen que quedarse pegados mejilla con mejilla hasta tu próximo turno. Si se separan, toman los dos 3 sorbos.",
+      "sips": [
+        {
+          "amount": 3,
+          "condition": "Ambos si se separan",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "title": "Acento Extranjero",
+      "story": "Un coco misterioso le cayó en la cabeza a {J1} y le revolvió las neuronas. Ahora habla con un acento que nadie cacha de dónde salió. ¿Peruano? ¿Argentino? ¿Español? ¡Sepa moya! Pero tiene que mantenerlo.",
+      "action": "Hablai con acento extranjero (el que querái) hasta tu próximo turno. Cada vez que se te olvide y hablís normal, tomai un sorbo.",
+      "sips": [
+        { "amount": 1, "condition": "Si olvida el acento", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 112,
+      "title": "Caminata de Cangrejo",
+      "story": "¡Plop! Una maldición cuática convirtió a {J1} en cangrejo. Las manos se le pusieron como pinzas, las piernas se le doblaron pa'l lado y ahora solo puede caminar de costado. La única forma de romper el hechizo es demostrarlo.",
+      "action": "Pega una vuelta completa a la mesa caminando como cangrejo, de ladito no más. Si te ponís choro y no querís, tomai 3 por arrugón.",
+      "sips": [{ "amount": 3, "condition": "Si se niega", "target": "SELF" }]
+    },
+    {
+      "id": 113,
+      "title": "El Fotógrafo Ciego",
+      "story": "Se cortó la luz en el carrete y {J1} quedó en la oscuridad total. Pero la sed no espera, weón. Ahora tiene que servirle un copete a {J2} sin ver ni una weá. ¡A puro pulso y fe!",
+      "action": "Véndate los ojos y sírvele un copete a {J2} sin derramar ni una gota. Si derramai, te mandai 5 sorbos de castigo al seco.",
+      "sips": [
+        { "amount": 5, "condition": "Si derrama (Castigo)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 114,
+      "title": "Tarzán",
+      "story": "Algo primitivo despertó dentro de {J1}. Le hierve la sangre, se le erizaron los pelos y siente unas ganas incontrolables de subirse a lo más alto y rugir como animal. ¡El espíritu de Tarzán lo/la poseyó, weón!",
+      "action": "Súbete a una silla y pega tu mejor grito de Tarzán. El grupo te califica del 1 al 10. Si sacai menos de 5, tomai la diferencia en sorbos.",
+      "sips": [
+        { "amount": 1, "condition": "Por punto faltante", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 115,
+      "title": "Interrogatorio Policial",
+      "story": "¡Se perdieron todos los plátanos del carrete y la evidencia apunta a {J1}! Los detectives de la fiesta designaron a {J2} como interrogador oficial. Pero ojo: acá el sospechoso TIENE que mentir en todo.",
+      "action": "{J2} te hace 3 preguntas rápidas y tenís que contestar PURA mentira, sin achaplinarte. Si decís la firme o te quedai pensando mucho, tomai un sorbo.",
+      "sips": [
+        { "amount": 1, "condition": "Si duda o dice verdad", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 116,
+      "title": "Maquillaje Tribal",
+      "story": "La tribu del carrete se prepara pa' la guerra contra el aburrimiento. {J1} fue elegido/a como guerrero principal y necesita su pintura de batalla. La gallada ya tiene marcadores y labiales listos.",
+      "action": "Dejái que el grupo te pinte la jeta con marcador o labial, marcas tribales bien locas. Si no querís, fondo al seco por cobarde.",
+      "sips": [
+        { "amount": 5, "condition": "Si se niega (Fondo)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 117,
+      "title": "El Bardo",
+      "story": "La tribu está aburrida y necesita un bardo que la entretenga. {J1} fue elegido/a como el trovador oficial de la noche. Tiene que improvisar una canción sobre su vecino/a de la derecha. ¡Que rime o que tome!",
+      "action": "Inventai y cantai una canción cortita sobre el weón o weona de tu derecha. Si no rima, tomai 2 sorbos por poeta penca.",
+      "sips": [{ "amount": 2, "condition": "Si no rima", "target": "SELF" }]
+    },
+    {
+      "id": 118,
+      "title": "Equilibrista",
+      "story": "Pa' cruzar el río del carrete hay un tronco flaquito y resbaloso. {J1} tiene que cruzar con equilibrio de cirquero, llevando el vaso en la cabeza sin que se caiga. Un movimiento en falso y chao.",
+      "action": "Ponete el vaso en la cabeza y recitá el abecedario al revés (o hasta donde lleguís). Si se cae el vaso, tomai un sorbo por torpe.",
+      "sips": [
+        { "amount": 1, "condition": "Si se cae el vaso", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 119,
+      "title": "Beso de la Muerte",
+      "story": "Los espíritus del carrete necesitan un sacrificio de amor pa' que la fiesta siga. {J1} fue elegido/a pa'l ritual sagrado del beso con {J2}. Es pa' salvar al grupo, no es na' personal... ¿o sí?",
+      "action": "Dale un beso a {J2} en la mejilla (o en la boca si se atreven, más puntos). Si te achaplinai, tomai 3 sorbos por cobarde.",
+      "sips": [
+        { "amount": 3, "condition": "Si no da el beso", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 120,
+      "title": "El Bebé",
+      "story": "¡Una fuente de la juventud apareció en medio del carrete! {J1} se mandó un trago y rejuveneció tanto que ahora es una guagua. No puede hablar bien, camina raro y... toma como bebé.",
+      "action": "Tomai tu copete como si fuera mamadera: chupando el borde o con bombilla, haciendo ruiditos de guagua. Así hasta tu próximo turno.",
+      "sips": [
+        { "amount": 0, "condition": "Beber como bebé (Modo)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 121,
+      "title": "Títere",
+      "story": "Unos hilos invisibles bajaron del techo y se amarraron a las extremidades de {J1}. Ahora {J2} es el titiritero y controla cada movimiento. ¡Muñeco/a de trapo a merced de su amo/a por 30 segundos!",
+      "action": "{J2} te mueve como títere por 30 segundos. Dejate llevar no más po, sin alegar ni poner resistencia.",
+      "timer": 60,
+      "sips": []
+    },
+    {
+      "id": 122,
+      "title": "Cambio de Nombre",
+      "story": "{J1} se miró al espejo y no se reconoció. ¿Quién chucha soy? Su identidad fue borrada por los espíritus del copete. Ahora el grupo le asigna un nombre nuevo y ridículo. Así se llama hasta nuevo aviso.",
+      "action": "El grupo te pone un nombre ridículo y tenís que responder a ese nombre. Si alguien te dice tu nombre real, esa persona toma. Dura hasta tu próximo turno.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Al que se equivoque de nombre",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 123,
+      "title": "La Momia",
+      "story": "Los antiguos espíritus del carrete decidieron momificar a {J1}. El grupo lo/la envuelve en confort como una momia egipcia. Pero ojo, esta momia no se queda quieta... ¡tiene que despertar bailando como si estuviera en la disco!",
+      "action": "Dejate envolver en confort por el grupo. Después rompé la 'momia' bailando como si estuvierai en el carrete más heavy de tu vida.",
+      "sips": []
+    },
+    {
+      "id": 124,
+      "title": "Cata a Ciegas",
+      "story": "En lo más profundo del carrete hay frutos misteriosos que nadie conoce. {J1} fue elegido/a como catador oficial, pero con los ojos vendados. {J2} es el chef que prepara la sorpresa. ¿Cachará qué weá le dieron?",
+      "action": "Cerrá los ojos. {J2} te da a probar algo de la cocina, lo que quiera. Si cachái qué es, {J2} toma. Si no, tomai tú.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "A {J2} si adivina o a ti si fallas",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 301,
+      "title": "Primer Amor",
+      "story": "El copete desbloqueó los recuerdos más profundos de {J1}. De repente le palpita el corazón y se le pone cara de volao pensando en esa persona que le robó el primer beso. ¡Hora de confesar po!",
+      "action": "¿Quién fue tu primer beso y qué nota le ponís del 1 al 10? Si no respondís, tomai 3 sorbos por cobarde.",
+      "sips": [{ "amount": 3, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 302,
+      "title": "Confesión Vergonzosa",
+      "story": "Los espíritus del carrete sapean todo, weón. Ven cada weá que hacís a escondidas y ahora quieren que {J1} suelte la pepa. La vergüenza es el precio de la sobriedad.",
+      "action": "Confiesa la weá más vergonzosa que hai hecho cuando nadie te veía. Si no respondís, te mandai 5 sorbos al seco.",
+      "sips": [{ "amount": 5, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 303,
+      "title": "El Crush",
+      "story": "La poción del carrete activó el suero de la verdad en {J1}. Las pupilas se le dilataron y ahora tiene que confesar a quién le echa el ojo en este grupo. ¡No se puede achaplinar!",
+      "action": "¿Cuál de los presentes te parece más rico/a? Podís decir 'nadie' pero tomai 1. Si decís un nombre, esa persona toma también.",
+      "sips": [
+        { "amount": 1, "condition": "Si dice 'nadie'", "target": "SELF" },
+        {
+          "amount": 1,
+          "condition": "Elegido si dice nombre",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 304,
+      "title": "La Mentira",
+      "story": "Los espíritus de la selva lo ven TODO, weón. Hasta esa mentira que le metiste a tus viejos el año de la cocoa. Ahora {J1} tiene que confesar su peor cacho o enfrentar las consecuencias.",
+      "action": "¿Cuál es la mentira más grande que le hai metido a tus viejos? Cuenta la firme o fondo al seco.",
+      "sips": [{ "amount": 999, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 305,
+      "title": "Vergüenza",
+      "story": "¡Tierra trágame! El espíritu del bochorno se apoderó de {J1} y le está quemando la cara de pura vergüenza. Todos queremos saber ese momento en que quedó pa'l gato en público.",
+      "action": "Cuenta tu chascarrillo más grande en público, el más plancha que te haya pasao. Si no querís contar, tomai 3.",
+      "sips": [{ "amount": 3, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 306,
+      "title": "Crimen",
+      "story": "La policía del carrete intercepto a {J1}. Los espíritus de la selva tienen un expediente con su nombre y quieren saber si ha cruzado la línea de la ley. Toda confesión será recompensada... o castigada.",
+      "action": "¿Hai hecho algo que rompa la ley? ¿Qué fue, weón? Cuenta la firme o tomai 5 sorbos.",
+      "sips": [
+        { "amount": 5, "condition": "Si no responde", "target": "SELF" },
+      { "amount": 5, "condition": "Si cometio algun crimen de lesa humanidad", "target": "SELF" }]
+    },
+    {
+      "id": 307,
+      "title": "Talento Oculto",
+      "story": "En la selva del carrete todos tienen un talento oculto, desde el más inútil hasta el más random. {J1} dice que tiene uno y la tribu quiere verlo en acción. ¡Que lo demuestre o que tome!",
+      "action": "¿Cuál es tu talento más inútil? Demuéstralo al tiro delante de todos. Si no te atrevís, tomai 5.",
+      "sips": [
+        { "amount": 5, "condition": "Si no lo demuestra", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 308,
+      "title": "El Ex",
+      "story": "¡Los fantasmas del pasado andan sueltos en el carrete! Se metieron por la ventana y están rodeando a {J1}. Piden una confesión sobre ese ex pololo/a que todavía le ronda por la cabeza... o no van a parar de molestar.",
+      "action": "¿Cuándo fue la última vez que te viste con tu ex? ¿Y por qué, weón? Cuenta la firme o fondo al seco.",
+      "sips": [
+        { "amount": 999, "condition": "Si no responde (Fondo)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 309,
+      "title": "Antipatía",
+      "story": "Se siente una energía negativa en el carrete, weón. Alguien en esta mesa le cae como patá en la guata a {J1}, y los espíritus del copete quieren que lo diga con nombre y apellido. Que se arme la grande.",
+      "action": "¿Quién te cae como patá en la guata de este grupo? Si decís que nadie, tomai 5 o dai un argumento conmovedor pa' salvarte.",
+      "sips": [
+        { "amount": 5, "condition": "Si no dice a nadie", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 310,
+      "title": "Higiene",
+      "story": "Los olores de la selva del carrete son cuáticos, pero {J1} tiene un secreto de higiene que podría superar cualquier hediondez tropical. Los espíritus quieren los detalles sucios.",
+      "action": "¿Cuánto es lo máximo que hai estado sin pegarte una ducha, weón? Cuenta la firme o tomai 5.",
+      "sips": [{ "amount": 5, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 312,
+      "title": "Celos",
+      "story": "Los fantasmas del pasado no se rindieron y ahora vienen por {J1} con la confesión más jugosa. Quieren saber de esa vez que los celos le volaron la cabeza y dejó la escoba a lo grande.",
+      "action": "¿Cuál es la escena de celos más intensa que hai hecho en tu vida? Cuenta la firme o tomai al seco.",
+      "sips": [{ "amount": 999, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 313,
+      "title": "Fantasía",
+      "story": "El carrete abrió un portal a los sueños de {J1}. Adentro hay una fantasía que nunca ha cumplido... puede ser viajar, puede ser cualquier weá bacán. Los espíritus quieren escucharla.",
+      "action": "Cuenta una fantasía que no hai cumplido (viajar, locuras, lo que sea pero que sea bacán). Si no querís, tomai un sorbo.",
+      "sips": [{ "amount": 1, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 314,
+      "title": "Miedo",
+      "story": "Los espíritus de la selva se acercaron a {J1} y le susurraron al oído: 'Sabemos tu miedo secreto'. Algo irracional, algo que no tiene sentido, pero que lo/la persigue desde cabro/a chico/a.",
+      "action": "¿A qué le tenís miedo irracionalmente, weón? Cuenta esa weá que te da julepe sin razón o tomai 2.",
+      "sips": [{ "amount": 2, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 315,
+      "title": "El Cahuín",
+      "story": "La gallada sabe que {J1} anda con un chisme jugoso guardáo hace rato. Los espíritus quieren que suelte el cahuín que ha contado por ahí a escondidas. ¡Que se destape la olla!",
+      "action": "Cuenta el último cahuín que anduviste esparciendo por ahí. Si no querís soltar la pepa, fondo al seco.",
+      "sips": [{ "amount": 999, "condition": "Si no cuenta", "target": "SELF" }]
+    },
+    {
+      "id": 316,
+      "title": "Lágrimas",
+      "story": "El ambiente del carrete se puso sentimental de repente. A {J1} se le aguaron los ojos sin querer y ahora la tribu quiere saber cuándo fue la última vez que lloró de verdad. Nada de hacerse el/la choro/a.",
+      "action": "¿Cuándo fue la última vez que lloraste y por qué? Cuenta la firme o tomai 2 sorbos.",
+      "sips": [{ "amount": 2, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 317,
+      "title": "Arrepentimiento",
+      "story": "Los fantasmas del pasado volvieron otra vez y se sentaron al lado de {J1}. Esta vez quieren algo profundo, algo que le duela de verdad. Quieren saber de ese arrepentimiento que le carcome el alma.",
+      "action": "¿De qué te arrepentís más en tu vida? Algo de verdad profundo, no leserías. Cuenta o tomai 5.",
+      "sips": [{ "amount": 5, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 318,
+      "title": "Apodo",
+      "story": "La tribu del carrete encontró unos archivos secretos de {J1} y descubrieron que tiene (o tuvo) un apodo vergonzoso. Los espíritus quieren conocer esa weá ridícula con la que le decían.",
+      "action": "¿Cuál es el apodo más ridículo que te han puesto en la vida? Suelta la pepa o tomai un sorbo.",
+      "sips": [{ "amount": 1, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 319,
+      "title": "Seducción",
+      "story": "Los espíritus del amor andan sueltos por el carrete y eligieron a {J1} como instructor de seducción. Quieren conocer esas técnicas de caza secreta que usa pa' conquistar corazones.",
+      "action": "¿Cuál es tu técnica pa' seducir a alguien? Explícala con detalles o tomai 3 sorbos.",
+      "sips": [{ "amount": 3, "condition": "Si no explica", "target": "SELF" }]
+    },
+    {
+      "id": 320,
+      "title": "Noche loca",
+      "story": "La noche está embalada y los fantasmas del pasado quieren saber de esa noche en que {J1} quedó curao/curá a más no poder y la cagó feo. Todos sabemos que hay una historia ahí.",
+      "action": "¿Qué es lo peor que hai hecho curao/curá? Cuenta la firme o tomai 5 sorbos.",
+      "sips": [{ "amount": 5, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 322,
+      "title": "Cuerpo",
+      "story": "El espejo mágico del carrete apareció frente a {J1} y le preguntó: '¿Qué cambiaríai de tu cuerpo?' Los espíritus de la vanidad quieren saber dónde le aprieta el zapato.",
+      "action": "¿Qué parte de tu cuerpo te cambiaríai? Cuenta la firme. Si no respondís, cada vez que alguien tome hasta tu próximo turno, tomai tú también.",
+      "sips": [{ "amount": 1, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 323,
+      "title": "Venganza",
+      "story": "Los fantasmas del pasado volvieron con su confesión favorita: la venganza. {J1} tiene cara de haber cobrado alguna vez y los espíritus quieren los detalles sucios de esa revancha.",
+      "action": "¿Te hai vengado de alguien alguna vez? ¿Cómo fue esa weá? Cuenta la firme. Si no respondís, tomai 1 cada vez que alguien tome hasta tu próximo turno.",
+      "sips": [{ "amount": 1, "condition": "Si no responde", "target": "SELF" }]
+    },
+    {
+      "id": 324,
+      "title": "Infidelidad",
+      "story": "Los fantasmas del pasado se pusieron serios esta vez. Rodearon a {J1} con cara de decepción y le preguntaron la weá que más duele: ¿hai sido infiel? La tribu necesita saber.",
+      "action": "¿Hai sido infiel alguna vez? Cuenta la historia completa o tomai 5 sorbos al seco.",
+      "sips": [{ "amount": 5, "condition": "Si no cuenta", "target": "SELF" }]
+    },
+    {
+      "id": 401,
+      "title": "Marcas de Autos",
+      "story": "Los motores rugen en la selva del carrete. {J1} jura que cacha caleta de autos, pero los espíritus quieren ponerlo a prueba. El que se quede pegao, paga con copete.",
+      "action": "Nombra marcas de autos, por turnos. El que repita o se quede corto, toma 3 sorbos.",
+      "sips": [
+        { "amount": 3, "condition": "Al que repita/dude", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 402,
+      "title": "Marcas de Cigarros",
+      "story": "Una nube de humo cuática invadió el carrete. Los espíritus del pucho quieren saber quién cacha más marcas de cigarro. ¡El que no sepa, fuma copete!",
+      "action": "Nombra marcas de cigarros, por turnos. El que repita o se quede callao, toma 2 sorbos.",
+      "sips": [
+        { "amount": 1, "condition": "Al que repita/dude", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 403,
+      "title": "Posiciones del Kamasutra",
+      "story": "Se encontró un libro ancestral en el carrete con conocimiento milenario del Kamasutra. Los espíritus quieren saber quién cacha más posiciones. ¡Ojo con la risa nerviosa!",
+      "action": "Nombra posiciones secsuales, por turnos. El que se ría, repita o se quede pegao, toma 2.",
+      "sips": [
+        {
+          "amount": 2,
+          "condition": "Al que se ría/repita/dude",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 404,
+      "title": "Capitales del Mundo",
+      "story": "El mapa de la selva del carrete se rompió y ahora necesitamos a los más capos en geografía pa' orientarnos. ¿Quién cacha más capitales del mundo acá?",
+      "action": "Nombra capitales del mundo, por turnos. El que la cague o no sepa, toma 2.",
+      "sips": [
+        {
+          "amount": 2,
+          "condition": "Al que se equivoque",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 405,
+      "title": "Superhéroes",
+      "story": "Un rayo cósmico le pegó a la junta y ahora todos tienen poderes momentáneos. Pa' mantenerlos, hay que demostrar que cachái de superhéroes. ¿Quién se queda sin poder?",
+      "action": "Nombra superhéroes, por turnos. El que quede en blanco, toma un sorbo por mortal común.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 406,
+      "title": "Marcas de Cerveza",
+      "story": "¡Se acabaron las chelas! Mentira... pero pa' merecer otra hay que demostrar que cachái del tema. Los espíritus cerveceros solo sirven a los conocedores.",
+      "action": "Nombra marcas de chela, por turnos. El que repita o se quede callao, toma un sorbo de la suya.",
+      "sips": [
+        { "amount": 1, "condition": "Al que repita/dude", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 407,
+      "title": "Personajes de Harry Potter",
+      "story": "Una lechuza misteriosa entró al carrete con una carta de Hogwarts. Los espíritus mágicos quieren saber quién cacha más del mundo de Harry Potter acá.",
+      "action": "Nombra personajes de la saga, por turnos. El que quede pa'l gato, toma un sorbo muggle.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 408,
+      "title": "Equipos de Fútbol",
+      "story": "Se armó el debate del siglo en el carrete: ¿quién cacha más de fútbol acá? Los espíritus de la pelota quieren nombres de equipos internacionales. ¡El que meta un condoro, toma!",
+      "action": "Nombra equipos de fútbol internacionales, por turnos. El que se mande un condoro, toma.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Al que se equivoque",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 409,
+      "title": "Razas de Perros",
+      "story": "Un quiltro callejero entró al carrete y se quedó mirando a todos. Los espíritus caninos quieren saber quién cacha más razas de perros. ¡El que quede pegao es el quiltro del grupo!",
+      "action": "Nombra razas de perros, por turnos. El que quede pegao, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 410,
+      "title": "Ingredientes de Pizza",
+      "story": "Llegó la hora de la pizza en el carrete, pero antes de pedir hay que demostrar conocimiento culinario. Los espíritus italianos exigen ingredientes o castigo.",
+      "action": "Nombra ingredientes de pizza, por turnos. El que repita o se quede corto, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que repita/dude", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 411,
+      "title": "Lenguajes de Programación",
+      "story": "Un virus se metió al celu de {J1} y ahora hay que programar la solución. ¿Quién cacha más lenguajes de programación en esta mesa? ¡Los nerds van a brillar!",
+      "action": "Nombra lenguajes de programación, por turnos. El que quede en blanco, toma por mortal.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 412,
+      "title": "Géneros Musicales",
+      "story": "El DJ del carrete se fue pa' la casa y ahora necesitamos a alguien que sepa de música pa' salvar la noche. Los espíritus del ritmo desafían a la mesa.",
+      "action": "Nombra géneros musicales, por turnos. El que se quede callao, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 413,
+      "title": "Películas de Disney",
+      "story": "Un portal mágico apareció y transportó al grupo a la infancia. Las películas de Disney suenan de fondo y los espíritus quieren saber quién cacha más clásicos.",
+      "action": "Nombra clásicos de Disney, por turnos. El que quede pa'l loli, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 414,
+      "title": "Colores en Inglés",
+      "story": "Un turista gringo se metió al carrete y ahora le enseñamos inglés. Bueno, al revés: ¿quién de acá cacha más colores en inglés? Los espíritus bilingües desafían.",
+      "action": "Nombra colores en inglés, por turnos. El que se mande un condoro, toma.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Al que se equivoque",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 415,
+      "title": "Partes del Cuerpo",
+      "story": "La clase de anatomía empezó en el carrete. Los espíritus del cuerpo humano quieren saber quién cacha más partes. ¡Se valen las cochinas también!",
+      "action": "Nombra partes del cuerpo humano, por turnos. El que repita o se quede corto, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que repita/dude", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 416,
+      "title": "Frutas",
+      "story": "Los espíritus de la naturaleza invadieron el carrete con antojo de frutas. ¿Quién cacha más tipos? El que no sepa, se queda con la pura sed.",
+      "action": "Nombra frutas, por turnos. El que quede pegao, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 417,
+      "title": "Videojuegos",
+      "story": "¡Se cortó la luz y lo único que funciona es la consola! Los espíritus gamers aparecieron y quieren saber quién cacha más franquicias de videojuegos en esta mesa.",
+      "action": "Nombra franquicias de videojuegos famosas, por turnos. El que quede en blanco, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 418,
+      "title": "Marcas de Ropa",
+      "story": "Una pasarela de moda apareció en medio del carrete. Los espíritus fashion quieren saber quién cacha más marcas de ropa. ¡El que no sepa, viste ropa de feria!",
+      "action": "Nombra marcas de ropa deportiva o casual, por turnos. El que repita, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que repita", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 419,
+      "title": "Copetes Chilenos",
+      "story": "¡SALUD DE CHILE, WEÓN! Los espíritus del carrete quieren saber quién es el más copetero de la mesa. Solo un verdadero chileno cacha todos los tragos típicos.",
+      "action": "Nombra tragos o copetes típicos chilenos (terremoto, piscola, jote...), por turnos. El que repita o dude, toma al seco.",
+      "sips": [
+        {
+          "amount": 5,
+          "condition": "Al que repita/dude (Seco)",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 420,
+      "title": "Planetas",
+      "story": "Una nave espacial aterrizó en el patio del carrete. Los aliens quieren saber si los terrícolas cachan algo de su sistema solar antes de llevarlos de viaje intergaláctico.",
+      "action": "Nombra planetas (o ex-planetas) del sistema solar, por turnos. El que se mande un condoro, toma.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Al que se equivoque",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 421,
+      "title": "Programas de la Tele",
+      "story": "La tele del carrete se prendió sola mostrando programas viejos. Los espíritus de la caja chica quieren saber quién cacha más series y programas clásicos.",
+      "action": "Nombra programas o series de tele clásicos, por turnos. El que repita o quede callao, toma.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Al que repita/calle",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 422,
+      "title": "Cantantes de Reggaetón",
+      "story": "El perreo empezó a sonar solito en el parlante y los espíritus del reguetón quieren saber quién cacha más artistas urbanos. ¡El que no sepa, no merece bailar!",
+      "action": "Nombra cantantes del género urbano, por turnos. El que se quede callao, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 423,
+      "title": "Pokémon",
+      "story": "Una Pokebola apareció en la mesa y los espíritus quieren saber quién es el verdadero maestro Pokémon del grupo. ¡Hay que atraparlos a todos... o tomar!",
+      "action": "Nombra criaturas Pokémon, por turnos. El que quede pegao, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 424,
+      "title": "Verduras",
+      "story": "Los espíritus saludables del carrete se enojaron porque puro copete y nada de verduras. Pa' compensar, hay que demostrar que al menos las conocís.",
+      "action": "Nombra verduras u hortalizas, por turnos. El que repita, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que repita", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 425,
+      "title": "Juegos de Mesa",
+      "story": "Alguien encontró un cajón con juegos de mesa viejos en el carrete. Los espíritus de la diversión análoga desafían a la mesa a nombrar todos los que cachan.",
+      "action": "Nombra juegos de mesa (Monopoly, Ludo...), por turnos. El que quede en blanco, toma.",
+      "sips": [
+        { "amount": 1, "condition": "Al que no sepa", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 501,
+      "title": "El Limón",
+      "story": "Los espíritus del carrete sacaron un limón de la nada y se lo tiraron a {J1}. Es ácido como esa ex que todos conocemos, y ahora hay que comérselo sin hacer caras. ¡Poker face o copete!",
+      "action": "Cómete una rodaja de limón (o cucharada de vinagre) sin hacer muecas. Si hacís aunque sea un gestito, tomai.",
+      "sips": [{ "amount": 1, "condition": "Si hace mueca", "target": "SELF" }]
+    },
+    {
+      "id": 502,
+      "title": "Fondo Blanco",
+      "story": "La sequía del carrete llegó a su fin, weón. Los espíritus de la sed decretaron que {J1} tiene que mandarse todo lo que le queda en el vaso de una sola vez. Sin respirar, sin parar, al seco.",
+      "action": "Mándate todo lo que te queda en el vaso. Al seco, sin respirar weón. ¡Sin excusas!",
+      "sips": [
+        { "amount": 5, "condition": "Fondo obligatorio", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 503,
+      "title": "Strip Poker",
+      "story": "Hace un calor del asco en el carrete y la ropa sobra. Los epospíritus del verano eterno eligieron a {J1} pa' que se saque una prenda. Zapatos y calcetines NO valen, weón, eso es trampa.",
+      "action": "Sácate una prenda de ropa (zapatos y calcetines no valen). Si no te atrevís, tomai 5 sorbos.",
+      "sips": [
+        { "amount": 5, "condition": "Si no se quita prenda", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 504,
+      "title": "Llamada Incómoda",
+      "story": "¡PELIGRO SOCIAL NIVEL MÁXIMO! Los espíritus del carrete le pasaron el celu a {J1} y ahora tiene que llamar a su vieja o viejo con una noticia que va a dejar la cagá. Tiene que ser rápido: suelta la bomba y cuelga.",
+      "action": "Llama a tu vieja o viejo y dile 'Estoy embarazado/a' o 'Voy a ser papá/mamá' y cuelga al tiro sin dar explicaciones. Si no te atrevís, fondo al seco.",
+      "sips": [
+        { "amount": 5, "condition": "Si no llama (Fondo)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 505,
+      "title": "El Hielo",
+      "story": "Un frío polar bajó de la nada al carrete. Los espíritus de la Antártida trajeron un cubo de hielo con tu nombre y quieren que {J1} se lo meta adentro de la ropa. ¡Ahí veamos quién aguanta!",
+      "action": "Métete un cubo de hielo dentro de la ropa (espalda o pantalón) y aguanta hasta que se derrita. Si te lo sacai antes, fondo al seco.",
+      "sips": [
+        {
+          "amount": 5,
+          "condition": "Si se saca el hielo (Fondo)",
+          "target": "SELF"
+        }
+      ]
+    },
+    {
+      "id": 506,
+      "title": "Azotes",
+      "story": "El consejo tribal del carrete sentenció a {J1} a recibir castigo corporal. Cada jugador de la mesa tiene derecho a una palmadita en el poto. Es la tradición, weón, no se puede rechazar.",
+      "action": "Déjate dar una palmá en el poto por cada jugador de la mesa. Si te ponís choro y no querís, tomai 4 sorbos.",
+      "sips": [{ "amount": 4, "condition": "Si se niega", "target": "SELF" }]
+    },
+    {
+      "id": 507,
+      "title": "La Mezcla",
+      "story": "Los espíritus del carrete prepararon una poción venenosa pa' {J1}. Cada weón de la mesa vierte un poco de su copete en el vaso de la víctima. El resultado es un brebaje asqueroso que hay que tomar sí o sí.",
+      "action": "Cada weón vierte un poco de su copete en tu vaso. Te tomai 3 sorbos de esa mezcla cuática.",
+      "sips": [
+        { "amount": 3, "condition": "Obligatorio (Mezcla)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 508,
+      "title": "La Plancha",
+      "story": "El gimnasio de la selva del carrete está abierto 24/7. {J1} fue elegido/a pa' demostrar su fuerza con la prueba más cuática: 45 segundos en posición de plancha. ¡Los músculos tiemblan!",
+      "action": "Haz posición de plancha (plank) por 45 segundos. Si caís antes de tiempo, tomai 3 sorbos por débil.",
+      "timer": 45,
+      "sips": [{ "amount": 3, "condition": "Si no aguanta", "target": "SELF" }]
+    },
+    {
+      "id": 509,
+      "title": "Condimento",
+      "story": "Los espíritus de la cocina se apoderaron del carrete y quieren ver a {J1} comerse una cucharada de condimento solo, sin mezclar con nada. Mayo, ketchup o ají... ¡a puro buche!",
+      "action": "Cómete una cucharada de mayonesa, ketchup o ají sola, sin pan ni nada. Si no te atrevís, fondo al seco.",
+      "sips": [
+        { "amount": 5, "condition": "Si no come (Fondo)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 510,
+      "title": "Sin Manos 2.0",
+      "story": "Una maldición cuática le quitó las manos a {J1}. Bueno, no literalmente, pero ahora NO puede usarlas pa' nada hasta su próximo turno. Ni pa' tomar, ni pa' rascarse, ni pa' nada.",
+      "action": "No podís usar las manos pa' NADA hasta tu próximo turno. Si te pillan usándolas, tomai 2 cada vez.",
+      "sips": [
+        { "amount": 2, "condition": "Cada vez que use manos", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 511,
+      "title": "A Ciegas",
+      "story": "La oscuridad total cayó sobre {J1}. Los espíritus de la noche lo/la cegaron y ahora tiene que sobrevivir el carrete sin ver nada hasta su próximo turno. ¡Ni un vistazo!",
+      "action": "Ponete una venda en los ojos hasta tu próximo turno. Si te la sacai, fondo al seco por tramposo/a.",
+      "sips": [
+        {
+          "amount": 5,
+          "condition": "Si se saca la venda (Fondo)",
+          "target": "SELF"
+        }
+      ]
+    },
+    {
+      "id": 512,
+      "title": "El Lienzo",
+      "story": "Los espíritus del arte corporal eligieron a {J1} como lienzo humano. El weón o weona de la derecha tiene el marcador listo y las ganas de dibujar. No hay vuelta atrás: bigote, monóculo, lo que se le ocurra.",
+      "action": "Dejá que el weón/weona de tu derecha te dibuje un bigote o monóculo con marcador. Te lo dejái todo el juego, sin alegar.",
+      "sips": []
+    },
+    {
+      "id": 513,
+      "title": "Susurros",
+      "story": "Un silencio mortal cayó sobre el carrete. Los espíritus le robaron la voz a {J1} y ahora solo puede comunicarse susurrando. Cualquier grito, risa fuerte o voz normal... tiene consecuencias.",
+      "action": "Tenís que hablar susurrando hasta tu próximo turno. Si alzái la voz, tomai un sorbo cada vez.",
+      "sips": [{ "amount": 1, "condition": "Si alza la voz", "target": "SELF" }]
+    },
+    {
+      "id": 514,
+      "title": "El Flamenco",
+      "story": "Los espíritus del equilibrio están probando a {J1}. Lo/la convirtieron en flamenco y ahora tiene que aguantar parao/a en un solo pie hasta que le toque de nuevo. Un solo toque al suelo y... copete.",
+      "action": "Quedai parao/a en un solo pie hasta tu próximo turno. Si tocái el suelo con el otro pie, tomai 3.",
+      "sips": [
+        { "amount": 3, "condition": "Si toca el suelo", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 515,
+      "title": "Nombre Prohibido",
+      "story": "Los espíritus del carrete borraron una palabra del diccionario grupal. {J1} elige un nombre común (puede ser de alguien presente o cualquier palabra) y ahora NADIE puede decirlo por 3 rondas.",
+      "action": "Elegí un nombre. Cada vez que alguien lo diga (incluido tú), esa persona toma. Dura 3 rondas.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Al que diga el nombre",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 516,
+      "title": "Esclavo Total",
+      "story": "La tribu del carrete necesita un esclavo y {J1} perdió la apuesta cósmica. Ahora es el perkin del grupo entero por 5 minutos: rellena vasos, trae snacks, abanica si es necesario.",
+      "action": "Erís el perkin del grupo por 5 minutos. Rellena vasos, trae copetito y snacks. Si alegai, tomai un sorbo por cada reclamo.",
+      "timer": 300,
+      "sips": [{ "amount": 1, "condition": "Si reclama", "target": "SELF" }]
+    },
+    {
+      "id": 517,
+      "title": "Brazos de T-Rex",
+      "story": "La evolución le jugó una broma pesada a {J1}: le achicaron los brazos como T-Rex. Ahora tiene que tomar con los codos pegados a las costillas, como dinosaurio, por el resto del juego. ¡Sin trampa!",
+      "action": "Tomái con los codos pegados a las costillas (como T-Rex) por el resto del juego, sin estirar los brazos.",
+      "sips": []
+    },
+    {
+      "id": 518,
+      "title": "Mareado",
+      "story": "Un vórtice dimensional apareció en medio del carrete y agarró a {J1}. Le dio vueltas como trompo y ahora está más mareao que gringo en fiestas patrias. Hay que comprobar si puede caminar derecho.",
+      "action": "Da 10 vueltas sobre tu eje y después intentá caminar en línea recta. Si quedái pa'l gato (o te caís), tomai.",
+      "sips": [{ "amount": 1, "condition": "Si marea/cae", "target": "SELF" }]
+    },
+    {
+      "id": 519,
+      "title": "Karaoke Vergonzoso",
+      "story": "¡Pégate el show, weón! Los espíritus del karaoke se apoderaron de {J1} y ahora tiene que subirse y cantarle una serenata al weón o weona de su derecha, mirándole directo a los ojos. Sin vergüenza.",
+      "action": "Párate y cántale una serenata al weón/weona de tu derecha mirándole a los ojos. Si no te atrevís, fondo al seco.",
+      "sips": [
+        { "amount": 5, "condition": "Si no canta (Fondo)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 520,
+      "title": "Cambio de Camisa",
+      "story": "Los espíritus del trueque aparecieron en el carrete y quieren un intercambio de poleras entre {J1} y la persona de su izquierda. Es tradición, weón, no se puede rechazar... o bueno, sí, pero cuesta.",
+      "action": "Intercambia tu camiseta con el weón/weona de tu izquierda al tiro. Si ninguno quiere, ambos toman 3 sorbos.",
+      "sips": [
+        { "amount": 3, "condition": "Ambos si se niegan", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 521,
+      "title": "Ráfaga",
+      "story": "¡AMETRALLADORA DE COPETE! Los espíritus del carrete activaron el modo ráfaga pa' {J1}. Cinco sorbos seguidos, sin parar, sin pensar, sin respirar. ¡A todo chancho!",
+      "action": "Tómate 5 sorbos chicos seguidos lo más rápido posible. ¡POONGALEE!",
+      "sips": [{ "amount": 5, "condition": "Obligatorio", "target": "SELF" }]
+    },
+    {
+      "id": 522,
+      "title": "Verdad o Dolor",
+      "story": "¡Ultimátum! Los espíritus del carrete le dieron a {J1} dos opciones: contestar una pregunta MUY íntima que el grupo le haga, o recibir un castigo físico de quien elija. No hay escapatoria.",
+      "action": "El grupo te hace una pregunta MUY íntima. Si no respondís, te comís un coscacho del weón/weona que elegís.",
+      "sips": []
+    },
+    {
+      "id": 523,
+      "title": "Limpieza",
+      "story": "Los espíritus de la humillación descendieron sobre {J1}. Quieren ver algo asqueroso, algo que nadie quiere hacer: lamer la mesa. Un pedacito no más, pero hay que hacerlo.",
+      "action": "Lame la mesa (un pedacito chiquitito no más) o fondo al seco. Tú elegís.",
+      "sips": [
+        { "amount": 5, "condition": "Si no lame (Fondo)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 525,
+      "title": "Suelo de Lava",
+      "story": "El piso del carrete se convirtió en lava otra vez, pero esta vez es personal: solo {J1} la siente. No puede tocar el suelo hasta su próximo turno. Súbase a la silla, al sofá, a lo que encuentre.",
+      "action": "No podís tocar el suelo hasta tu próximo turno. Súbete a la silla o sillón. Si tocái suelo, tomai 1.",
+      "sips": [{ "amount": 1, "condition": "Si toca suelo", "target": "SELF" }]
+    }
+  ],
+  "all": [
+    {
+      "id": 201,
+      "title": "Brindis por el Líder",
+      "story": "Los espíritus del carrete eligieron a {J2} como líder espiritual de la tribu. Pa' celebrar semejante honor, TODOS tienen que levantar sus vasos y brindar por el/la jefe/a. ¡Nadie se salva!",
+      "action": "Todos brindan y toman un sorbo por {J2}. ¡Salud po, cabros!",
+      "sips": [{ "amount": 1, "condition": "Todos toman", "target": "ALL" }]
+    },
+    {
+      "id": 202,
+      "title": "La Cascada",
+      "story": "Un río de copete apareció en el carrete y nadie puede parar de tomar hasta que el de la derecha pare. Empieza {J2} y la cascada fluye en cadena. ¡Que nadie se ahogue!",
+      "action": "Todos empiezan a tomar a la vez. Nadie para hasta que pare el de su derecha. Empieza {J2}. ¡A todo chancho!",
+      "sips": [
+        {
+          "amount": 5,
+          "condition": "Todos (Variable según aguante)",
+          "target": "ALL"
+        }
+      ]
+    },
+    {
+      "id": 203,
+      "title": "Hidratación",
+      "story": "El calor del carrete está insoportable, weón. Los cuerpos necesitan líquido urgente pa' seguir funcionando. Los espíritus del oasis decretaron hidratación obligatoria pa' todos.",
+      "action": "Todos se mandan 2 sorbos grandes de copete (o agua pa' los débiles) pa' seguir vivos en esta fiesta.",
+      "sips": [{ "amount": 2, "condition": "Todos toman", "target": "ALL" }]
+    },
+    {
+      "id": 205,
+      "title": "Tribu de Bajitos",
+      "story": "Los espíritus de la cueva del carrete decretaron que solo los más petisos pueden entrar. El jugador más bajo del grupo recibió poderes especiales y ahora decide quién toma.",
+      "action": "El jugador más petiso del grupo reparte 3 sorbos a quien quiera. ¡Mandai tú, enano/a!",
+      "sips": [
+        {
+          "amount": 3,
+          "condition": "Reparte el más bajo",
+          "target": "DISTRIBUTE"
+        }
+      ]
+    },
+    {
+      "id": 206,
+      "title": "Tribu de Gigantes",
+      "story": "Los espíritus de los árboles más altos del carrete necesitan al jugador más alto pa' alcanzar los frutos sagrados. A cambio de ese honor, puede repartir sorbos a quien quiera.",
+      "action": "El jugador más alto del grupo reparte 3 sorbos a los demás como quiera.",
+      "sips": [
+        {
+          "amount": 3,
+          "condition": "Reparte el más alto",
+          "target": "DISTRIBUTE"
+        }
+      ]
+    },
+    {
+      "id": 209,
+      "title": "Medusa Inversa",
+      "story": "Los espíritus de Medusa invadieron el carrete, pero esta vez al revés: si cruzai mirada con alguien, los dos quedan petrificados... y toman. A la cuenta de 3, todos eligen a quién mirar.",
+      "action": "A la cuenta de 3, todos miran a alguien. Si cruzai mirada, ambos gritan '¡Medusa!' y toman.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "A los que crucen mirada",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 211,
+      "title": "El Bufón",
+      "story": "Los espíritus del humor invadieron el carrete y quieren premiar al más chistoso. Si alguien hizo reír a la mesa en los últimos 5 minutos, se gana el título de bufón oficial.",
+      "action": "Si alguien hizo reír a otr@ en los últimos 5 minutos, reparte 3 sorbos. Si nadie se rió... todos toman 3 por fomes.",
+      "sips": [
+        {
+          "amount": 3,
+          "condition": "Si hizo reír (Reparte)",
+          "target": "DISTRIBUTE"
+        },
+        { "amount": 3, "condition": "Si fue fome (Toma)", "target": "SELF" }
+      ]
+    },
+    {
+      "id": 212,
+      "title": "Vainilla vs Chocolate",
+      "story": "¡Guerra de clanes en el carrete! Los espíritus dividieron al grupo según el color de pelo. Rubios contra morenos, no hay término medio. Cada bando tiene su castigo.",
+      "action": "El grupo más pequeño debe tomar 5.",
+      "sips": [
+        { "amount": 5, "condition": "Grupo más pequeño", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 213,
+      "title": "Cuatro Ojos",
+      "story": "Los espíritus del carrete sacaron una tabla optométrica y quieren saber quién anda con visión asistida. Los cuatro ojos de la mesa van a tener que pagar peaje.",
+      "action": "Todos los que usen lentes (o lentes de contacto, si confiesan) toman 2 sorbos por cuatro ojos.",
+      "sips": [
+        {
+          "amount": 2,
+          "condition": "Los que usan lentes",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 215,
+      "title": "Sin Manos",
+      "story": "Los espíritus del carrete decidieron que las manos son un lujo. Ahora TODOS tienen que tomar un sorbo sin usarlas: vaso en la mesa y puro hocico, o con los codos. El que derrame, paga doble.",
+      "action": "Todos toman un sorbo sin usar las manos (vaso en la mesa o con los codos). El que derrame, toma doble.",
+      "sips": [
+        { "amount": 1, "condition": "Todos (Sin manos)", "target": "ALL" },
+        { "amount": 2, "condition": "Si derrama", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 217,
+      "title": "Cumpleaños",
+      "story": "Los espíritus del calendario invadieron el carrete y quieren celebrar al que tenga el cumpleaños más cercano, ya sea pasado o por venir. ¡Feliz cumpleaños anticipado o atrasado!",
+      "action": "El que tenga el cumpleaños más cercano (pasado o futuro) toma al seco. ¡Feliz cumple, espero te guste el regalo 🥵!",
+      "sips": [
+        {
+          "amount": 999,
+          "condition": "Cumpleañero cercano",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 219,
+      "title": "Monedas y Llaves",
+      "story": "Los espíritus del carrete quieren saber quién anda más cargao encima. Todos sacan lo que tienen en los bolsillos: monedas, llaves, lo que sea. El que tenga más cosas manda.",
+      "action": "El que tenga más monedas o llaves en los bolsillos reparte 3 sorbos. El que no tenga nada, toma 2 por andar livianito.",
+      "sips": [
+        {
+          "amount": 3,
+          "condition": "El con más cosas (Reparte)",
+          "target": "DISTRIBUTE"
+        },
+        { "amount": 2, "condition": "El sin nada (Toma)", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 220,
+      "title": "Aventurero Novato",
+      "story": "Los espíritus del carrete tienen ojo con los atrasados. El último weón que llegó a la fiesta hoy fue fichado y ahora tiene que pagar su impuntualidad con copete.",
+      "action": "El último weón que llegó a la fiesta hoy toma 3 sorbos. Por atrasao, sin excusas.",
+      "sips": [
+        {
+          "amount": 3,
+          "condition": "El último en llegar",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 221,
+      "title": "El Vestido",
+      "story": "Los espíritus de la moda del carrete están evaluando los looks de todos. El que ande más colorido, más llamativo, más pintar el mono... paga con copete.",
+      "action": "El que cargue más flow en su ropa toma 3 sorbos. ¡¿Por que tan llamativo?!",
+      "sips": [
+        { "amount": 3, "condition": "El/La con más flow", "target": "SPECIFIC" }
+      ]
+    },
+    {
+      "id": 222,
+      "title": "Titanic",
+      "story": "¡Se hunde el barco del carrete! Los espíritus del Titanic aparecieron y decretaron que todos se mandan lo que les queda en el vaso. Si es mucho, se negocia a 5 sorbos máximo.",
+      "action": "Todos se mandan lo que les queda en el vaso. Si es mucho, se negocia a 5 sorbos máximo.",
+      "sips": [
+        { "amount": 5, "condition": "Todos (Resto del vaso)", "target": "ALL" }
+      ]
+    },
+    {
+      "id": 224,
+      "title": "Zurdo",
+      "story": "Los espíritus del carrete decidieron complicarle la vida a todos: desde ahora, se toma con la mano izquierda (o la no dominante) por el resto del juego. El que olvide, paga.",
+      "action": "Todos toman con la mano izquierda (o la no dominante) el resto del juego. Quien use la otra mano, toma penalización.",
+      "sips": [
+        {
+          "amount": 1,
+          "condition": "Penalización por mano derecha",
+          "target": "SPECIFIC"
+        }
+      ]
+    },
+    {
+      "id": 225,
+      "title": "Aguas Termales",
+      "story": "Los espíritus del relajo decidieron premiar al grupo con un momento de paz. Todos masajean al weón o weona de su derecha mientras se mandan un traguito de placer. ¡Aguas termales mode!",
+      "action": "Todos masajean los hombros del weón/weona de su derecha y se mandan un trago de placer. ¡Relax!",
+      "sips": [{ "amount": 1, "condition": "Todos toman", "target": "ALL" }]
+    }
+  ]
+}
