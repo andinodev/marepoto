@@ -19,6 +19,9 @@ const TARGET_LABELS := ["Uno mismo", "Específico", "Todos", "Distribuir"]
 const PASIVE_KEYS := ["X_PLAYER_TURN", "X_TURN", "ANY_TURN"]
 const PASIVE_LABELS := ["Turno del jugador", "Turno general", "Permanente"]
 
+const MINIGAME_KEYS := ["", "HOCKEY"]
+const MINIGAME_LABELS := ["Ninguno", "🏒 Air Hockey"]
+
 # --- State ---
 var _current_tab := "player" # "player" or "all"
 var _search_text := ""
@@ -42,6 +45,9 @@ var _action_input: TextEdit
 var _timer_spin: SpinBox
 var _sips_container: VBoxContainer
 var _pasive_container: VBoxContainer
+var _minigame_option: OptionButton
+var _minigame_rounds_spin: SpinBox
+var _minigame_rounds_row: HBoxContainer
 var _save_btn: Button
 var _cancel_btn: Button
 var _form_title_label: Label
@@ -409,22 +415,23 @@ func _create_card(data: Dictionary, index: int) -> void:
 	story_lbl.label_settings = ss
 	info_vbox.add_child(story_lbl)
 
+	# Badge row (sips + timer + minigame + passives)
+	var badge_hbox := HBoxContainer.new()
+	badge_hbox.add_theme_constant_override("separation", 10)
+	badge_hbox.mouse_filter = Control.MOUSE_FILTER_PASS
+	info_vbox.add_child(badge_hbox)
+
 	# Sips badges
 	var sips_arr: Array = data.get("sips", [])
-	if sips_arr.size() > 0:
-		var badge_hbox := HBoxContainer.new()
-		badge_hbox.add_theme_constant_override("separation", 6)
-		badge_hbox.mouse_filter = Control.MOUSE_FILTER_PASS
-		info_vbox.add_child(badge_hbox)
-		for sip in sips_arr:
-			var badge := Label.new()
-			badge.text = "🍺×%s" % str(sip.get("amount", 0))
-			badge.mouse_filter = Control.MOUSE_FILTER_PASS
-			var bs := LabelSettings.new()
-			bs.font_size = 28
-			bs.font_color = NEON_GREEN
-			badge.label_settings = bs
-			badge_hbox.add_child(badge)
+	for sip in sips_arr:
+		var badge := Label.new()
+		badge.text = "🍺×%s" % str(sip.get("amount", 0))
+		badge.mouse_filter = Control.MOUSE_FILTER_PASS
+		var bs := LabelSettings.new()
+		bs.font_size = 28
+		bs.font_color = NEON_GREEN
+		badge.label_settings = bs
+		badge_hbox.add_child(badge)
 
 	# Timer badge
 	var timer_val: int = int(data.get("timer", 0))
@@ -436,7 +443,37 @@ func _create_card(data: Dictionary, index: int) -> void:
 		tls.font_size = 28
 		tls.font_color = Color(0.9, 0.6, 0.2)
 		timer_lbl.label_settings = tls
-		info_vbox.add_child(timer_lbl)
+		badge_hbox.add_child(timer_lbl)
+
+	# Minigame badge
+	var mg_data: Dictionary = data.get("minigame", {})
+	if not mg_data.is_empty():
+		var mg_lbl := Label.new()
+		var mg_type: String = str(mg_data.get("type", ""))
+		var mg_rounds: int = int(mg_data.get("rounds", 3))
+		mg_lbl.text = "🎮 %s (%d)" % [mg_type, mg_rounds]
+		mg_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
+		var mls := LabelSettings.new()
+		mls.font_size = 28
+		mls.font_color = Color(0.4, 0.7, 1.0)
+		mg_lbl.label_settings = mls
+		badge_hbox.add_child(mg_lbl)
+
+	# Passive badges
+	var pasive_arr: Array = data.get("pasive", [])
+	for pas in pasive_arr:
+		var p_lbl := Label.new()
+		var ptype: String = str(pas.get("type", ""))
+		if ptype == "ANY_TURN":
+			p_lbl.text = "🗣️ ∞"
+		else:
+			p_lbl.text = "🗣️ ×%d" % int(pas.get("count", 1))
+		p_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
+		var pls := LabelSettings.new()
+		pls.font_size = 28
+		pls.font_color = Color(0.8, 0.5, 1.0)
+		p_lbl.label_settings = pls
+		badge_hbox.add_child(p_lbl)
 
 	# --- Right: Action buttons ---
 	var btn_vbox := VBoxContainer.new()
@@ -595,7 +632,7 @@ func _build_form_overlay() -> void:
 	form_vbox.add_child(add_sip_btn)
 
 	# Pasive section
-	form_vbox.add_child(_make_form_label("Pasiva ⏳"))
+	form_vbox.add_child(_make_form_label("Pasiva 🗣️"))
 	_pasive_container = VBoxContainer.new()
 	_pasive_container.add_theme_constant_override("separation", 8)
 	form_vbox.add_child(_pasive_container)
@@ -606,6 +643,47 @@ func _build_form_overlay() -> void:
 	_style_button(add_pasive_btn, NEON_YELLOW)
 	add_pasive_btn.pressed.connect(_on_add_pasive_row)
 	form_vbox.add_child(add_pasive_btn)
+
+	# Minigame section
+	form_vbox.add_child(_make_form_label("Minijuego 🎮"))
+	var mg_row := HBoxContainer.new()
+	mg_row.add_theme_constant_override("separation", 8)
+	form_vbox.add_child(mg_row)
+
+	_minigame_option = OptionButton.new()
+	_minigame_option.custom_minimum_size = Vector2(280, 56)
+	_minigame_option.add_theme_font_size_override("font_size", 28)
+	for i in MINIGAME_LABELS.size():
+		_minigame_option.add_item(MINIGAME_LABELS[i], i)
+	var mg_popup := _minigame_option.get_popup()
+	if mg_popup:
+		mg_popup.add_theme_font_size_override("font_size", 32)
+	_minigame_option.item_selected.connect(_on_minigame_type_changed)
+	mg_row.add_child(_minigame_option)
+
+	_minigame_rounds_row = HBoxContainer.new()
+	_minigame_rounds_row.add_theme_constant_override("separation", 6)
+	_minigame_rounds_row.visible = false
+	mg_row.add_child(_minigame_rounds_row)
+
+	var rounds_lbl := Label.new()
+	rounds_lbl.text = "Rondas:"
+	var rls := LabelSettings.new()
+	rls.font_size = 30
+	rls.font_color = Color(0.7, 0.7, 0.8)
+	rounds_lbl.label_settings = rls
+	_minigame_rounds_row.add_child(rounds_lbl)
+
+	_minigame_rounds_spin = SpinBox.new()
+	_minigame_rounds_spin.min_value = 1
+	_minigame_rounds_spin.max_value = 10
+	_minigame_rounds_spin.value = 3
+	_minigame_rounds_spin.custom_minimum_size = Vector2(130, 56)
+	_minigame_rounds_spin.add_theme_font_size_override("font_size", 32)
+	var mg_spin_le := _minigame_rounds_spin.get_line_edit()
+	if mg_spin_le:
+		mg_spin_le.add_theme_font_size_override("font_size", 32)
+	_minigame_rounds_row.add_child(_minigame_rounds_spin)
 
 	# Spacer
 	var spacer := Control.new()
@@ -910,6 +988,10 @@ func _on_new_challenge() -> void:
 	# Clear pasives
 	for child in _pasive_container.get_children():
 		child.queue_free()
+	# Reset minigame
+	_minigame_option.select(0)
+	_minigame_rounds_spin.value = 3
+	_minigame_rounds_row.visible = false
 	_show_form()
 
 
@@ -940,6 +1022,18 @@ func _on_edit(_category: String, _id: int, data: Dictionary) -> void:
 			str(pas.get("type", "X_PLAYER_TURN")),
 			int(pas.get("count", 1))
 		)
+	# Minigame
+	var mg_data: Dictionary = data.get("minigame", {})
+	if not mg_data.is_empty():
+		var mg_type: String = str(mg_data.get("type", ""))
+		var mg_idx := MINIGAME_KEYS.find(mg_type)
+		_minigame_option.select(mg_idx if mg_idx >= 0 else 0)
+		_minigame_rounds_spin.value = int(mg_data.get("rounds", 3))
+		_minigame_rounds_row.visible = mg_idx > 0
+	else:
+		_minigame_option.select(0)
+		_minigame_rounds_spin.value = 3
+		_minigame_rounds_row.visible = false
 	_show_form()
 
 
@@ -970,6 +1064,10 @@ func _on_restore(category: String, id: int) -> void:
 
 func _on_add_sip_row() -> void:
 	_add_sip_row()
+
+
+func _on_minigame_type_changed(index: int) -> void:
+	_minigame_rounds_row.visible = index > 0
 
 
 ## ======================================================================
@@ -1057,6 +1155,14 @@ func _on_form_save() -> void:
 		pasive_arr.append(pas_data)
 	if not pasive_arr.is_empty():
 		data["pasive"] = pasive_arr
+
+	# Minigame
+	var mg_selected: int = _minigame_option.selected
+	if mg_selected > 0 and mg_selected < MINIGAME_KEYS.size():
+		data["minigame"] = {
+			"type": MINIGAME_KEYS[mg_selected],
+			"rounds": int(_minigame_rounds_spin.value),
+		}
 
 	# Save
 	if _editing_id == -1:
