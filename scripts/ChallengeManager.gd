@@ -126,12 +126,21 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
-		if _confirm_overlay.visible:
-			_on_confirm_no()
-		elif _form_overlay.visible:
-			_hide_form()
-		else:
-			_on_back()
+		_handle_back()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		_handle_back()
+
+
+func _handle_back() -> void:
+	if _confirm_overlay.visible:
+		_on_confirm_no()
+	elif _form_overlay.visible:
+		_hide_form()
+	else:
+		_on_back()
 
 
 ## ======================================================================
@@ -536,6 +545,8 @@ func _build_form_overlay() -> void:
 	# SafeZone margin wrapper for form
 	var form_safe_margin := MarginContainer.new()
 	form_safe_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	form_safe_margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	form_safe_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	SafeZoneManager.apply_to_margin(form_safe_margin, 60, 20, 16, 16)
 	_form_overlay.add_child(form_safe_margin)
 
@@ -845,7 +856,9 @@ func _build_confirm_dialog() -> void:
 	# SafeZone margin wrapper for confirm dialog
 	var confirm_safe_margin := MarginContainer.new()
 	confirm_safe_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	SafeZoneManager.apply_to_margin(confirm_safe_margin, 0, 0, 0, 0)
+	confirm_safe_margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	confirm_safe_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	SafeZoneManager.apply_to_margin(confirm_safe_margin, 20, 20, 16, 16)
 	_confirm_overlay.add_child(confirm_safe_margin)
 
 	var center := CenterContainer.new()

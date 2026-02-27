@@ -12,6 +12,7 @@ config_version=5
 
 config/name="Marepoto"
 run/main_scene="res://scenes/Main.tscn"
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.6", "Mobile")
 boot_splash/show_image=false
 boot_splash/stretch_mode=0

@@ -81,6 +81,15 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("ui_cancel"):
 		return
+	_handle_back()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		_handle_back()
+
+
+func _handle_back() -> void:
 	# ChallengeManager handles its own back button if active
 	if _challenge_manager != null:
 		return
@@ -787,7 +796,7 @@ func _clear_passive_icons() -> void:
 
 func _get_player_color(player_name: String, is_all: bool) -> Color:
 	if is_all:
-		return Color("#facc15") # Gold for ALL challenges
+		return Color("#fa15e7ff") # Gold for ALL challenges
 	for p in GameManager.players:
 		if p["name"] == player_name:
 			return p["color"]
