@@ -5,6 +5,7 @@ extends Control
 @onready var game_ui: Control = $GameUI
 @onready var challenge_modal: Control = $ChallengeModal
 @onready var roulette: Control = $GameUI/SafeMargin/GameContent/RouletteContainer/Roulette
+@onready var passive_icons_container: HFlowContainer = $GameUI/SafeMargin/GameContent/PassiveIconsContainer
 
 # Setup UI refs
 @onready var setup_safe_margin: MarginContainer = $SetupUI/SafeMargin
@@ -35,13 +36,20 @@ extends Control
 const ChallengeManagerScene := preload("res://scenes/ChallengeManager.tscn")
 const BANNER_TEX: Texture2D = preload("res://sprites/ui/PNG/Double/banner_classic_curtain.png")
 const MODAL_PANEL_TEX: Texture2D = preload("res://sprites/ui/PNG/Double/panel_brown_corners_a.png")
+const PassiveIconScript := preload("res://scripts/PassiveIcon.gd")
+const HockeyMinigameScript := preload("res://scripts/HockeyMinigame.gd")
 
 var _challenge_timer: Timer
 var _timer_seconds: int = 0
 var _timer_running: bool = false
 var _challenge_manager: Control = null
 var _is_transitioning: bool = false
-
+var _current_challenge: Dictionary = {}
+var _current_challenge_is_all: bool = false
+var _current_winner_name: String = ""
+var _current_j2_name: String = ""
+var _hockey_minigame: Control = null
+var _minigame_played: bool = false
 
 func _ready() -> void:
 	# Setup timer node
@@ -64,9 +72,30 @@ func _ready() -> void:
 	GameManager.state_changed.connect(_on_state_changed)
 	GameManager.game_started.connect(roulette.reset)
 
+
 	# _apply_neon_theme()
 	_apply_safe_zone()
 	_on_state_changed(GameManager.State.SETUP)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_action_pressed("ui_cancel"):
+		return
+	# ChallengeManager handles its own back button if active
+	if _challenge_manager != null:
+		return
+	# Block back during minigame
+	if _hockey_minigame != null:
+		return
+	get_viewport().set_input_as_handled()
+	match GameManager.state:
+		GameManager.State.CHALLENGE_VIEW:
+			_on_challenge_done()
+		GameManager.State.PLAYING:
+			if not roulette.is_spinning():
+				_on_back_to_menu()
+		GameManager.State.SETUP:
+			get_tree().quit()
 
 ## ---------- Safe Zone ----------
 
@@ -372,6 +401,7 @@ func _refresh_player_list() -> void:
 
 func _on_start_game() -> void:
 	if GameManager.get_player_count() >= 2:
+		_clear_passive_icons()
 		GameManager.start_game()
 
 
@@ -390,10 +420,12 @@ func _on_spin_completed(winner_name: String, is_all: bool) -> void:
 	spin_btn.disabled = false
 	back_to_menu_btn.disabled = false
 	$AnimationPlayer.play("RESET")
+	_decrement_passive_icons(winner_name, is_all)
 	_show_challenge(winner_name, is_all)
 
 
 func _on_back_to_menu() -> void:
+	_clear_passive_icons()
 	GameManager.return_to_setup()
 
 
@@ -404,10 +436,22 @@ func _show_challenge(winner_name: String, is_all: bool) -> void:
 	if challenge.is_empty():
 		return
 
+	# Store for passive icon spawning in _on_challenge_done
+	_current_challenge = challenge
+	_current_challenge_is_all = is_all
+	_current_winner_name = winner_name
+
 	var current_player := GameManager.get_current_player()
 	var j1_name: String = winner_name
-	var j2_player := GameManager.get_random_other_player()
+	# Find the winner's index so we exclude the correct player for J2
+	var winner_idx := 0
+	for i in GameManager.players.size():
+		if GameManager.players[i]["name"] == winner_name:
+			winner_idx = i
+			break
+	var j2_player := GameManager.get_random_other_player(winner_idx)
 	var j2_name: String = j2_player.get("name", "???")
+	_current_j2_name = j2_name
 
 	if is_all:
 		challenge_player.text = "👥 ¡TODOS!"
@@ -464,8 +508,22 @@ func _show_challenge(winner_name: String, is_all: bool) -> void:
 	tween.tween_property(challenge_modal, "scale", Vector2.ONE, 0.3) \
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 
+	# Check if this challenge has a minigame
+	var minigame_data: Dictionary = challenge.get("minigame", {})
+	if not minigame_data.is_empty():
+		done_btn.text = "🎮 ¡JUGAR!"
+	else:
+		done_btn.text = "Listo"
+
 
 func _on_challenge_done() -> void:
+	# If this challenge has a minigame, launch it instead of closing
+	var minigame_data: Dictionary = _current_challenge.get("minigame", {})
+	if not minigame_data.is_empty() and not _minigame_played:
+		_launch_minigame(minigame_data)
+		return
+	_minigame_played = false
+
 	_challenge_timer.stop()
 	_timer_running = false
 	done_btn.disabled = true
@@ -476,8 +534,148 @@ func _on_challenge_done() -> void:
 		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 	tween.chain().tween_callback(func():
 		done_btn.disabled = false
+		done_btn.text = "Listo"
+		_try_spawn_passive_icons()
 		GameManager.next_turn()
 		GameManager.state = GameManager.State.PLAYING
+	)
+
+
+func _launch_minigame(minigame_data: Dictionary) -> void:
+	var mg_type: String = str(minigame_data.get("type", ""))
+	if mg_type != "HOCKEY":
+		return
+
+	var rounds: int = int(minigame_data.get("rounds", 3))
+
+	# Get player colors
+	var p1_color := _get_player_color(_current_winner_name, false)
+	var p2_color := _get_player_color(_current_j2_name, false)
+
+	# Create minigame
+	_hockey_minigame = Control.new()
+	_hockey_minigame.set_script(HockeyMinigameScript)
+	_hockey_minigame.player1_name = _current_winner_name
+	_hockey_minigame.player2_name = _current_j2_name
+	_hockey_minigame.player1_color = p1_color
+	_hockey_minigame.player2_color = p2_color
+	_hockey_minigame.rounds_to_win = rounds
+	_hockey_minigame.game_finished.connect(_on_minigame_finished)
+	_hockey_minigame.z_index = 50
+	add_child(_hockey_minigame)
+
+
+func _on_minigame_finished(winner_idx: int) -> void:
+	if _hockey_minigame == null:
+		return
+
+	var winner_name: String = _current_winner_name if winner_idx == 0 else _current_j2_name
+	var loser_name: String = _current_j2_name if winner_idx == 0 else _current_winner_name
+	var winner_color: Color = _hockey_minigame.player1_color if winner_idx == 0 else _hockey_minigame.player2_color
+
+	# Remove minigame
+	_hockey_minigame.queue_free()
+	_hockey_minigame = null
+
+	# Show result overlay
+	_show_minigame_result(winner_name, loser_name, winner_color)
+
+
+func _show_minigame_result(winner_name: String, loser_name: String, winner_color: Color) -> void:
+	var overlay := Control.new()
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.z_index = 60
+
+	# Dim background
+	var dim := ColorRect.new()
+	dim.color = Color(0, 0, 0, 0.85)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(dim)
+
+	# Content VBox
+	var vbox := VBoxContainer.new()
+	vbox.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	vbox.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	vbox.grow_vertical = Control.GROW_DIRECTION_BOTH
+	vbox.custom_minimum_size = Vector2(600, 400)
+	vbox.offset_left = -300
+	vbox.offset_right = 300
+	vbox.offset_top = -200
+	vbox.offset_bottom = 200
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 24)
+	overlay.add_child(vbox)
+
+	# Winner label
+	var winner_lbl := Label.new()
+	winner_lbl.text = "🏆 %s" % winner_name
+	winner_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var wls := LabelSettings.new()
+	wls.font_size = 56
+	wls.font_color = winner_color
+	wls.outline_size = 6
+	wls.outline_color = Color(0, 0, 0, 0.8)
+	winner_lbl.label_settings = wls
+	vbox.add_child(winner_lbl)
+
+	# VS
+	var vs_lbl := Label.new()
+	vs_lbl.text = "GANADOR"
+	vs_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var vls := LabelSettings.new()
+	vls.font_size = 32
+	vls.font_color = Color(0.6, 0.6, 0.6)
+	vs_lbl.label_settings = vls
+	vbox.add_child(vs_lbl)
+
+	# Loser label
+	var loser_lbl := Label.new()
+	loser_lbl.text = "💀 %s" % loser_name
+	loser_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var lls := LabelSettings.new()
+	lls.font_size = 48
+	lls.font_color = Color(0.9, 0.2, 0.2)
+	lls.outline_size = 5
+	lls.outline_color = Color(0, 0, 0, 0.8)
+	loser_lbl.label_settings = lls
+	vbox.add_child(loser_lbl)
+
+	# Spacer
+	var spacer := Control.new()
+	spacer.custom_minimum_size.y = 20
+	vbox.add_child(spacer)
+
+	# Continue button
+	var btn := Button.new()
+	btn.text = "Continuar"
+	btn.custom_minimum_size = Vector2(300, 70)
+	btn.add_theme_font_size_override("font_size", 36)
+	var btn_style := StyleBoxFlat.new()
+	btn_style.bg_color = Color(winner_color, 0.3)
+	btn_style.border_color = winner_color
+	btn_style.set_border_width_all(2)
+	btn_style.set_corner_radius_all(16)
+	btn_style.set_content_margin_all(12)
+	btn.add_theme_stylebox_override("normal", btn_style)
+	btn.add_theme_color_override("font_color", Color.WHITE)
+	vbox.add_child(btn)
+
+	add_child(overlay)
+
+	# Animate entrance
+	overlay.modulate.a = 0.0
+	var tween := create_tween()
+	tween.tween_property(overlay, "modulate:a", 1.0, 0.4)
+
+	# Connect continue button
+	btn.pressed.connect(func():
+		var tw := create_tween()
+		tw.tween_property(overlay, "modulate:a", 0.0, 0.25)
+		tw.tween_callback(func():
+			overlay.queue_free()
+			_minigame_played = true
+			_on_challenge_done()
+		)
 	)
 
 
@@ -506,3 +704,91 @@ func _format_time(seconds: int) -> String:
 	var m := seconds / 60
 	var s := seconds % 60
 	return "%d:%02d" % [m, s]
+
+
+## ---------- Passive Icons ----------
+
+func _try_spawn_passive_icons() -> void:
+	if _current_challenge.is_empty():
+		return
+	var pasive_arr: Array = _current_challenge.get("pasive", [])
+	if pasive_arr.is_empty():
+		return
+
+	var color := _get_player_color(_current_winner_name, _current_challenge_is_all)
+	var title: String = _current_challenge.get("title", "")
+
+	for pasive in pasive_arr:
+		var ptype: String = str(pasive.get("type", ""))
+		var is_permanent := ptype.begins_with("ANY_")
+		var rounds: int = -1 if is_permanent else int(pasive.get("count", 1))
+		var icon_path: String = str(pasive.get("icon", ""))
+		_spawn_passive_icon(color, rounds, icon_path, title, ptype, _current_winner_name)
+
+
+func _spawn_passive_icon(color: Color, rounds: int, icon_path: String, title: String, ptype: String, owner: String) -> void:
+	var icon := Control.new()
+	icon.set_script(PassiveIconScript)
+	icon.passive_type = ptype
+	icon.owner_name = owner
+	icon.setup(color, rounds, icon_path, title)
+	passive_icons_container.add_child(icon)
+
+	# Animate entrance
+	icon.scale = Vector2.ZERO
+	icon.pivot_offset = icon.custom_minimum_size / 2.0
+	var tween := create_tween()
+	tween.tween_property(icon, "scale", Vector2.ONE, 0.35) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+
+
+func _decrement_passive_icons(winner_name: String, _is_all: bool) -> void:
+	## Decrement passive icons based on their type.
+	## X_PLAYER_TURN: only when the owner is selected again.
+	## X_TURN / X_MOMENT: every spin, regardless of player.
+	var to_remove: Array[Control] = []
+	for child in passive_icons_container.get_children():
+		if not child.has_method("decrement"):
+			continue
+		var ptype: String = child.passive_type
+		var should_decrement := false
+
+		if ptype.begins_with("ANY_"):
+			# Permanent — never decrement
+			continue
+		elif ptype == "X_PLAYER_TURN":
+			# Only decrement when this player is selected again
+			should_decrement = (child.owner_name == winner_name)
+		else:
+			# X_TURN, X_MOMENT — decrement every spin
+			should_decrement = true
+
+		if should_decrement:
+			var expired: bool = child.decrement()
+			if expired:
+				to_remove.append(child)
+
+	for icon in to_remove:
+		_remove_passive_icon(icon)
+
+
+func _remove_passive_icon(icon: Control) -> void:
+	icon.pivot_offset = icon.size / 2.0
+	var tween := create_tween()
+	tween.tween_property(icon, "scale", Vector2.ZERO, 0.25) \
+		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	tween.tween_callback(icon.queue_free)
+
+
+func _clear_passive_icons() -> void:
+	for child in passive_icons_container.get_children():
+		child.queue_free()
+
+
+func _get_player_color(player_name: String, is_all: bool) -> Color:
+	if is_all:
+		return Color("#facc15") # Gold for ALL challenges
+	for p in GameManager.players:
+		if p["name"] == player_name:
+			return p["color"]
+	return Color.WHITE

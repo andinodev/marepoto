@@ -20,6 +20,10 @@ var _last_winners: Array[String] = []
 const MAX_HISTORY := 2
 
 
+func is_spinning() -> bool:
+	return _is_spinning
+
+
 func _ready() -> void:
 	build_segments()
 
@@ -281,7 +285,7 @@ func spin() -> void:
 		target_rotation += TAU
 
 	var tween := create_tween()
-	tween.tween_property(self, "_current_rotation", target_rotation, SPIN_DURATION) \
+	tween.tween_property(self , "_current_rotation", target_rotation, SPIN_DURATION) \
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	tween.tween_callback(_on_spin_finished)
 

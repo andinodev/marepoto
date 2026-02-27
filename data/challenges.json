@@ -4,7 +4,7 @@
     {
       "id": 101,
       "title": "Posesión",
-      "story": "Ohhh weón, algo raro pasó en el carrete... {J1} quedó mirando fijo a {J2} y de repente empezó a hablar con la voz del otro. ¡Se le metió el espíritu! Ahora son prácticamente la misma persona.",
+      "story": "Ohhh weón, algo raro pasó en el carrete... {J1} quedó mirando fijo a {J2} y de repente empezó a hablar con la voz del otro. ¡Se le metió adentro 🥵! Ahora son prácticamente la misma persona.",
       "action": "Cámbiense una prenda de ropa entre los dos, ¡al tiro! Si se ponen choros y no quieren, ambos se mandan 3 sorbos por cobardes.",
       "sips": [
         {
@@ -132,6 +132,9 @@
       "action": "Erís el perkin de {J2} por 2 rondas. Sirvele el copete, abanícalo, hazle masajitos... lo que pida. Cada vez que no obezcai, te mandai 5 sorbos.",
       "sips": [
         { "amount": 5, "condition": "Si desobedece", "target": "SELF" }
+      ],
+      "pasive": [
+        { "type": "X_TURN", "count": 2 }
       ]
     },
     {
@@ -170,6 +173,9 @@
           "condition": "Ambos si se separan",
           "target": "SPECIFIC"
         }
+      ],
+      "pasive": [
+        { "type": "X_PLAYER_TURN", "count": 1 }
       ]
     },
     {
@@ -179,6 +185,9 @@
       "action": "Hablai con acento extranjero (el que querái) hasta tu próximo turno. Cada vez que se te olvide y hablís normal, tomai un sorbo.",
       "sips": [
         { "amount": 1, "condition": "Si olvida el acento", "target": "SELF" }
+      ],
+      "pasive": [
+        { "type": "X_PLAYER_TURN", "count": 1 }
       ]
     },
     {
@@ -808,6 +817,9 @@
       "action": "No podís usar las manos pa' NADA hasta tu próximo turno. Si te pillan usándolas, tomai 2 cada vez.",
       "sips": [
         { "amount": 2, "condition": "Cada vez que use manos", "target": "SELF" }
+      ],
+      "pasive": [
+        { "type": "X_PLAYER_TURN", "count": 1 }
       ]
     },
     {
@@ -821,6 +833,9 @@
           "condition": "Si se saca la venda (Fondo)",
           "target": "SELF"
         }
+      ],
+      "pasive": [
+        { "type": "X_PLAYER_TURN", "count": 1 }
       ]
     },
     {
@@ -828,14 +843,20 @@
       "title": "El Lienzo",
       "story": "Los espíritus del arte corporal eligieron a {J1} como lienzo humano. El weón o weona de la derecha tiene el marcador listo y las ganas de dibujar. No hay vuelta atrás: bigote, monóculo, lo que se le ocurra.",
       "action": "Dejá que el weón/weona de tu derecha te dibuje un bigote o monóculo con marcador. Te lo dejái todo el juego, sin alegar.",
-      "sips": []
+      "sips": [],
+      "pasive": [
+        { "type": "ANY_TURN" }
+      ]
     },
     {
       "id": 513,
       "title": "Susurros",
       "story": "Un silencio mortal cayó sobre el carrete. Los espíritus le robaron la voz a {J1} y ahora solo puede comunicarse susurrando. Cualquier grito, risa fuerte o voz normal... tiene consecuencias.",
       "action": "Tenís que hablar susurrando hasta tu próximo turno. Si alzái la voz, tomai un sorbo cada vez.",
-      "sips": [{ "amount": 1, "condition": "Si alza la voz", "target": "SELF" }]
+      "sips": [{ "amount": 1, "condition": "Si alza la voz", "target": "SELF" }],
+      "pasive": [
+        { "type": "X_PLAYER_TURN", "count": 1 }
+      ]
     },
     {
       "id": 514,
@@ -844,6 +865,9 @@
       "action": "Quedai parao/a en un solo pie hasta tu próximo turno. Si tocái el suelo con el otro pie, tomai 3.",
       "sips": [
         { "amount": 3, "condition": "Si toca el suelo", "target": "SELF" }
+      ],
+      "pasive": [
+        { "type": "X_PLAYER_TURN", "count": 1 }
       ]
     },
     {
@@ -857,6 +881,9 @@
           "condition": "Al que diga el nombre",
           "target": "SPECIFIC"
         }
+      ],
+      "pasive": [
+        { "type": "X_TURN", "count": 3 }
       ]
     },
     {
@@ -872,7 +899,10 @@
       "title": "Brazos de T-Rex",
       "story": "La evolución le jugó una broma pesada a {J1}: le achicaron los brazos como T-Rex. Ahora tiene que tomar con los codos pegados a las costillas, como dinosaurio, por el resto del juego. ¡Sin trampa!",
       "action": "Tomái con los codos pegados a las costillas (como T-Rex) por el resto del juego, sin estirar los brazos.",
-      "sips": []
+      "sips": [],
+      "pasive": [
+        { "type": "ANY_TURN" }
+      ]
     },
     {
       "id": 518,
@@ -928,6 +958,19 @@
       "story": "El piso del carrete se convirtió en lava otra vez, pero esta vez es personal: solo {J1} la siente. No puede tocar el suelo hasta su próximo turno. Súbase a la silla, al sofá, a lo que encuentre.",
       "action": "No podís tocar el suelo hasta tu próximo turno. Súbete a la silla o sillón. Si tocái suelo, tomai 1.",
       "sips": [{ "amount": 1, "condition": "Si toca suelo", "target": "SELF" }]
+    },
+    {
+      "id": 601,
+      "title": "Air Hockey",
+      "story": "Los espíritus del carrete encontraron una mesa de air hockey en la bodega. {J1} y {J2} se miran fijo, los ojos les brillan de competitividad pura. Solo uno saldrá victorioso de este duelo épico. ¡A darle con todo!",
+      "action": "¡Duelo de Air Hockey en el celu! El primero en meter 3 goles gana. El perdedor se manda 5 sorbos al seco por malo.",
+      "sips": [
+        { "amount": 5, "condition": "Al perdedor", "target": "SPECIFIC" }
+      ],
+      "minigame": {
+        "type": "HOCKEY",
+        "rounds": 3
+      }
     }
   ],
   "all": [
@@ -1112,6 +1155,9 @@
           "condition": "Penalización por mano derecha",
           "target": "SPECIFIC"
         }
+      ],
+      "pasive": [
+        { "type": "ANY_TURN" }
       ]
     },
     {

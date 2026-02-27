@@ -16,6 +16,9 @@ const PAGE_SIZE := 25
 const TARGET_KEYS := ["SELF", "SPECIFIC", "ALL", "DISTRIBUTE"]
 const TARGET_LABELS := ["Uno mismo", "Específico", "Todos", "Distribuir"]
 
+const PASIVE_KEYS := ["X_PLAYER_TURN", "X_TURN", "ANY_TURN"]
+const PASIVE_LABELS := ["Turno del jugador", "Turno general", "Permanente"]
+
 # --- State ---
 var _current_tab := "player" # "player" or "all"
 var _search_text := ""
@@ -38,6 +41,7 @@ var _story_input: TextEdit
 var _action_input: TextEdit
 var _timer_spin: SpinBox
 var _sips_container: VBoxContainer
+var _pasive_container: VBoxContainer
 var _save_btn: Button
 var _cancel_btn: Button
 var _form_title_label: Label
@@ -111,6 +115,17 @@ func _ready() -> void:
 
 	# Populate
 	_refresh_list()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		if _confirm_overlay.visible:
+			_on_confirm_no()
+		elif _form_overlay.visible:
+			_hide_form()
+		else:
+			_on_back()
 
 
 ## ======================================================================
@@ -579,6 +594,19 @@ func _build_form_overlay() -> void:
 	add_sip_btn.pressed.connect(_on_add_sip_row)
 	form_vbox.add_child(add_sip_btn)
 
+	# Pasive section
+	form_vbox.add_child(_make_form_label("Pasiva ⏳"))
+	_pasive_container = VBoxContainer.new()
+	_pasive_container.add_theme_constant_override("separation", 8)
+	form_vbox.add_child(_pasive_container)
+
+	var add_pasive_btn := Button.new()
+	add_pasive_btn.text = "+ Agregar Pasiva"
+	add_pasive_btn.custom_minimum_size.y = 50
+	_style_button(add_pasive_btn, NEON_YELLOW)
+	add_pasive_btn.pressed.connect(_on_add_pasive_row)
+	form_vbox.add_child(add_pasive_btn)
+
 	# Spacer
 	var spacer := Control.new()
 	spacer.custom_minimum_size.y = 20
@@ -664,6 +692,61 @@ func _add_sip_row(amount: int = 1, condition: String = "", target: String = "SEL
 	row.add_child(del_btn)
 
 	_sips_container.add_child(row)
+
+
+func _add_pasive_row(type_key: String = "X_PLAYER_TURN", count: int = 1) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	row.custom_minimum_size.y = 56
+
+	var type_btn := OptionButton.new()
+	type_btn.custom_minimum_size = Vector2(280, 56)
+	type_btn.add_theme_font_size_override("font_size", 28)
+	for i in PASIVE_LABELS.size():
+		type_btn.add_item(PASIVE_LABELS[i], i)
+	var popup := type_btn.get_popup()
+	if popup:
+		popup.add_theme_font_size_override("font_size", 32)
+	var type_idx := PASIVE_KEYS.find(type_key)
+	if type_idx >= 0:
+		type_btn.select(type_idx)
+	else:
+		type_btn.select(0)
+	row.add_child(type_btn)
+
+	var count_spin := SpinBox.new()
+	count_spin.min_value = 1
+	count_spin.max_value = 99
+	count_spin.value = count
+	count_spin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	count_spin.custom_minimum_size = Vector2(120, 56)
+	count_spin.tooltip_text = "Turnos"
+	count_spin.prefix = "x"
+	count_spin.add_theme_font_size_override("font_size", 32)
+	var spin_le := count_spin.get_line_edit()
+	if spin_le:
+		spin_le.add_theme_font_size_override("font_size", 32)
+	# Hide count for ANY_TURN (permanent)
+	count_spin.visible = (type_key != "ANY_TURN")
+	row.add_child(count_spin)
+
+	# Toggle count visibility when type changes
+	type_btn.item_selected.connect(func(idx: int):
+		count_spin.visible = (PASIVE_KEYS[idx] != "ANY_TURN")
+	)
+
+	var del_btn := Button.new()
+	del_btn.text = "✕"
+	del_btn.custom_minimum_size = Vector2(50, 50)
+	_style_button(del_btn, Color(0.8, 0.3, 0.3))
+	del_btn.pressed.connect(func(): row.queue_free())
+	row.add_child(del_btn)
+
+	_pasive_container.add_child(row)
+
+
+func _on_add_pasive_row() -> void:
+	_add_pasive_row()
 
 
 ## ======================================================================
@@ -824,6 +907,9 @@ func _on_new_challenge() -> void:
 	# Clear sips
 	for child in _sips_container.get_children():
 		child.queue_free()
+	# Clear pasives
+	for child in _pasive_container.get_children():
+		child.queue_free()
 	_show_form()
 
 
@@ -844,6 +930,15 @@ func _on_edit(_category: String, _id: int, data: Dictionary) -> void:
 			int(sip.get("amount", 0)),
 			str(sip.get("condition", "")),
 			str(sip.get("target", "SELF"))
+		)
+	# Clear & rebuild pasives
+	for child in _pasive_container.get_children():
+		child.queue_free()
+	var pasive_arr: Array = data.get("pasive", [])
+	for pas in pasive_arr:
+		_add_pasive_row(
+			str(pas.get("type", "X_PLAYER_TURN")),
+			int(pas.get("count", 1))
 		)
 	_show_form()
 
@@ -944,6 +1039,24 @@ func _on_form_save() -> void:
 		}
 		sips_arr.append(sip_data)
 	data["sips"] = sips_arr
+
+	# Pasives
+	var pasive_arr: Array = []
+	for row in _pasive_container.get_children():
+		if not row is HBoxContainer:
+			continue
+		var hrow: HBoxContainer = row as HBoxContainer
+		if hrow.get_child_count() < 2:
+			continue
+		var type_opt: OptionButton = hrow.get_child(0) as OptionButton
+		var count_spin: SpinBox = hrow.get_child(1) as SpinBox
+		var pas_type: String = PASIVE_KEYS[type_opt.selected] if type_opt.selected < PASIVE_KEYS.size() else "X_PLAYER_TURN"
+		var pas_data := {"type": pas_type}
+		if pas_type != "ANY_TURN":
+			pas_data["count"] = int(count_spin.value)
+		pasive_arr.append(pas_data)
+	if not pasive_arr.is_empty():
+		data["pasive"] = pasive_arr
 
 	# Save
 	if _editing_id == -1:
