@@ -1,7 +1,7 @@
 extends Control
 ## Roulette — Spinning wheel component with dynamic segment drawing.
 
-signal spin_completed(winner_name: String, is_all: bool)
+signal spin_completed(winner_name: String, winner_color: Color, is_all: bool)
 
 const TODOS_COLOR := Color("#fa15e7ff")
 const TODOS_SEGMENT_RATIO := 0.15 # "TODOS" takes ~15% of wheel
@@ -318,13 +318,13 @@ func _on_spin_finished() -> void:
 		if local_pointer >= s and local_pointer < e:
 			_record_winner(seg["name"])
 			AudioManager.play_sfx(SFX_SELECTED)
-			spin_completed.emit(seg["name"], seg["is_all"])
+			spin_completed.emit(seg["name"], seg["color"], seg["is_all"])
 			return
 
 	# Fallback (should not happen)
 	if not _segments.is_empty():
 		_record_winner(_segments[0]["name"])
-		spin_completed.emit(_segments[0]["name"], _segments[0]["is_all"])
+		spin_completed.emit(_segments[0]["name"], _segments[0]["color"], _segments[0]["is_all"])
 
 
 func _record_winner(winner_name: String) -> void:

@@ -4,83 +4,97 @@
 [ext_resource type="Script" uid="uid://nnf6wvm2jsfq" path="res://scripts/Main.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://4cxsiudhpx75" path="res://scripts/Roulette.gd" id="2_roulette"]
 [ext_resource type="Texture2D" uid="uid://c6b5rvy7tifh5" path="res://sprites/ui/background-v1.webp" id="3_lhr70"]
-[ext_resource type="Texture2D" uid="uid://b128fg1wxfvd2" path="res://sprites/ui/PNG/Double/panel_grey_blue.png" id="4_bjd11"]
-[ext_resource type="Texture2D" uid="uid://cdsw2a3jiwewh" path="res://sprites/ui/Vector/panel_brown.svg" id="4_c01mt"]
-[ext_resource type="Texture2D" uid="uid://cvawcxaol6sha" path="res://sprites/ui/PNG/Default/banner_classic_curtain.png" id="4_mwfav"]
 [ext_resource type="Texture2D" uid="uid://cfr2ibtfmwgbh" path="res://sprites/ui/essentials/Gradient/gradient-vertical.png" id="4_nfivy"]
-[ext_resource type="Texture2D" uid="uid://dn4idh85lc5oe" path="res://sprites/ui/PNG/Default/banner_hanging.png" id="4_rarhs"]
-[ext_resource type="Texture2D" uid="uid://b105iobvwg7fc" path="res://sprites/ui/PNG/Double/panel_brown_dark_corners_a.png" id="4_wp0k4"]
 [ext_resource type="LabelSettings" uid="uid://rqhrkrriljdv" path="res://title_label_settings.tres" id="5_3p2gp"]
-[ext_resource type="Texture2D" uid="uid://cfy1rlr7gh0aj" path="res://sprites/ui/Vector/panel_grey_green.svg" id="5_qmy6f"]
-[ext_resource type="Texture2D" uid="uid://buul0agnkcdxg" path="res://sprites/ui/Vector/scrollbar_brown.svg" id="6_jlsqs"]
-[ext_resource type="Texture2D" uid="uid://3y647xomab3y" path="res://sprites/ui/Vector/panel_grey_red.svg" id="6_nxtc6"]
-[ext_resource type="Texture2D" uid="uid://3mts8a3mghnr" path="res://sprites/ui/PNG/Double/progress_red.png" id="9_3p2gp"]
-[ext_resource type="Texture2D" uid="uid://bc1c0uuuocy0i" path="res://sprites/ui/PNG/Double/progress_red_border.png" id="10_cvmbd"]
+[ext_resource type="Texture2D" uid="uid://4v31lj6y8wa0" path="res://sprites/gui/Headers/header_yellow.png" id="6_yxlcp"]
+[ext_resource type="Texture2D" uid="uid://bmslwodwe7b5r" path="res://sprites/gui/Buttons/button_white.png" id="8_2ofn6"]
+[ext_resource type="Texture2D" uid="uid://dubic78mfw6yx" path="res://sprites/gui/Containers/container_diamond.png" id="8_ebg2g"]
+[ext_resource type="Texture2D" uid="uid://cyuulgro21od5" path="res://sprites/gui/Icons/64px/plusV2_icon_64px.png" id="9_2ofn6"]
+[ext_resource type="Texture2D" uid="uid://cg36sg2sh7tsg" path="res://sprites/gui/Icons/128px/settings_icon_128px.png" id="10_ebg2g"]
 [ext_resource type="Shader" uid="uid://dfmcmxoqmdqm4" path="res://shaders/sunburst.gdshader" id="13_ebg2g"]
 [ext_resource type="Texture2D" uid="uid://yrledluwlm8j" path="res://sprites/ui/PNG/Double/panel_brown_damaged_dark.png" id="14_bb450"]
-[ext_resource type="Texture2D" uid="uid://dm00t2esclpih" path="res://sprites/ui/PNG/RPG/panel_beige.png" id="16_1iba3"]
-[ext_resource type="Texture2D" uid="uid://dkdom5d56id7p" path="res://sprites/ui/PNG/Double/panel_brown_dark_corners_a-a.png" id="16_ft6cd"]
-[ext_resource type="Texture2D" uid="uid://cyi0ofv3tx4ns" path="res://sprites/ui/PNG/Double/panel_brown_dark_corners_a-b.png" id="17_bb450"]
+[ext_resource type="Texture2D" uid="uid://bs6aa2ibbgkp8" path="res://sprites/gui/Headers/notebook_white.png" id="16_1nqs0"]
+[ext_resource type="Texture2D" uid="uid://butqfc4c036qo" path="res://sprites/gui/Headers/headerBow_white.png" id="16_36rkl"]
+[ext_resource type="Texture2D" uid="uid://c0w17cfhui448" path="res://sprites/gui/Icons/128px/close_icon_128px.png" id="17_36rkl"]
+[ext_resource type="Texture2D" uid="uid://cw455f2r3fu5q" path="res://sprites/gui/Containers/cardContainer_cyan.png" id="18_1nqs0"]
+[ext_resource type="Texture2D" uid="uid://0rr8ls64lket" path="res://sprites/gui/Modals/profile_image.png" id="19_nfivy"]
+[ext_resource type="Theme" uid="uid://conjmxjlhmf8a" path="res://sprites/gui/gui_theme.tres" id="22_yxlcp"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ft6cd"]
-texture = ExtResource("4_mwfav")
+texture = ExtResource("6_yxlcp")
 texture_margin_left = 30.0
 texture_margin_top = 30.0
 texture_margin_right = 30.0
 texture_margin_bottom = 30.0
-expand_margin_left = 25.0
-expand_margin_top = 25.0
-expand_margin_right = 25.0
-expand_margin_bottom = 25.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_subtitle"]
 font_size = 44
+font_color = Color(0.1254902, 0.1254902, 0.1254902, 1)
+outline_color = Color(0.14767182, 0.14767179, 0.14767179, 1)
 shadow_size = 12
 shadow_color = Color(0, 0, 0, 0.13333334)
 shadow_offset = Vector2(0, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3p2gp"]
-texture = ExtResource("4_bjd11")
-texture_margin_left = 25.0
-texture_margin_top = 25.0
-texture_margin_right = 25.0
-texture_margin_bottom = 25.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xa025"]
+texture = ExtResource("8_2ofn6")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cvmbd"]
-texture = ExtResource("5_qmy6f")
-texture_margin_left = 25.0
-texture_margin_top = 25.0
-texture_margin_right = 25.0
-texture_margin_bottom = 25.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2ofn6"]
+content_margin_top = 64.0
+content_margin_bottom = 64.0
+texture = ExtResource("8_ebg2g")
+texture_margin_left = 32.0
+texture_margin_top = 64.0
+texture_margin_right = 32.0
+texture_margin_bottom = 64.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mwfav"]
-texture = ExtResource("4_wp0k4")
-texture_margin_left = 50.0
-texture_margin_top = 28.0
-texture_margin_right = 50.0
-texture_margin_bottom = 28.0
-axis_stretch_horizontal = 1
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_36rkl"]
+texture = ExtResource("8_2ofn6")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wp0k4"]
-texture = ExtResource("9_3p2gp")
-texture_margin_left = 14.0
-texture_margin_top = 14.0
-texture_margin_right = 14.0
-texture_margin_bottom = 14.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fs0b5"]
+texture = ExtResource("8_2ofn6")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.5568628, 0.49019608, 0.74509805, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bjd11"]
-texture = ExtResource("10_cvmbd")
-texture_margin_left = 14.0
-texture_margin_top = 14.0
-texture_margin_right = 14.0
-texture_margin_bottom = 14.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e2s0e"]
+texture = ExtResource("16_36rkl")
+modulate_color = Color(0.84705883, 0.54901963, 0.6039216, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qmy6f"]
-texture = ExtResource("10_cvmbd")
-texture_margin_left = 14.0
-texture_margin_top = 14.0
-texture_margin_right = 14.0
-texture_margin_bottom = 14.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dg70y"]
+content_margin_top = 25.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fs0b5"]
+content_margin_left = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ma7h6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e2s0e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gsxep"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0vrg"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gsxep"]
+texture = ExtResource("8_2ofn6")
+texture_margin_left = 32.0
+texture_margin_top = 120.0
+texture_margin_right = 32.0
+texture_margin_bottom = 120.0
+modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1iba3"]
 shader = ExtResource("13_ebg2g")
@@ -108,45 +122,21 @@ shader_parameter/rotation_speed = 0.5
 shader_parameter/pulse_speed = 3.0
 shader_parameter/pulse_intensity = 1.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jlsqs"]
-texture = ExtResource("4_c01mt")
-texture_margin_left = 8.0
-texture_margin_top = 8.0
-texture_margin_right = 8.0
-texture_margin_bottom = 8.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vcsgt"]
-texture = ExtResource("4_rarhs")
-texture_margin_left = 14.0
-texture_margin_top = 14.0
-texture_margin_right = 14.0
-texture_margin_bottom = 14.0
-expand_margin_left = 28.0
-expand_margin_right = 28.0
-region_rect = Rect2(0, 0, 257, 64)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1iba3"]
+content_margin_bottom = 50.0
+texture = ExtResource("16_1nqs0")
+texture_margin_left = 200.0
+texture_margin_top = 98.0
+texture_margin_right = 200.0
+modulate_color = Color(0.78039217, 0.35686275, 0.43137255, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_challenge_title"]
 font_size = 60
-font_color = Color(0.98, 0.8, 0.082, 1)
-outline_size = 4
-outline_color = Color(0, 0, 0, 1)
+outline_size = 64
+outline_color = Color(0.78039217, 0.35686275, 0.43137255, 1)
 shadow_size = 5
 shadow_color = Color(0.98, 0.8, 0.082, 0.2)
 shadow_offset = Vector2(0, 3)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yxlcp"]
-texture = ExtResource("16_1iba3")
-texture_margin_left = 16.0
-texture_margin_top = 16.0
-texture_margin_right = 16.0
-texture_margin_bottom = 16.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lhr70"]
-texture = ExtResource("6_jlsqs")
-texture_margin_left = 14.0
-texture_margin_top = 14.0
-texture_margin_right = 14.0
-texture_margin_bottom = 14.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nfivy"]
 texture = ExtResource("14_bb450")
@@ -165,50 +155,41 @@ font_color = Color(0.9990805, 0.9999983, 0.7191811, 1)
 font_size = 44
 font_color = Color(0.1254902, 0.1254902, 0.1254902, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yxlcp"]
+texture = ExtResource("18_1nqs0")
+texture_margin_left = 53.0
+texture_margin_top = 32.0
+texture_margin_right = 53.0
+texture_margin_bottom = 32.0
+expand_margin_top = 32.0
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q8u5g"]
-texture = ExtResource("6_nxtc6")
-texture_margin_left = 14.0
-texture_margin_top = 14.0
-texture_margin_right = 14.0
-texture_margin_bottom = 14.0
-expand_margin_left = 20.0
-expand_margin_right = 20.0
+texture = ExtResource("19_nfivy")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+expand_margin_top = 32.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_sips"]
 font_size = 42
 font_color = Color(1, 0, 0, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ebg2g"]
+texture = ExtResource("8_2ofn6")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
+
 [sub_resource type="Animation" id="Animation_nfivy"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("GameUI/SafeMargin/GameContent/TopBar:theme_override_styles/panel:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("4_wp0k4")]
-}
 
 [sub_resource type="Animation" id="Animation_1nqs0"]
 resource_name = "anim_spin"
 length = 0.3
 loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("GameUI/SafeMargin/GameContent/TopBar:theme_override_styles/panel:texture")
-tracks/0/interp = 0
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.16666667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [ExtResource("16_ft6cd"), ExtResource("17_bb450")]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1iba3"]
 _data = {
@@ -241,9 +222,10 @@ metadata/_edit_use_anchors_ = true
 [node name="TextureRect2" type="TextureRect" parent="." unique_id=341665758]
 modulate = Color(0, 0, 0, 0.6156863)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = -0.3472222
+anchor_right = 1.4305557
+anchor_bottom = 1.0000001
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_nfivy")
@@ -259,7 +241,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0bbpv")
+theme = ExtResource("22_yxlcp")
 
 [node name="SafeMargin" type="MarginContainer" parent="SetupUI" unique_id=1708507112]
 self_modulate = Color(0.57723844, 0.040715873, 0.22410822, 1)
@@ -269,91 +251,128 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0bbpv")
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
+theme = ExtResource("22_yxlcp")
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
 
-[node name="Background" type="ColorRect" parent="SetupUI/SafeMargin" unique_id=408944517]
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="SetupUI/SafeMargin" unique_id=798270421]
 layout_mode = 2
-theme = ExtResource("1_0bbpv")
-color = Color(0.1254902, 0.1254902, 0.1254902, 0.49803922)
+theme_override_constants/separation = 0
 
-[node name="VBox" type="VBoxContainer" parent="SetupUI/SafeMargin" unique_id=378713830]
+[node name="Title" type="Label" parent="SetupUI/SafeMargin/VBoxContainer" unique_id=158378949]
 layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Title" type="Label" parent="SetupUI/SafeMargin/VBox" unique_id=158378949]
-layout_mode = 2
+theme = ExtResource("22_yxlcp")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ft6cd")
 text = "MAREPOTO"
 label_settings = ExtResource("5_3p2gp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="SetupUI/SafeMargin/VBox" unique_id=2022848882]
+[node name="PanelContainer" type="PanelContainer" parent="SetupUI/SafeMargin/VBoxContainer" unique_id=1954206013]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("22_yxlcp")
+
+[node name="VBox" type="VBoxContainer" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer" unique_id=378713830]
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
+theme_override_constants/separation = 20
+
+[node name="HSeparator" type="HSeparator" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox" unique_id=2022848882]
 z_index = -1
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme = ExtResource("22_yxlcp")
 
-[node name="Subtitle" type="Label" parent="SetupUI/SafeMargin/VBox" unique_id=1384200669]
+[node name="Subtitle" type="Label" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox" unique_id=1384200669]
 layout_mode = 2
+theme = ExtResource("22_yxlcp")
 text = "Agrega jugadores pa' empezar el carrete"
 label_settings = SubResource("LabelSettings_subtitle")
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="HSeparator2" type="HSeparator" parent="SetupUI/SafeMargin/VBox" unique_id=1695746926]
-custom_minimum_size = Vector2(0, 20)
+[node name="HSeparator2" type="HSeparator" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox" unique_id=1695746926]
 layout_mode = 2
+theme = ExtResource("22_yxlcp")
 
-[node name="InputRow" type="HBoxContainer" parent="SetupUI/SafeMargin/VBox" unique_id=2143596869]
+[node name="InputRow" type="HBoxContainer" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox" unique_id=2143596869]
 layout_mode = 2
+theme = ExtResource("22_yxlcp")
 theme_override_constants/separation = 10
 
-[node name="PlayerNameInput" type="LineEdit" parent="SetupUI/SafeMargin/VBox/InputRow" unique_id=1403007206]
+[node name="PlayerNameInput" type="LineEdit" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/InputRow" unique_id=1403007206]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_0bbpv")
+theme = ExtResource("22_yxlcp")
 placeholder_text = "Nombre del jugador..."
 
-[node name="AddPlayerBtn" type="Button" parent="SetupUI/SafeMargin/VBox/InputRow" unique_id=608633911]
+[node name="AddPlayerBtn" type="Button" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/InputRow" unique_id=608633911]
 custom_minimum_size = Vector2(120, 80)
 layout_mode = 2
-text = "+"
+theme = ExtResource("22_yxlcp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_xa025")
+icon = ExtResource("9_2ofn6")
 
-[node name="PlayerListScroll" type="ScrollContainer" parent="SetupUI/SafeMargin/VBox" unique_id=479667192]
-custom_minimum_size = Vector2(0, 300)
+[node name="PlayerListScroll" type="ScrollContainer" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox" unique_id=479667192]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("22_yxlcp")
+theme_override_colors/scroll_hint_vertical_color = Color(0, 0, 0, 1)
+theme_override_colors/scroll_hint_horizontal_color = Color(0, 0, 0, 1)
+theme_override_constants/scrollbar_h_separation = 32
+theme_override_constants/scrollbar_v_separation = 32
+theme_override_styles/panel = SubResource("StyleBoxTexture_2ofn6")
+scroll_horizontal_custom_step = 64.0
+scroll_vertical_custom_step = 64.0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+scroll_deadzone = 5
+scroll_hint_mode = 2
 
-[node name="PlayerList" type="VBoxContainer" parent="SetupUI/SafeMargin/VBox/PlayerListScroll" unique_id=1757212485]
+[node name="MarginContainer" type="MarginContainer" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/PlayerListScroll" unique_id=616520871]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="PlayerList" type="VBoxContainer" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/PlayerListScroll/MarginContainer" unique_id=1757212485]
+clip_contents = true
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
 theme_override_constants/separation = 8
 
-[node name="StartBtn" type="Button" parent="SetupUI/SafeMargin/VBox" unique_id=1783940858]
+[node name="HBoxContainer" type="HBoxContainer" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox" unique_id=2107802088]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="StartBtn" type="Button" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/HBoxContainer" unique_id=1783940858]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+theme = ExtResource("22_yxlcp")
 theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxTexture_36rkl")
 disabled = true
 text = "Mínimo 2 jugadores"
 
-[node name="ManageBtn" type="Button" parent="SetupUI/SafeMargin/VBox" unique_id=1551878317]
+[node name="ManageBtn" type="Button" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/HBoxContainer" unique_id=1551878317]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+theme = ExtResource("22_yxlcp")
 theme_override_colors/font_color = Color(0.1254902, 0.1254902, 0.1254902, 1)
 theme_override_colors/font_hover_color = Color(0.30477512, 0.24151325, 0.003309326, 1)
 theme_override_font_sizes/font_size = 42
-theme_override_styles/normal = SubResource("StyleBoxTexture_3p2gp")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_cvmbd")
-theme_override_styles/hover = SubResource("StyleBoxTexture_cvmbd")
-text = "Administrar Retos"
+theme_override_styles/normal = SubResource("StyleBoxTexture_fs0b5")
+icon = ExtResource("10_ebg2g")
 
-[node name="GameUI" type="Control" parent="." unique_id=1424340329]
+[node name="GameUI" type="Control" parent="." unique_id=1133324116]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -361,9 +380,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0bbpv")
+theme = ExtResource("22_yxlcp")
 
-[node name="SafeMargin" type="MarginContainer" parent="GameUI" unique_id=279751798]
+[node name="SafeMargin" type="MarginContainer" parent="GameUI" unique_id=1938153028]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -371,89 +390,84 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GameContent" type="Control" parent="GameUI/SafeMargin" unique_id=1663649831]
+[node name="GameContent" type="VBoxContainer" parent="GameUI/SafeMargin" unique_id=66189510]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
-[node name="TopBar" type="PanelContainer" parent="GameUI/SafeMargin/GameContent" unique_id=1818858323]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 129.0
-grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_mwfav")
-
-[node name="HBox" type="HBoxContainer" parent="GameUI/SafeMargin/GameContent/TopBar" unique_id=1491247744]
+[node name="TopBar" type="PanelContainer" parent="GameUI/SafeMargin/GameContent" unique_id=685031818]
 layout_mode = 2
-theme_override_constants/separation = 10
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_e2s0e")
 
-[node name="TurnLabel" type="Label" parent="GameUI/SafeMargin/GameContent/TopBar/HBox" unique_id=34275168]
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/SafeMargin/GameContent/TopBar" unique_id=1382415642]
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
-size_flags_horizontal = 3
-text = "Marepoto"
-label_settings = ExtResource("5_3p2gp")
+size_flags_vertical = 4
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 120
+
+[node name="HBox" type="HBoxContainer" parent="GameUI/SafeMargin/GameContent/TopBar/MarginContainer" unique_id=237829799]
+layout_mode = 2
+
+[node name="TurnLabel" type="Label" parent="GameUI/SafeMargin/GameContent/TopBar/MarginContainer/HBox" unique_id=1015758851]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 72
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dg70y")
+text = "¡Gira la ruleta!"
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BackToMenuBtn" type="Button" parent="GameUI/SafeMargin/GameContent/TopBar/HBox" unique_id=1232990382]
-custom_minimum_size = Vector2(140, 0)
+[node name="BackToMenuBtn" type="Button" parent="GameUI/SafeMargin/GameContent/TopBar/MarginContainer/HBox" unique_id=946232033]
 layout_mode = 2
-theme = ExtResource("1_0bbpv")
-theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("StyleBoxTexture_wp0k4")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_bjd11")
-theme_override_styles/hover = SubResource("StyleBoxTexture_qmy6f")
-text = "X
-"
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_fs0b5")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ma7h6")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_e2s0e")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_gsxep")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_v0vrg")
+icon = ExtResource("17_36rkl")
+flat = true
+icon_alignment = 1
 
-[node name="RouletteContainer" type="CenterContainer" parent="GameUI/SafeMargin/GameContent" unique_id=835002406]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.05
-anchor_right = 1.0
-anchor_bottom = 0.7
-grow_horizontal = 2
-grow_vertical = 2
+[node name="RouletteContainer" type="CenterContainer" parent="GameUI/SafeMargin/GameContent" unique_id=1757063749]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("22_yxlcp")
 
-[node name="Roulette" type="Control" parent="GameUI/SafeMargin/GameContent/RouletteContainer" unique_id=158061033]
+[node name="Roulette" type="Control" parent="GameUI/SafeMargin/GameContent/RouletteContainer" unique_id=1817936338]
 custom_minimum_size = Vector2(750, 750)
 layout_mode = 2
 script = ExtResource("2_roulette")
 
-[node name="PassiveIconsContainer" type="HFlowContainer" parent="GameUI/SafeMargin/GameContent" unique_id=601098723]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.69
-anchor_right = 0.95
-anchor_bottom = 0.76
-grow_horizontal = 2
-grow_vertical = 2
+[node name="PassiveIconsContainer" type="HFlowContainer" parent="GameUI/SafeMargin/GameContent" unique_id=23917705]
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
 alignment = 1
 
-[node name="SpinBtn" type="Button" parent="GameUI/SafeMargin/GameContent" unique_id=1976910242]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.15
-anchor_top = 0.75
-anchor_right = 0.85
-anchor_bottom = 0.85
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 48
-text = "🍻 ¡GIRAR!"
+[node name="SpinBtn" type="Button" parent="GameUI/SafeMargin/GameContent" unique_id=1084516296]
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("22_yxlcp")
+theme_override_font_sizes/font_size = 120
+theme_override_styles/normal = SubResource("StyleBoxTexture_gsxep")
+text = "🍻"
 
 [node name="ChallengeModal" type="Control" parent="." unique_id=21486912]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0bbpv")
+theme = ExtResource("22_yxlcp")
 
 [node name="ColorRect" type="ColorRect" parent="ChallengeModal" unique_id=619737800]
 layout_mode = 1
@@ -462,6 +476,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("22_yxlcp")
 color = Color(0, 0, 0, 0.7411765)
 
 [node name="ColorRect2" type="ColorRect" parent="ChallengeModal" unique_id=571907788]
@@ -472,6 +487,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("22_yxlcp")
 color = Color(0, 0, 0, 0.7411765)
 
 [node name="TextureRect" type="TextureRect" parent="ChallengeModal" unique_id=1451607016]
@@ -487,54 +503,108 @@ grow_horizontal = 2
 grow_vertical = 2
 rotation = 3.1415927
 pivot_offset = Vector2(960, 960)
+theme = ExtResource("22_yxlcp")
 texture = ExtResource("4_nfivy")
 expand_mode = 2
 stretch_mode = 6
 metadata/_edit_use_anchors_ = true
 
-[node name="Panel" type="PanelContainer" parent="ChallengeModal" unique_id=328832791]
+[node name="VBox" type="VBoxContainer" parent="ChallengeModal" unique_id=950414274]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.1
-anchor_right = 0.95
-anchor_bottom = 0.9
-theme = ExtResource("1_0bbpv")
-theme_override_styles/panel = SubResource("StyleBoxTexture_jlsqs")
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -478.0
+offset_right = 478.0
+offset_bottom = 1520.0
+grow_horizontal = 2
+theme = ExtResource("22_yxlcp")
+theme_override_constants/separation = 0
 
-[node name="VBox" type="VBoxContainer" parent="ChallengeModal/Panel" unique_id=950414274]
+[node name="ChallengeTitle" type="Label" parent="ChallengeModal/VBox" unique_id=296607038]
 layout_mode = 2
-theme = ExtResource("1_0bbpv")
-theme_override_constants/separation = 20
-
-[node name="ChallengeTitle" type="Label" parent="ChallengeModal/Panel/VBox" unique_id=296607038]
-layout_mode = 2
-theme = ExtResource("1_0bbpv")
+size_flags_vertical = 0
+theme = ExtResource("22_yxlcp")
 theme_type_variation = &"HeaderLarge"
-theme_override_styles/normal = SubResource("StyleBoxTexture_vcsgt")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1iba3")
 text = "🔥 Challenge Title"
 label_settings = SubResource("LabelSettings_challenge_title")
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="ChallengeModal/Panel/VBox" unique_id=518688041]
+[node name="Panel" type="PanelContainer" parent="ChallengeModal/VBox" unique_id=328832791]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("22_yxlcp")
+
+[node name="MarginContainer" type="MarginContainer" parent="ChallengeModal/VBox/Panel" unique_id=518688041]
 layout_mode = 2
 size_flags_vertical = 2
 size_flags_stretch_ratio = 100.0
-theme = ExtResource("1_0bbpv")
+theme = ExtResource("22_yxlcp")
 theme_override_constants/margin_left = 35
 theme_override_constants/margin_top = 35
 theme_override_constants/margin_right = 35
 theme_override_constants/margin_bottom = 35
 
-[node name="VBox" type="VBoxContainer" parent="ChallengeModal/Panel/VBox/MarginContainer" unique_id=900360839]
+[node name="VBox" type="VBoxContainer" parent="ChallengeModal/VBox/Panel/MarginContainer" unique_id=900360839]
 layout_mode = 2
+theme = ExtResource("22_yxlcp")
 theme_override_constants/separation = 100
 alignment = 1
 
-[node name="ChallengePlayer" type="RichTextLabel" parent="ChallengeModal/Panel/VBox/MarginContainer/VBox" unique_id=2104010127]
+[node name="ChallengeStory" type="Label" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox" unique_id=404829667]
 layout_mode = 2
-theme = ExtResource("1_0bbpv")
+size_flags_vertical = 1
+theme = ExtResource("22_yxlcp")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_nfivy")
+text = "Story..."
+label_settings = SubResource("LabelSettings_story")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ChallengeAction" type="Label" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox" unique_id=996994015]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("22_yxlcp")
+text = "Action..."
+label_settings = SubResource("LabelSettings_action")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TimerContainer" type="HBoxContainer" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox" unique_id=1558364389]
+visible = false
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TimerLabel" type="Label" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/TimerContainer" unique_id=1379695255]
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
+text = "0:30"
+label_settings = SubResource("LabelSettings_challenge_title")
+horizontal_alignment = 1
+
+[node name="TimerBtn" type="Button" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/TimerContainer" unique_id=1871789922]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
+text = "⏱ Iniciar"
+
+[node name="HBox" type="HBoxContainer" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox" unique_id=662790410]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="ChallengePlayer" type="RichTextLabel" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox" unique_id=2104010127]
+clip_contents = false
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("22_yxlcp")
 theme_override_colors/default_color = Color(0.43496928, 0.29052418, 0.13605303, 1)
 theme_override_styles/normal = SubResource("StyleBoxTexture_yxlcp")
 bbcode_enabled = true
@@ -544,77 +614,30 @@ scroll_active = false
 autowrap_mode = 2
 shortcut_keys_enabled = false
 
-[node name="HSeparator2" type="HSeparator" parent="ChallengeModal/Panel/VBox/MarginContainer/VBox" unique_id=937280739]
+[node name="SipsContainer" type="PanelContainer" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox" unique_id=2030271994]
 layout_mode = 2
-theme = ExtResource("1_0bbpv")
-theme_override_constants/separation = 12
-theme_override_styles/separator = SubResource("StyleBoxTexture_lhr70")
-
-[node name="ChallengeStory" type="Label" parent="ChallengeModal/Panel/VBox/MarginContainer/VBox" unique_id=404829667]
-layout_mode = 2
-size_flags_vertical = 1
-theme = ExtResource("1_0bbpv")
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_styles/normal = SubResource("StyleBoxTexture_nfivy")
-text = "Story..."
-label_settings = SubResource("LabelSettings_story")
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="HSeparator" type="HSeparator" parent="ChallengeModal/Panel/VBox/MarginContainer/VBox" unique_id=1116854833]
-layout_mode = 2
-theme = ExtResource("1_0bbpv")
-theme_override_constants/separation = 12
-theme_override_styles/separator = SubResource("StyleBoxTexture_lhr70")
-
-[node name="ChallengeAction" type="Label" parent="ChallengeModal/Panel/VBox/MarginContainer/VBox" unique_id=996994015]
-layout_mode = 2
-size_flags_vertical = 1
-theme = ExtResource("1_0bbpv")
-text = "Action..."
-label_settings = SubResource("LabelSettings_action")
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="SipsContainer" type="PanelContainer" parent="ChallengeModal/Panel/VBox" unique_id=2030271994]
-layout_mode = 2
-theme = ExtResource("1_0bbpv")
+size_flags_horizontal = 3
+theme = ExtResource("22_yxlcp")
 theme_override_styles/panel = SubResource("StyleBoxTexture_q8u5g")
 
-[node name="SipsLabel" type="Label" parent="ChallengeModal/Panel/VBox/SipsContainer" unique_id=1550716881]
+[node name="SipsLabel" type="Label" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox/SipsContainer" unique_id=1550716881]
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-theme = ExtResource("1_0bbpv")
+size_flags_horizontal = 4
+size_flags_vertical = 1
+theme = ExtResource("22_yxlcp")
 text = "🍺 x1 — Condition"
 label_settings = SubResource("LabelSettings_sips")
-horizontal_alignment = 1
+vertical_alignment = 3
 autowrap_mode = 2
 
-[node name="TimerContainer" type="HBoxContainer" parent="ChallengeModal/Panel/VBox" unique_id=1558364389]
-visible = false
-layout_mode = 2
-theme = ExtResource("1_0bbpv")
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="TimerLabel" type="Label" parent="ChallengeModal/Panel/VBox/TimerContainer" unique_id=1379695255]
-layout_mode = 2
-theme = ExtResource("1_0bbpv")
-text = "0:30"
-label_settings = SubResource("LabelSettings_challenge_title")
-horizontal_alignment = 1
-
-[node name="TimerBtn" type="Button" parent="ChallengeModal/Panel/VBox/TimerContainer" unique_id=1871789922]
-custom_minimum_size = Vector2(200, 70)
-layout_mode = 2
-theme = ExtResource("1_0bbpv")
-text = "⏱ Iniciar"
-
-[node name="DoneBtn" type="Button" parent="ChallengeModal/Panel/VBox" unique_id=1250405613]
+[node name="DoneBtn" type="Button" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox" unique_id=1250405613]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-theme = ExtResource("1_0bbpv")
-text = "✅ ¡LISTO!"
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = ExtResource("22_yxlcp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_ebg2g")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=443359197]
 libraries/ = SubResource("AnimationLibrary_1iba3")

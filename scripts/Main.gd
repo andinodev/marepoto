@@ -9,30 +9,35 @@ extends Control
 
 # Setup UI refs
 @onready var setup_safe_margin: MarginContainer = $SetupUI/SafeMargin
-@onready var player_name_input: LineEdit = $SetupUI/SafeMargin/VBox/InputRow/PlayerNameInput
-@onready var add_player_btn: Button = $SetupUI/SafeMargin/VBox/InputRow/AddPlayerBtn
-@onready var player_list_container: VBoxContainer = $SetupUI/SafeMargin/VBox/PlayerListScroll/PlayerList
-@onready var start_btn: Button = $SetupUI/SafeMargin/VBox/StartBtn
-@onready var manage_btn: Button = $SetupUI/SafeMargin/VBox/ManageBtn
-@onready var setup_title: Label = $SetupUI/SafeMargin/VBox/Title
+@onready var player_name_input: LineEdit = $SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/InputRow/PlayerNameInput
+@onready var add_player_btn: Button = $SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/InputRow/AddPlayerBtn
+@onready var player_list_container: VBoxContainer = $SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/PlayerListScroll/MarginContainer/PlayerList
+@onready var start_btn: Button = $SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/HBoxContainer/StartBtn
+@onready var manage_btn: Button = $SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/HBoxContainer/ManageBtn
+@onready var setup_title: Label = $SetupUI/SafeMargin/VBoxContainer/Title
 
 # Game UI refs
 @onready var game_safe_margin: MarginContainer = $GameUI/SafeMargin
-@onready var turn_label: Label = $GameUI/SafeMargin/GameContent/TopBar/HBox/TurnLabel
-@onready var back_to_menu_btn: Button = $GameUI/SafeMargin/GameContent/TopBar/HBox/BackToMenuBtn
+@onready var turn_label: Label = $GameUI/SafeMargin/GameContent/TopBar/MarginContainer/HBox/TurnLabel
+@onready var back_to_menu_btn: Button = $GameUI/SafeMargin/GameContent/TopBar/MarginContainer/HBox/BackToMenuBtn
 @onready var spin_btn: Button = $GameUI/SafeMargin/GameContent/SpinBtn
 
 # Challenge modal refs
-@onready var challenge_player: RichTextLabel = $ChallengeModal/Panel/VBox/MarginContainer/VBox/ChallengePlayer
-@onready var challenge_title: Label = $ChallengeModal/Panel/VBox/ChallengeTitle
-@onready var challenge_story: Label = $ChallengeModal/Panel/VBox/MarginContainer/VBox/ChallengeStory
-@onready var challenge_action: Label = $ChallengeModal/Panel/VBox/MarginContainer/VBox/ChallengeAction
-@onready var sips_label: Label = $ChallengeModal/Panel/VBox/SipsContainer/SipsLabel
-@onready var timer_container: HBoxContainer = $ChallengeModal/Panel/VBox/TimerContainer
-@onready var timer_label: Label = $ChallengeModal/Panel/VBox/TimerContainer/TimerLabel
-@onready var timer_btn: Button = $ChallengeModal/Panel/VBox/TimerContainer/TimerBtn
-@onready var done_btn: Button = $ChallengeModal/Panel/VBox/DoneBtn
+@onready var challenge_player: RichTextLabel = $ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox/ChallengePlayer
+@onready var challenge_title: Label = $ChallengeModal/VBox/ChallengeTitle
+@onready var challenge_story: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/ChallengeStory
+@onready var challenge_action: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/ChallengeAction
+@onready var sips_label: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox/SipsContainer/SipsLabel
+@onready var timer_container: HBoxContainer = $ChallengeModal/VBox/Panel/MarginContainer/VBox/TimerContainer
+@onready var timer_label: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/TimerContainer/TimerLabel
+@onready var timer_btn: Button = $ChallengeModal/VBox/Panel/MarginContainer/VBox/TimerContainer/TimerBtn
+@onready var done_btn: Button = $ChallengeModal/VBox/Panel/MarginContainer/VBox/DoneBtn
 
+const TICK_ICON: Texture2D = preload("res://sprites/gui/Icons/64px/tickV2_icon_64px.png")
+const M_TICK_ICON: Texture2D = preload("res://sprites/gui/Icons/128px/tickV2_icon_128px.png")
+const M_PLAY_ICON: Texture2D = preload("res://sprites/gui/Icons/128px/adventure_icon_128px.png")
+const WARNING_ICON: Texture2D = preload("res://sprites/gui/Icons/64px/-Group-!_icon_64px.png")
+const REMOVE_ICON: Texture2D = preload("res://sprites/gui/Icons/64px/xRounded_icon_64px.png")
 const ChallengeManagerScene := preload("res://scenes/ChallengeManager.tscn")
 const BANNER_TEX: Texture2D = preload("res://sprites/ui/PNG/Double/banner_classic_curtain.png")
 const MODAL_PANEL_TEX: Texture2D = preload("res://sprites/ui/PNG/Double/panel_brown_corners_a.png")
@@ -376,7 +381,8 @@ func _refresh_player_list() -> void:
 
 		# Color indicator
 		var color_rect := ColorRect.new()
-		color_rect.custom_minimum_size = Vector2(24, 24)
+		color_rect.custom_minimum_size = Vector2(32, 24)
+		
 		color_rect.color = player["color"]
 		row.add_child(color_rect)
 
@@ -385,15 +391,16 @@ func _refresh_player_list() -> void:
 		name_lbl.text = player["name"]
 		name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var ls := LabelSettings.new()
-		ls.font_color = Color.WHITE
-		ls.font_size = 36
+		ls.font_color = Color.BLACK
+		ls.font_size = 48
 		name_lbl.label_settings = ls
 		row.add_child(name_lbl)
 
 		# Remove button
 		var remove_btn := Button.new()
-		remove_btn.text = "✕"
-		remove_btn.custom_minimum_size = Vector2(40, 40)
+		remove_btn.icon = REMOVE_ICON
+		remove_btn.custom_minimum_size = Vector2(32, 32)
+		remove_btn.modulate = Color("ff415c")
 		var idx := i
 		remove_btn.pressed.connect(func() -> void:
 			GameManager.remove_player(idx)
@@ -405,7 +412,8 @@ func _refresh_player_list() -> void:
 
 	# Enable start button when >= 2 players
 	start_btn.disabled = GameManager.get_player_count() < 2
-	start_btn.text = "¡A BEBER! (%d)" % GameManager.get_player_count() if GameManager.get_player_count() >= 2 else "Mínimo 2 jugadores"
+	start_btn.icon = TICK_ICON if GameManager.get_player_count() >= 2 else WARNING_ICON
+	start_btn.text = "%d" % GameManager.get_player_count() if GameManager.get_player_count() >= 2 else "Mínimo 2 jugadores"
 
 
 func _on_start_game() -> void:
@@ -425,12 +433,12 @@ func _on_spin() -> void:
 	roulette.spin()
 
 
-func _on_spin_completed(winner_name: String, is_all: bool) -> void:
+func _on_spin_completed(winner_name: String, winner_color: Color, is_all: bool) -> void:
 	spin_btn.disabled = false
 	back_to_menu_btn.disabled = false
 	$AnimationPlayer.play("RESET")
 	_decrement_passive_icons(winner_name, is_all)
-	_show_challenge(winner_name, is_all)
+	_show_challenge(winner_name, winner_color, is_all)
 
 
 func _on_back_to_menu() -> void:
@@ -440,7 +448,7 @@ func _on_back_to_menu() -> void:
 
 ## ---------- Challenge Modal ----------
 
-func _show_challenge(winner_name: String, is_all: bool) -> void:
+func _show_challenge(winner_name: String, winner_color: Color, is_all: bool) -> void:
 	var challenge := ChallengeDB.get_random_challenge(is_all)
 	if challenge.is_empty():
 		return
@@ -450,7 +458,7 @@ func _show_challenge(winner_name: String, is_all: bool) -> void:
 	_current_challenge_is_all = is_all
 	_current_winner_name = winner_name
 
-	var current_player := GameManager.get_current_player()
+	var current_player = GameManager.get_current_player()
 	var j1_name: String = winner_name
 	# Find the winner's index so we exclude the correct player for J2
 	var winner_idx := 0
@@ -462,14 +470,16 @@ func _show_challenge(winner_name: String, is_all: bool) -> void:
 	var j2_name: String = j2_player.get("name", "???")
 	_current_j2_name = j2_name
 
+
 	if is_all:
 		challenge_player.text = "👥 ¡TODOS!"
 	else:
-		challenge_player.text = "Imputado/a: [b]%s[/b]" % winner_name
+		challenge_player.text = "🗣️ [b]%s[/b]" % winner_name
 
 	var title_text: String = challenge.get("title", "")
 	challenge_title.text = "🔥 %s" % title_text
-
+	challenge_title.label_settings.outline_color = winner_color
+	challenge_title.add_theme_color_override("modulate", winner_color)
 	var story_text: String = challenge.get("story", "")
 	story_text = story_text.replace("{J1}", j1_name).replace("{J2}", j2_name)
 	challenge_story.text = story_text
@@ -520,9 +530,9 @@ func _show_challenge(winner_name: String, is_all: bool) -> void:
 	# Check if this challenge has a minigame
 	var minigame_data: Dictionary = challenge.get("minigame", {})
 	if not minigame_data.is_empty():
-		done_btn.text = "🎮 ¡JUGAR!"
+		done_btn.icon = M_PLAY_ICON
 	else:
-		done_btn.text = "Listo"
+		done_btn.icon = M_TICK_ICON
 
 
 func _on_challenge_done() -> void:
@@ -543,7 +553,6 @@ func _on_challenge_done() -> void:
 		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 	tween.chain().tween_callback(func():
 		done_btn.disabled = false
-		done_btn.text = "Listo"
 		_try_spawn_passive_icons()
 		GameManager.next_turn()
 		GameManager.state = GameManager.State.PLAYING

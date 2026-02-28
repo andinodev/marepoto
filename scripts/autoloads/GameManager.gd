@@ -12,30 +12,25 @@ signal game_started
 enum State {SETUP, PLAYING, CHALLENGE_VIEW}
 
 const PLAYER_COLORS: Array[Color] = [
-	Color("#e74c3c"),
-	Color("#3498db"),
-	Color("#2ecc71"),
-	Color("#f39c12"),
-	Color("#9b59b6"),
-	Color("#009f7fff"),
-	Color("#e91e63"),
-	Color("#00bcd4"),
-	Color("#ff9800"),
-	Color("#8bc34a"),
-	Color("#ff5722"),
-	Color("#ff00a2ff"),
-	Color("#79fffdff"),
-	Color("#77ff00ff"),
-	Color("#ff0000ff"),
-	Color("#00ff00ff"),
-	Color("#0000ffff"),
-	Color("#ff00ffff"),
-	Color("#ff84ffff"),
-	Color("#1929a6ff"),
-	Color("#a77120ff"),
-	Color("#187671ff"),
-	Color("#61114200"),
-	Color("#000000ff"),
+	# 16 player colors — OKLCH-designed, harmonious with UI palette
+	# (#D88C9A, #F2D0A9, #F1E3D3, #99C1B9, #8E7DBE)
+	# Warm/cool alternation, L:0.55-0.72, C:0.12-0.17, hues spaced ~22.5°
+	Color("#C75B6E"), # 1  Dusty Rose      H≈10°   warm  (echoes UI #D88C9A)
+	Color("#3A9EA3"), # 2  Deep Teal        H≈190°  cool  (echoes UI #99C1B9)
+	Color("#D48A3C"), # 3  Amber            H≈55°   warm  (echoes UI #F2D0A9)
+	Color("#6B7FC9"), # 4  Periwinkle       H≈265°  cool  (echoes UI #8E7DBE)
+	Color("#C96347"), # 5  Terracotta       H≈25°   warm
+	Color("#4BA587"), # 6  Jade             H≈160°  cool
+	Color("#BDA033"), # 7  Mustard          H≈85°   warm
+	Color("#9068B8"), # 8  Amethyst         H≈290°  cool
+	Color("#D46B84"), # 9  Coral Pink       H≈355°  warm
+	Color("#3689AC"), # 10  Steel Blue       H≈220°  cool
+	Color("#8DB34A"), # 11  Olive Green      H≈115°  warm
+	Color("#7C6DAA"), # 12  Soft Violet      H≈280°  cool
+	Color("#E09565"), # 13  Peach Tan        H≈40°   warm
+	Color("#4E8E99"), # 14  Dusty Cyan       H≈200°  cool
+	Color("#6AAD6A"), # 15  Sage Green       H≈140°  cool
+	Color("#B06498"), # 16  Mauve            H≈320°  warm
 ]
 
 var state: State = State.SETUP:

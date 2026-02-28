@@ -24,7 +24,6 @@ config/icon="res://icon.svg"
 GameManager="*res://scripts/autoloads/GameManager.gd"
 ChallengeDB="*res://scripts/autoloads/ChallengeDB.gd"
 AudioManager="*res://scripts/autoloads/AudioManager.gd"
-ThemeManager="*res://scripts/autoloads/ThemeManager.gd"
 SafeZoneManager="*res://scripts/autoloads/SafeZoneManager.gd"
 
 [display]
