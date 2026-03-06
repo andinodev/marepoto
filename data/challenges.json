@@ -341,7 +341,7 @@
       "title": "La Mentira",
       "story": "Los espíritus de la selva lo ven TODO, weón. Hasta esa mentira que le metiste a tus viejos el año de la cocoa. Ahora {J1} tiene que confesar su peor cacho o enfrentar las consecuencias.",
       "action": "¿Cuál es la mentira más grande que le hai metido a tus viejos? Cuenta la firme o fondo al seco.",
-      "sips": [{ "amount": 999, "condition": "Si no responde", "target": "SELF" }]
+      "sips": [{ "amount": 5, "condition": "Si no responde", "target": "SELF" }]
     },
     {
       "id": 305,
@@ -374,7 +374,7 @@
       "story": "¡Los fantasmas del pasado andan sueltos en el carrete! Se metieron por la ventana y están rodeando a {J1}. Piden una confesión sobre ese ex pololo/a que todavía le ronda por la cabeza... o no van a parar de molestar.",
       "action": "¿Cuándo fue la última vez que te viste con tu ex? ¿Y por qué, weón? Cuenta la firme o fondo al seco.",
       "sips": [
-        { "amount": 999, "condition": "Si no responde (Fondo)", "target": "SELF" }
+        { "amount": 5, "condition": "Si no responde (Fondo)", "target": "SELF" }
       ]
     },
     {
@@ -398,7 +398,7 @@
       "title": "Celos",
       "story": "Los fantasmas del pasado no se rindieron y ahora vienen por {J1} con la confesión más jugosa. Quieren saber de esa vez que los celos le volaron la cabeza y dejó la escoba a lo grande.",
       "action": "¿Cuál es la escena de celos más intensa que hai hecho en tu vida? Cuenta la firme o tomai al seco.",
-      "sips": [{ "amount": 999, "condition": "Si no responde", "target": "SELF" }]
+      "sips": [{ "amount": 5, "condition": "Si no responde", "target": "SELF" }]
     },
     {
       "id": 313,
@@ -419,7 +419,7 @@
       "title": "El Cahuín",
       "story": "La gallada sabe que {J1} anda con un chisme jugoso guardáo hace rato. Los espíritus quieren que suelte el cahuín que ha contado por ahí a escondidas. ¡Que se destape la olla!",
       "action": "Cuenta el último cahuín que anduviste esparciendo por ahí. Si no querís soltar la pepa, fondo al seco.",
-      "sips": [{ "amount": 999, "condition": "Si no cuenta", "target": "SELF" }]
+      "sips": [{ "amount": 5, "condition": "Si no cuenta", "target": "SELF" }]
     },
     {
       "id": 316,
@@ -1093,7 +1093,7 @@
       "action": "El que tenga el cumpleaños más cercano (pasado o futuro) toma al seco. ¡Feliz cumple, espero te guste el regalo 🥵!",
       "sips": [
         {
-          "amount": 999,
+          "amount": 5,
           "condition": "Cumpleañero cercano",
           "target": "SPECIFIC"
         }

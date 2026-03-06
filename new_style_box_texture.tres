@@ -1,0 +1,10 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://dfkvv37e0i36n"]
+
+[ext_resource type="Texture2D" uid="uid://dcel0pngupk1d" path="res://sprites/gui/Containers/container_ruby.png" id="1_5slsn"]
+
+[resource]
+texture = ExtResource("1_5slsn")
+texture_margin_left = 50.0
+texture_margin_top = 50.0
+texture_margin_right = 50.0
+texture_margin_bottom = 50.0

@@ -30,7 +30,7 @@ func _ready() -> void:
 
 func _draw() -> void:
 	var center := size / 2.0
-	_radius = min(center.x, center.y) * 1.32
+	_radius = min(center.x, center.y) * 1.40
 
 	var border_width := _radius * 0.075 # Thick border ring
 	var inner_radius := _radius - border_width
@@ -80,13 +80,44 @@ func _draw() -> void:
 		stud_count = 16
 	var stud_radius_pos := (_radius + inner_radius) / 2.0
 	var stud_size := border_width * 0.18
+	var time := Time.get_ticks_msec() / 1000.0
 	for i in range(stud_count):
 		var angle := TAU * (float(i) / stud_count)
 		var stud_pos := center + Vector2(cos(angle), sin(angle)) * stud_radius_pos
-		# Gold stud with highlight
-		draw_circle(stud_pos, stud_size + 1.0, Color(0, 0, 0, 0.3))
-		draw_circle(stud_pos, stud_size, Color("#DAA520"))
-		draw_circle(stud_pos, stud_size * 0.5, Color("#FFD700", 0.7))
+		var is_even := (i % 2 == 0)
+
+		# Pick color based on even/odd
+		var base_gold := Color("#FFD700")
+		var base_red := Color("#FF3333")
+		var stud_base_color := base_gold if is_even else base_red
+		var white_mix := 0.6 if is_even else 0.4
+
+		if _is_spinning:
+			# Chasing lights: use rotation to shift which studs are "lit"
+			var chase_offset := _current_rotation * float(stud_count) / TAU
+			var chase_pos := fmod(float(i) + chase_offset, float(stud_count))
+			# Only ~30% of studs lit at once, creates a moving band
+			var lit := fmod(chase_pos, 4.0) / 4.0
+			var brightness := smoothstep(0.5, 0.0, lit)
+			if brightness > 0.01:
+				var glow_color := stud_base_color.lerp(Color.WHITE, brightness * white_mix)
+				draw_circle(stud_pos, stud_size * 2.5, Color(glow_color, 0.3 * brightness))
+				draw_circle(stud_pos, stud_size * 1.8, Color(glow_color, 0.4 * brightness))
+				draw_circle(stud_pos, stud_size + 1.0, Color(0, 0, 0, 0.15))
+				draw_circle(stud_pos, stud_size, glow_color)
+				draw_circle(stud_pos, stud_size * 0.5, Color(1, 1, 1, 0.8 * brightness))
+			else:
+				draw_circle(stud_pos, stud_size + 1.0, Color(0, 0, 0, 0.3))
+				draw_circle(stud_pos, stud_size, Color("#DAA520"))
+				draw_circle(stud_pos, stud_size * 0.5, Color("#FFD700", 0.3))
+		else:
+			# Idle: gentle pulse in place
+			var pulse := sin(time * 3.0 + float(i) * 0.4) * 0.5 + 0.5
+			var glow_color := stud_base_color.lerp(Color.WHITE, pulse * white_mix * 0.5)
+			draw_circle(stud_pos, stud_size * lerp(1.0, 2.0, pulse * 0.3), Color(glow_color, 0.2 * pulse))
+			draw_circle(stud_pos, stud_size + 1.0, Color(0, 0, 0, 0.25))
+			draw_circle(stud_pos, stud_size, glow_color)
+			draw_circle(stud_pos, stud_size * 0.5, Color(1, 1, 1, 0.5 * pulse))
 
 	# --- 6. Center hub (metallic gold) ---
 	var hub_r := inner_radius * 0.14
@@ -291,8 +322,7 @@ func spin() -> void:
 
 
 func _process(_delta: float) -> void:
-	if _is_spinning:
-		queue_redraw()
+	queue_redraw()
 
 
 func _on_spin_finished() -> void:

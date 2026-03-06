@@ -12,13 +12,19 @@
 [ext_resource type="Texture2D" uid="uid://cyuulgro21od5" path="res://sprites/gui/Icons/64px/plusV2_icon_64px.png" id="9_2ofn6"]
 [ext_resource type="Texture2D" uid="uid://cg36sg2sh7tsg" path="res://sprites/gui/Icons/128px/settings_icon_128px.png" id="10_ebg2g"]
 [ext_resource type="Shader" uid="uid://dfmcmxoqmdqm4" path="res://shaders/sunburst.gdshader" id="13_ebg2g"]
+[ext_resource type="Shader" uid="uid://dg5fa5abg3yd2" path="res://shaders/sunburst_gradient.gdshader" id="14_36rkl"]
 [ext_resource type="Texture2D" uid="uid://yrledluwlm8j" path="res://sprites/ui/PNG/Double/panel_brown_damaged_dark.png" id="14_bb450"]
+[ext_resource type="Texture2D" uid="uid://rfjmdav4jnn5" path="res://sprites/gui/Buttons/button_black.png" id="14_xa025"]
 [ext_resource type="Texture2D" uid="uid://bs6aa2ibbgkp8" path="res://sprites/gui/Headers/notebook_white.png" id="16_1nqs0"]
-[ext_resource type="Texture2D" uid="uid://butqfc4c036qo" path="res://sprites/gui/Headers/headerBow_white.png" id="16_36rkl"]
 [ext_resource type="Texture2D" uid="uid://c0w17cfhui448" path="res://sprites/gui/Icons/128px/close_icon_128px.png" id="17_36rkl"]
-[ext_resource type="Texture2D" uid="uid://cw455f2r3fu5q" path="res://sprites/gui/Containers/cardContainer_cyan.png" id="18_1nqs0"]
-[ext_resource type="Texture2D" uid="uid://0rr8ls64lket" path="res://sprites/gui/Modals/profile_image.png" id="19_nfivy"]
+[ext_resource type="Texture2D" uid="uid://d3rbtk1uvqnm8" path="res://sprites/gui/Panels/panelEpicAdv_yellow.png" id="19_xa025"]
+[ext_resource type="Texture2D" uid="uid://clkedi2fyy1jx" path="res://sprites/gui/Labels/card_label.png" id="20_36rkl"]
+[ext_resource type="Texture2D" uid="uid://crjq4v67yragx" path="res://sprites/gui/Panels/panel_pink.png" id="21_1iba3"]
+[ext_resource type="Shader" uid="uid://dyaleryxebsoc" path="res://shaders/Highlight.gdshader" id="22_ebg2g"]
 [ext_resource type="Theme" uid="uid://conjmxjlhmf8a" path="res://sprites/gui/gui_theme.tres" id="22_yxlcp"]
+[ext_resource type="FontFile" uid="uid://c6lvpfg1p86tj" path="res://fonts/Roboto-VariableFont_wdth,wght.ttf" id="23_ebg2g"]
+[ext_resource type="Shader" uid="uid://dcmp30kd0bjyl" path="res://shaders/Defeat.gdshader" id="24_xa025"]
+[ext_resource type="Texture2D" uid="uid://tks8kejatkmb" path="res://sprites/gui/Icons/128px/tickV2_icon_128px.png" id="25_36rkl"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ft6cd"]
 texture = ExtResource("6_yxlcp")
@@ -52,14 +58,6 @@ texture_margin_top = 64.0
 texture_margin_right = 32.0
 texture_margin_bottom = 64.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_36rkl"]
-texture = ExtResource("8_2ofn6")
-texture_margin_left = 32.0
-texture_margin_top = 32.0
-texture_margin_right = 32.0
-texture_margin_bottom = 32.0
-modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fs0b5"]
 texture = ExtResource("8_2ofn6")
 texture_margin_left = 32.0
@@ -68,17 +66,28 @@ texture_margin_right = 32.0
 texture_margin_bottom = 32.0
 modulate_color = Color(0.5568628, 0.49019608, 0.74509805, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e2s0e"]
-texture = ExtResource("16_36rkl")
-modulate_color = Color(0.84705883, 0.54901963, 0.6039216, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_36rkl"]
+texture = ExtResource("8_2ofn6")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dg70y"]
-content_margin_top = 25.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1nqs0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e2s0e"]
+shader = ExtResource("24_xa025")
+shader_parameter/shake_speed = 3.50000011875
+shader_parameter/shake_amount = 1.8330000870675
+shader_parameter/desaturation = 0.0
+shader_parameter/drip_speed = 0.14100000343762
+shader_parameter/drip_amount = 0.00400000019
+shader_parameter/darken = 0.3
+shader_parameter/gloom_color = Color(0.4, 0.1, 0.1, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fs0b5"]
-content_margin_left = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 5.0
+content_margin_top = 32.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ma7h6"]
 
@@ -88,13 +97,55 @@ content_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0vrg"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xa025"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fs0b5"]
+shader = ExtResource("14_36rkl")
+shader_parameter/ray_color_base = Color(1, 0.432765, 0.69507015, 1)
+shader_parameter/ray_color_pulse = Color(0.92613465, 0.6266219, 0.8285741, 1)
+shader_parameter/bg_color = Color(0, 0, 0, 0)
+shader_parameter/num_rays = 15
+shader_parameter/center_x = 0.5
+shader_parameter/center_y = 0.5
+shader_parameter/ray_softness = 0.0
+shader_parameter/rotation_speed = 0.5
+shader_parameter/pulse_speed = 3.0
+shader_parameter/pulse_intensity = 1.0
+shader_parameter/edge_fade_start = 0.35
+shader_parameter/edge_fade_end = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_36rkl"]
+shader = ExtResource("22_ebg2g")
+shader_parameter/sweep_speed = 0.22900000761762002
+shader_parameter/sweep_width = 0.13200000464006
+shader_parameter/shine_intensity = 0.8
+shader_parameter/pause_ratio = 0.5600000266
+shader_parameter/shine_color = Color(1, 0.47657922, 0.70000815, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e2s0e"]
+content_margin_top = 30.0
+content_margin_bottom = 65.0
+texture = ExtResource("8_2ofn6")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.74014115, 0.209449, 0.5698251, 1)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gsxep"]
 texture = ExtResource("8_2ofn6")
 texture_margin_left = 32.0
-texture_margin_top = 120.0
+texture_margin_top = 32.0
 texture_margin_right = 32.0
-texture_margin_bottom = 120.0
-modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
+texture_margin_bottom = 32.0
+modulate_color = Color(0.9980106, 0.99999994, 0.90555876, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ma7h6"]
+texture = ExtResource("14_xa025")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1iba3"]
 shader = ExtResource("13_ebg2g")
@@ -155,25 +206,26 @@ font_color = Color(0.9990805, 0.9999983, 0.7191811, 1)
 font_size = 44
 font_color = Color(0.1254902, 0.1254902, 0.1254902, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yxlcp"]
-texture = ExtResource("18_1nqs0")
-texture_margin_left = 53.0
-texture_margin_top = 32.0
-texture_margin_right = 53.0
-texture_margin_bottom = 32.0
-expand_margin_top = 32.0
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q8u5g"]
-texture = ExtResource("19_nfivy")
-texture_margin_left = 32.0
-texture_margin_top = 32.0
+texture = ExtResource("19_xa025")
+texture_margin_top = 22.0
+expand_margin_top = 32.0
+expand_margin_bottom = 66.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pnhog"]
+texture = ExtResource("20_36rkl")
+texture_margin_left = 58.0
+texture_margin_top = 12.0
 texture_margin_right = 32.0
 texture_margin_bottom = 32.0
 expand_margin_top = 32.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_sips"]
-font_size = 42
-font_color = Color(1, 0, 0, 1)
+font = ExtResource("23_ebg2g")
+font_size = 47
+outline_color = Color(0.9607843, 0.4, 0.30980393, 1)
+shadow_size = 32
+shadow_color = Color(0.95281494, 0.3491902, 0.30943933, 0.573)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ebg2g"]
 texture = ExtResource("8_2ofn6")
@@ -196,6 +248,59 @@ _data = {
 &"RESET": SubResource("Animation_nfivy"),
 &"anim_spin": SubResource("Animation_1nqs0")
 }
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yxlcp"]
+shader = ExtResource("13_ebg2g")
+shader_parameter/ray_color_base = Color(0.9607843, 0.27058825, 0.7254902, 1)
+shader_parameter/ray_color_pulse = Color(0.97083575, 0.38458744, 0.7537555, 1)
+shader_parameter/bg_color = Color(0.14901961, 0.14901961, 0.20392157, 0.8666667)
+shader_parameter/num_rays = 12
+shader_parameter/center_x = 0.5
+shader_parameter/center_y = 0.5
+shader_parameter/ray_softness = 0.0
+shader_parameter/rotation_speed = 0.5
+shader_parameter/pulse_speed = 3.0
+shader_parameter/pulse_intensity = 1.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v0vrg"]
+texture = ExtResource("21_1iba3")
+texture_margin_top = 33.0
+texture_margin_bottom = 33.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ofn6"]
+shader = ExtResource("22_ebg2g")
+shader_parameter/sweep_speed = 0.29100001056262004
+shader_parameter/sweep_width = 0.05000000074506
+shader_parameter/shine_intensity = 0.2950000140125
+shader_parameter/pause_ratio = 0.0450000021375
+shader_parameter/shine_color = Color(8.398, 8.398, 8.398, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fs0b5"]
+font = ExtResource("23_ebg2g")
+font_size = 84
+font_color = Color(1, 1, 0.39215687, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ma7h6"]
+shader = ExtResource("24_xa025")
+shader_parameter/shake_speed = 3.034000096615
+shader_parameter/shake_amount = 1.92800009158
+shader_parameter/desaturation = 0.0
+shader_parameter/drip_speed = 1.84700008447262
+shader_parameter/drip_amount = 0.0
+shader_parameter/darken = 0.3970000188575
+shader_parameter/gloom_color = Color(0.4, 0.1, 0.1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_e2s0e"]
+font = ExtResource("23_ebg2g")
+font_size = 70
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dg70y"]
+texture = ExtResource("8_2ofn6")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
 
 [node name="Main" type="Control" unique_id=745247859]
 layout_mode = 3
@@ -326,12 +431,7 @@ theme_override_colors/scroll_hint_horizontal_color = Color(0, 0, 0, 1)
 theme_override_constants/scrollbar_h_separation = 32
 theme_override_constants/scrollbar_v_separation = 32
 theme_override_styles/panel = SubResource("StyleBoxTexture_2ofn6")
-scroll_horizontal_custom_step = 64.0
-scroll_vertical_custom_step = 64.0
-horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
-scroll_deadzone = 5
-scroll_hint_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/PlayerListScroll" unique_id=616520871]
 clip_contents = true
@@ -353,15 +453,6 @@ theme_override_constants/separation = 8
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="StartBtn" type="Button" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/HBoxContainer" unique_id=1783940858]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-theme = ExtResource("22_yxlcp")
-theme_override_font_sizes/font_size = 42
-theme_override_styles/normal = SubResource("StyleBoxTexture_36rkl")
-disabled = true
-text = "Mínimo 2 jugadores"
-
 [node name="ManageBtn" type="Button" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/HBoxContainer" unique_id=1551878317]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
@@ -371,6 +462,20 @@ theme_override_colors/font_hover_color = Color(0.30477512, 0.24151325, 0.0033093
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("StyleBoxTexture_fs0b5")
 icon = ExtResource("10_ebg2g")
+
+[node name="StartBtn" type="Button" parent="SetupUI/SafeMargin/VBoxContainer/PanelContainer/VBox/HBoxContainer" unique_id=1783940858]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
+theme_override_colors/font_color = Color(0.6, 0.75686276, 0.7254902, 1)
+theme_override_colors/font_disabled_color = Color(0.8750814, 0.8750814, 0.8750814, 1)
+theme_override_colors/font_outline_color = Color(0.08627451, 0.08627451, 0.12156863, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 68
+theme_override_styles/normal = SubResource("StyleBoxTexture_36rkl")
+disabled = true
+text = "Mínimo 2 jugadores"
+icon_alignment = 1
 
 [node name="GameUI" type="Control" parent="." unique_id=1133324116]
 visible = false
@@ -393,49 +498,31 @@ grow_vertical = 2
 [node name="GameContent" type="VBoxContainer" parent="GameUI/SafeMargin" unique_id=66189510]
 layout_mode = 2
 
-[node name="TopBar" type="PanelContainer" parent="GameUI/SafeMargin/GameContent" unique_id=685031818]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxTexture_e2s0e")
-
-[node name="MarginContainer" type="MarginContainer" parent="GameUI/SafeMargin/GameContent/TopBar" unique_id=1382415642]
-custom_minimum_size = Vector2(0, 300)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/margin_left = 120
-theme_override_constants/margin_top = 60
-theme_override_constants/margin_right = 120
-
-[node name="HBox" type="HBoxContainer" parent="GameUI/SafeMargin/GameContent/TopBar/MarginContainer" unique_id=237829799]
-layout_mode = 2
-
-[node name="TurnLabel" type="Label" parent="GameUI/SafeMargin/GameContent/TopBar/MarginContainer/HBox" unique_id=1015758851]
-layout_mode = 2
-size_flags_horizontal = 2
-size_flags_vertical = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 32
-theme_override_font_sizes/font_size = 72
-theme_override_styles/normal = SubResource("StyleBoxEmpty_dg70y")
-text = "¡Gira la ruleta!"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="BackToMenuBtn" type="Button" parent="GameUI/SafeMargin/GameContent/TopBar/MarginContainer/HBox" unique_id=946232033]
+[node name="CloseBar" type="PanelContainer" parent="GameUI/SafeMargin/GameContent" unique_id=685031818]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 0
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxTexture_1nqs0")
+
+[node name="BackToMenuBtn" type="Button" parent="GameUI/SafeMargin/GameContent/CloseBar" unique_id=946232033]
+material = SubResource("ShaderMaterial_e2s0e")
+layout_mode = 2
+size_flags_horizontal = 4
 theme_override_styles/normal = SubResource("StyleBoxEmpty_fs0b5")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ma7h6")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_e2s0e")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_gsxep")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_v0vrg")
 icon = ExtResource("17_36rkl")
-flat = true
 icon_alignment = 1
 
+[node name="Control" type="Control" parent="GameUI/SafeMargin/GameContent" unique_id=1000591083]
+layout_mode = 2
+size_flags_vertical = 3
+
 [node name="RouletteContainer" type="CenterContainer" parent="GameUI/SafeMargin/GameContent" unique_id=1757063749]
+custom_minimum_size = Vector2(0, 900)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("22_yxlcp")
@@ -447,20 +534,50 @@ script = ExtResource("2_roulette")
 
 [node name="PassiveIconsContainer" type="HFlowContainer" parent="GameUI/SafeMargin/GameContent" unique_id=23917705]
 layout_mode = 2
+size_flags_vertical = 6
 theme = ExtResource("22_yxlcp")
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
 alignment = 1
 
-[node name="SpinBtn" type="Button" parent="GameUI/SafeMargin/GameContent" unique_id=1084516296]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/SafeMargin/GameContent" unique_id=861752502]
 layout_mode = 2
-size_flags_vertical = 8
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="PlayBar" type="PanelContainer" parent="GameUI/SafeMargin/GameContent/HBoxContainer" unique_id=1045969246]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xa025")
+
+[node name="SunBurstShader" type="ColorRect" parent="GameUI/SafeMargin/GameContent/HBoxContainer/PlayBar" unique_id=240849041]
+visible = false
+material = SubResource("ShaderMaterial_fs0b5")
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/SafeMargin/GameContent/HBoxContainer/PlayBar" unique_id=843464542]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 50
+
+[node name="SpinBtn" type="Button" parent="GameUI/SafeMargin/GameContent/HBoxContainer/PlayBar/MarginContainer" unique_id=1084516296]
+material = SubResource("ShaderMaterial_36rkl")
+layout_mode = 2
+size_flags_vertical = 4
 theme = ExtResource("22_yxlcp")
-theme_override_font_sizes/font_size = 120
-theme_override_styles/normal = SubResource("StyleBoxTexture_gsxep")
+theme_override_font_sizes/font_size = 160
+theme_override_styles/normal = SubResource("StyleBoxTexture_e2s0e")
+theme_override_styles/hover = SubResource("StyleBoxTexture_gsxep")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_ma7h6")
 text = "🍻"
+icon_alignment = 1
 
 [node name="ChallengeModal" type="Control" parent="." unique_id=21486912]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -516,10 +633,11 @@ anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -478.0
 offset_right = 478.0
-offset_bottom = 1520.0
+offset_bottom = 1920.0
 grow_horizontal = 2
 theme = ExtResource("22_yxlcp")
 theme_override_constants/separation = 0
+alignment = 1
 
 [node name="ChallengeTitle" type="Label" parent="ChallengeModal/VBox" unique_id=296607038]
 layout_mode = 2
@@ -594,19 +712,23 @@ layout_mode = 2
 theme = ExtResource("22_yxlcp")
 text = "⏱ Iniciar"
 
-[node name="HBox" type="HBoxContainer" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox" unique_id=662790410]
+[node name="SipsContainer" type="PanelContainer" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox" unique_id=2030271994]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
+size_flags_horizontal = 3
+theme = ExtResource("22_yxlcp")
+theme_override_styles/panel = SubResource("StyleBoxTexture_q8u5g")
 
-[node name="ChallengePlayer" type="RichTextLabel" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox" unique_id=2104010127]
+[node name="VBoxContainer" type="VBoxContainer" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/SipsContainer" unique_id=1009855785]
+layout_mode = 2
+
+[node name="ChallengePlayer" type="RichTextLabel" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/SipsContainer/VBoxContainer" unique_id=2104010127]
 clip_contents = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 0
 theme = ExtResource("22_yxlcp")
-theme_override_colors/default_color = Color(0.43496928, 0.29052418, 0.13605303, 1)
-theme_override_styles/normal = SubResource("StyleBoxTexture_yxlcp")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_pnhog")
 bbcode_enabled = true
 text = "Player selected"
 fit_content = true
@@ -614,19 +736,18 @@ scroll_active = false
 autowrap_mode = 2
 shortcut_keys_enabled = false
 
-[node name="SipsContainer" type="PanelContainer" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox" unique_id=2030271994]
+[node name="MarginContainer" type="MarginContainer" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/SipsContainer/VBoxContainer" unique_id=1884055528]
 layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("22_yxlcp")
-theme_override_styles/panel = SubResource("StyleBoxTexture_q8u5g")
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_right = 32
 
-[node name="SipsLabel" type="Label" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox/SipsContainer" unique_id=1550716881]
+[node name="SipsLabel" type="Label" parent="ChallengeModal/VBox/Panel/MarginContainer/VBox/SipsContainer/VBoxContainer/MarginContainer" unique_id=1550716881]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 1
 theme = ExtResource("22_yxlcp")
-text = "🍺 x1 — Condition"
+text = "🍺 x1 — Condition
+"
 label_settings = SubResource("LabelSettings_sips")
 vertical_alignment = 3
 autowrap_mode = 2
@@ -641,3 +762,77 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_ebg2g")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=443359197]
 libraries/ = SubResource("AnimationLibrary_1iba3")
+
+[node name="MinigameUI" type="Control" parent="." unique_id=1048823053]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("22_yxlcp")
+
+[node name="Background" type="ColorRect" parent="MinigameUI" unique_id=1724582268]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1254902, 0.1254902, 0.1254902, 0.72156864)
+
+[node name="Sunburst" type="ColorRect" parent="MinigameUI" unique_id=1350414447]
+material = SubResource("ShaderMaterial_yxlcp")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("22_yxlcp")
+color = Color(0, 0, 0, 1)
+
+[node name="Container" type="PanelContainer" parent="MinigameUI" unique_id=93953302]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 254.0
+offset_bottom = -566.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_v0vrg")
+
+[node name="VBox" type="VBoxContainer" parent="MinigameUI/Container" unique_id=9058331]
+layout_mode = 2
+alignment = 1
+
+[node name="WinnerLbl" type="Label" parent="MinigameUI/Container/VBox" unique_id=340706687]
+material = SubResource("ShaderMaterial_2ofn6")
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
+text = "🏆 GANADOR"
+label_settings = SubResource("LabelSettings_fs0b5")
+horizontal_alignment = 1
+
+[node name="LoserLbl" type="Label" parent="MinigameUI/Container/VBox" unique_id=2145022032]
+material = SubResource("ShaderMaterial_ma7h6")
+layout_mode = 2
+theme = ExtResource("22_yxlcp")
+theme_override_colors/font_color = Color(0.1254902, 0.1254902, 0.1254902, 1)
+text = "💀 PERDEDOR"
+label_settings = SubResource("LabelSettings_e2s0e")
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="MinigameUI/Container/VBox" unique_id=1385078459]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MinigameUI/Container/VBox" unique_id=1520160025]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_dg70y")
+icon = ExtResource("25_36rkl")
+icon_alignment = 1

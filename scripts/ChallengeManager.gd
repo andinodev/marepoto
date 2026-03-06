@@ -1,17 +1,14 @@
 extends Control
 ## ChallengeManager.gd — CRUD UI for challenges database.
+## Static layout is defined in ChallengeManager.tscn; this script handles
+## dynamic content (cards, pagination, sip/passive rows) and all logic.
 
 signal closed
 
-# --- Theme colors ---
-const NEON_GREEN := Color("#22c55e")
-const NEON_YELLOW := Color("#facc15")
-const DARK_BG := Color("#1a1a2e")
-const DARKER_BG := Color("#0f0f1a")
-const CARD_BG := Color("#252545")
-const DELETED_ALPHA := 0.4
-const CARD_BORDER := Color("#22c55e", 0.4)
+# --- Constants ---
 const PAGE_SIZE := 25
+const BTN_TEX: Texture2D = preload("res://sprites/gui/Buttons/button_white.png")
+const CARD_TEX: Texture2D = preload("res://sprites/gui/Buttons/button_white.png")
 
 const TARGET_KEYS := ["SELF", "SPECIFIC", "ALL", "DISTRIBUTE"]
 const TARGET_LABELS := ["Uno mismo", "Específico", "Todos", "Distribuir"]
@@ -19,107 +16,83 @@ const TARGET_LABELS := ["Uno mismo", "Específico", "Todos", "Distribuir"]
 const PASIVE_KEYS := ["X_PLAYER_TURN", "X_TURN", "ANY_TURN"]
 const PASIVE_LABELS := ["Turno del jugador", "Turno general", "Permanente"]
 
-const MINIGAME_KEYS := ["", "HOCKEY"]
-const MINIGAME_LABELS := ["Ninguno", "🏒 Air Hockey"]
+const MINIGAME_KEYS := ["", "HOCKEY", "FINGER"]
+const MINIGAME_LABELS := ["Ninguno", "🏒 Air Hockey", "👇 Último Dedo"]
+
+# --- Scene node references ---
+@onready var _tab_player_btn: Button = $SafeMargin/Content/TabBar/TabPlayerBtn
+@onready var _tab_all_btn: Button = $SafeMargin/Content/TabBar/TabAllBtn
+@onready var _search_input: LineEdit = $SafeMargin/Content/SearchBar/SearchInput
+@onready var _new_btn: Button = $SafeMargin/Content/SearchBar/NewBtn
+@onready var _back_btn: Button = $SafeMargin/Content/Header/BackBtn
+@onready var _scroll: ScrollContainer = $SafeMargin/Content/Scroll
+@onready var _list_container: VBoxContainer = $SafeMargin/Content/Scroll/ListContainer
+
+# Form overlay
+@onready var _form_overlay: Control = $FormOverlay
+@onready var _form_panel: PanelContainer = $FormOverlay/FormSafeMargin/FormPanel
+@onready var _form_title_label: Label = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormTitleLabel
+@onready var _title_input: LineEdit = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/TitleInput
+@onready var _story_input: TextEdit = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/StoryInput
+@onready var _action_input: TextEdit = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/ActionInput
+@onready var _timer_spin: SpinBox = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/HBoxContainer/TimerSpin
+@onready var _sips_container: VBoxContainer = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/SipsContainer
+@onready var _add_sip_btn: Button = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/AddSipBtn
+@onready var _pasive_container: VBoxContainer = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/PasiveContainer
+@onready var _add_pasive_btn: Button = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/AddPasiveBtn
+@onready var _minigame_option: OptionButton = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/MinigameRow/MinigameOption
+@onready var _minigame_rounds_row: HBoxContainer = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/MinigameRow/MinigameRoundsRow
+@onready var _minigame_rounds_spin: SpinBox = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/FormScroll/FormVBox/MinigameRow/MinigameRoundsRow/MinigameRoundsSpin
+@onready var _cancel_btn: Button = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/BtnRow/CancelBtn
+@onready var _save_btn: Button = $FormOverlay/FormSafeMargin/FormPanel/VBoxContainer/BtnRow/SaveBtn
+
+# Confirm overlay
+@onready var _confirm_overlay: Control = $ConfirmOverlay
+@onready var _confirm_label: Label = $ConfirmOverlay/ConfirmSafeMargin/CenterContainer/ConfirmPanel/VBox/ConfirmLabel
+@onready var _confirm_no: Button = $ConfirmOverlay/ConfirmSafeMargin/CenterContainer/ConfirmPanel/VBox/BtnRow/ConfirmNo
+@onready var _confirm_yes: Button = $ConfirmOverlay/ConfirmSafeMargin/CenterContainer/ConfirmPanel/VBox/BtnRow/ConfirmYes
+
+# Toast
+@onready var _toast_label: Label = $ToastLabel
 
 # --- State ---
-var _current_tab := "player" # "player" or "all"
+var _current_tab := "player"
 var _search_text := ""
-var _editing_id: int = -1 # -1 = creating new
+var _editing_id: int = -1
 var _editing_category := ""
 var _current_page: int = 0
 var _total_pages: int = 1
-
-# --- Nodes (built in _ready) ---
-var _tab_player_btn: Button
-var _tab_all_btn: Button
-var _search_input: LineEdit
-var _list_container: VBoxContainer
-var _scroll: ScrollContainer
-var _form_overlay: Control
-var _form_panel: PanelContainer
-var _form_scroll: ScrollContainer
-var _title_input: LineEdit
-var _story_input: TextEdit
-var _action_input: TextEdit
-var _timer_spin: SpinBox
-var _sips_container: VBoxContainer
-var _pasive_container: VBoxContainer
-var _minigame_option: OptionButton
-var _minigame_rounds_spin: SpinBox
-var _minigame_rounds_row: HBoxContainer
-var _save_btn: Button
-var _cancel_btn: Button
-var _form_title_label: Label
-var _toast_label: Label
-var _confirm_overlay: Control
-var _confirm_label: Label
-var _confirm_yes: Button
-var _confirm_no: Button
 var _pending_delete_id: int = -1
 var _pending_delete_cat := ""
 
 
 func _ready() -> void:
-	# Full rect
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	# Apply safe-zone insets
+	SafeZoneManager.apply_to_margin($SafeMargin, 20, 20, 24, 24)
+	SafeZoneManager.apply_to_margin($FormOverlay/FormSafeMargin, 60, 20, 16, 16)
+	SafeZoneManager.apply_to_margin($ConfirmOverlay/ConfirmSafeMargin, 20, 20, 16, 16)
 
-	# Background
-	var bg := ColorRect.new()
-	bg.color = DARK_BG
-	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
+	# Connect signals
+	_back_btn.pressed.connect(_on_back)
+	_tab_player_btn.pressed.connect(_on_tab_player)
+	_tab_all_btn.pressed.connect(_on_tab_all)
+	_search_input.text_changed.connect(_on_search_changed)
+	_new_btn.pressed.connect(_on_new_challenge)
+	_add_sip_btn.pressed.connect(_on_add_sip_row)
+	_add_pasive_btn.pressed.connect(_on_add_pasive_row)
+	_cancel_btn.pressed.connect(_on_form_cancel)
+	_save_btn.pressed.connect(_on_form_save)
+	_confirm_no.pressed.connect(_on_confirm_no)
+	_confirm_yes.pressed.connect(_on_confirm_yes)
 
-	# Main VBox
-	var main_vbox := VBoxContainer.new()
-	main_vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	main_vbox.add_theme_constant_override("separation", 12)
-	add_child(main_vbox)
+	# Populate minigame dropdown
+	_minigame_option.clear()
+	for i in MINIGAME_LABELS.size():
+		_minigame_option.add_item(MINIGAME_LABELS[i], i)
+	_minigame_option.item_selected.connect(_on_minigame_type_changed)
 
-	# --- Margin wrapper ---
-	var margin := MarginContainer.new()
-	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	# Apply safe-zone insets + design padding (24 sides, 20 top/bottom)
-	SafeZoneManager.apply_to_margin(margin, 20, 20, 24, 24)
-	main_vbox.add_child(margin)
-
-	var content_vbox := VBoxContainer.new()
-	content_vbox.add_theme_constant_override("separation", 16)
-	content_vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	margin.add_child(content_vbox)
-
-	# --- Header ---
-	_build_header(content_vbox)
-
-	# --- Tab Bar ---
-	_build_tab_bar(content_vbox)
-
-	# --- Search + New ---
-	_build_search_bar(content_vbox)
-
-	# --- Challenge List ---
-	_scroll = ScrollContainer.new()
-	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	content_vbox.add_child(_scroll)
-
-	_list_container = VBoxContainer.new()
-	_list_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_list_container.add_theme_constant_override("separation", 12)
-	_scroll.add_child(_list_container)
-
-	# --- Form Overlay (hidden) ---
-	_build_form_overlay()
-
-	# --- Confirm Dialog (hidden) ---
-	_build_confirm_dialog()
-
-	# --- Toast (hidden) ---
-	_build_toast()
-
-	# Populate
+	# Initial state
+	_update_tab_styles()
 	_refresh_list()
 
 
@@ -144,94 +117,12 @@ func _handle_back() -> void:
 
 
 ## ======================================================================
-##  HEADER
+##  TAB STYLES
 ## ======================================================================
-
-func _build_header(parent: VBoxContainer) -> void:
-	var hbox := HBoxContainer.new()
-	hbox.add_theme_constant_override("separation", 12)
-	parent.add_child(hbox)
-
-	var back_btn := Button.new()
-	back_btn.text = "← Volver"
-	back_btn.custom_minimum_size = Vector2(180, 60)
-	_style_button(back_btn, NEON_GREEN)
-	back_btn.pressed.connect(_on_back)
-	hbox.add_child(back_btn)
-
-	var title_lbl := Label.new()
-	title_lbl.text = "🎮 Administrar Retos"
-	title_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var title_settings := LabelSettings.new()
-	title_settings.font_size = 56
-	title_settings.font_color = NEON_YELLOW
-	title_settings.outline_size = 3
-	title_settings.outline_color = Color.BLACK
-	title_settings.shadow_size = 5
-	title_settings.shadow_color = Color(NEON_YELLOW, 0.25)
-	title_lbl.label_settings = title_settings
-	hbox.add_child(title_lbl)
-
-
-## ======================================================================
-##  TAB BAR
-## ======================================================================
-
-func _build_tab_bar(parent: VBoxContainer) -> void:
-	var hbox := HBoxContainer.new()
-	hbox.add_theme_constant_override("separation", 8)
-	parent.add_child(hbox)
-
-	_tab_player_btn = Button.new()
-	_tab_player_btn.text = "🎯 Jugador"
-	_tab_player_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_tab_player_btn.custom_minimum_size.y = 60
-	_tab_player_btn.pressed.connect(_on_tab_player)
-	hbox.add_child(_tab_player_btn)
-
-	_tab_all_btn = Button.new()
-	_tab_all_btn.text = "👥 Todos"
-	_tab_all_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_tab_all_btn.custom_minimum_size.y = 60
-	_tab_all_btn.pressed.connect(_on_tab_all)
-	hbox.add_child(_tab_all_btn)
-
-	_update_tab_styles()
-
 
 func _update_tab_styles() -> void:
-	if _current_tab == "player":
-		_style_button(_tab_player_btn, NEON_GREEN, true)
-		_style_button(_tab_all_btn, Color(0.4, 0.4, 0.5), false)
-	else:
-		_style_button(_tab_player_btn, Color(0.4, 0.4, 0.5), false)
-		_style_button(_tab_all_btn, NEON_GREEN, true)
-
-
-## ======================================================================
-##  SEARCH BAR
-## ======================================================================
-
-func _build_search_bar(parent: VBoxContainer) -> void:
-	var hbox := HBoxContainer.new()
-	hbox.add_theme_constant_override("separation", 10)
-	parent.add_child(hbox)
-
-	_search_input = LineEdit.new()
-	_search_input.placeholder_text = "🔍 Buscar por título..."
-	_search_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_search_input.custom_minimum_size.y = 56
-	_style_line_edit(_search_input)
-	_search_input.text_changed.connect(_on_search_changed)
-	hbox.add_child(_search_input)
-
-	var new_btn := Button.new()
-	new_btn.text = "+ Nuevo"
-	new_btn.custom_minimum_size = Vector2(160, 56)
-	_style_button(new_btn, NEON_YELLOW)
-	new_btn.pressed.connect(_on_new_challenge)
-	hbox.add_child(new_btn)
+	_tab_player_btn.modulate = Color.WHITE if _current_tab == "player" else Color(0.6, 0.6, 0.6)
+	_tab_all_btn.modulate = Color.WHITE if _current_tab == "all" else Color(0.6, 0.6, 0.6)
 
 
 ## ======================================================================
@@ -239,11 +130,9 @@ func _build_search_bar(parent: VBoxContainer) -> void:
 ## ======================================================================
 
 func _refresh_list() -> void:
-	# Clear
 	for child in _list_container.get_children():
 		child.queue_free()
 
-	# Filter
 	var challenges := ChallengeDB.get_all_raw(_current_tab)
 	var filtered: Array[Dictionary] = []
 	for c in challenges:
@@ -252,28 +141,24 @@ func _refresh_list() -> void:
 			continue
 		filtered.append(c)
 
-	# Pagination math
+	# Pagination
 	var total_items := filtered.size()
 	_total_pages = maxi(1, ceili(float(total_items) / PAGE_SIZE))
 	_current_page = clampi(_current_page, 0, _total_pages - 1)
 	var start_idx := _current_page * PAGE_SIZE
 	var end_idx := mini(start_idx + PAGE_SIZE, total_items)
 
-	# Top pagination
 	if _total_pages > 1:
 		_list_container.add_child(_build_pagination_bar())
 
-	# Render page items
 	var visual_idx := 0
 	for i in range(start_idx, end_idx):
 		_create_card(filtered[i], visual_idx)
 		visual_idx += 1
 
-	# Bottom pagination
 	if _total_pages > 1:
 		_list_container.add_child(_build_pagination_bar())
 
-	# Scroll to top
 	_scroll.scroll_vertical = 0
 
 
@@ -283,85 +168,41 @@ func _build_pagination_bar() -> HBoxContainer:
 	bar.alignment = BoxContainer.ALIGNMENT_CENTER
 	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	# First
 	var first_btn := Button.new()
 	first_btn.text = "«"
 	first_btn.custom_minimum_size = Vector2(70, 60)
 	first_btn.disabled = _current_page == 0
-	_style_page_button(first_btn, not first_btn.disabled)
 	first_btn.pressed.connect(_go_to_page.bind(0))
 	bar.add_child(first_btn)
 
-	# Prev
 	var prev_btn := Button.new()
 	prev_btn.text = "‹"
 	prev_btn.custom_minimum_size = Vector2(70, 60)
 	prev_btn.disabled = _current_page == 0
-	_style_page_button(prev_btn, not prev_btn.disabled)
 	prev_btn.pressed.connect(_go_to_page.bind(_current_page - 1))
 	bar.add_child(prev_btn)
 
-	# Page indicator
 	var page_lbl := Label.new()
 	page_lbl.text = "%d / %d" % [_current_page + 1, _total_pages]
 	page_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	page_lbl.custom_minimum_size = Vector2(140, 60)
-	var pls := LabelSettings.new()
-	pls.font_size = 32
-	pls.font_color = NEON_YELLOW
-	pls.outline_size = 2
-	pls.outline_color = Color.BLACK
-	page_lbl.label_settings = pls
 	bar.add_child(page_lbl)
 
-	# Next
 	var next_btn := Button.new()
 	next_btn.text = "›"
 	next_btn.custom_minimum_size = Vector2(70, 60)
 	next_btn.disabled = _current_page >= _total_pages - 1
-	_style_page_button(next_btn, not next_btn.disabled)
 	next_btn.pressed.connect(_go_to_page.bind(_current_page + 1))
 	bar.add_child(next_btn)
 
-	# Last
 	var last_btn := Button.new()
 	last_btn.text = "»"
 	last_btn.custom_minimum_size = Vector2(70, 60)
 	last_btn.disabled = _current_page >= _total_pages - 1
-	_style_page_button(last_btn, not last_btn.disabled)
 	last_btn.pressed.connect(_go_to_page.bind(_total_pages - 1))
 	bar.add_child(last_btn)
 
 	return bar
-
-
-func _style_page_button(btn: Button, active: bool) -> void:
-	btn.add_theme_font_size_override("font_size", 36)
-
-	var normal := StyleBoxFlat.new()
-	normal.bg_color = Color(NEON_GREEN, 0.2) if active else Color(0.15, 0.15, 0.2)
-	normal.border_color = Color(NEON_GREEN, 0.6) if active else Color(0.3, 0.3, 0.4)
-	normal.set_border_width_all(2)
-	normal.set_corner_radius_all(10)
-	normal.set_content_margin_all(6)
-	btn.add_theme_stylebox_override("normal", normal)
-
-	var hover := normal.duplicate() as StyleBoxFlat
-	hover.bg_color = Color(NEON_GREEN, 0.35)
-	hover.border_color = NEON_GREEN
-	btn.add_theme_stylebox_override("hover", hover)
-
-	var pressed := normal.duplicate() as StyleBoxFlat
-	pressed.bg_color = Color(NEON_GREEN, 0.5)
-	btn.add_theme_stylebox_override("pressed", pressed)
-
-	var disabled := normal.duplicate() as StyleBoxFlat
-	disabled.bg_color = Color(0.1, 0.1, 0.15, 0.5)
-	disabled.border_color = Color(0.2, 0.2, 0.25, 0.4)
-	btn.add_theme_stylebox_override("disabled", disabled)
-
-	btn.add_theme_color_override("font_color", Color.WHITE if active else Color(0.4, 0.4, 0.4))
-	btn.add_theme_color_override("font_disabled_color", Color(0.3, 0.3, 0.35))
 
 
 func _go_to_page(page: int) -> void:
@@ -377,17 +218,19 @@ func _create_card(data: Dictionary, index: int) -> void:
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.custom_minimum_size.y = 130
 	card.mouse_filter = Control.MOUSE_FILTER_PASS
-
-	var card_style := StyleBoxFlat.new()
-	card_style.bg_color = CARD_BG if not is_deleted else Color(CARD_BG, 0.3)
-	card_style.set_corner_radius_all(14)
-	card_style.border_color = CARD_BORDER if not is_deleted else Color(0.5, 0.2, 0.2, 0.3)
-	card_style.set_border_width_all(2)
-	card_style.set_content_margin_all(16)
+	var card_style := StyleBoxTexture.new()
+	card_style.texture = CARD_TEX
+	card_style.texture_margin_left = 32.0
+	card_style.texture_margin_top = 32.0
+	card_style.texture_margin_right = 32.0
+	card_style.texture_margin_bottom = 32.0
+	card_style.content_margin_left = 32.0
+	card_style.content_margin_top = 32.0
+	card_style.content_margin_right = 32.0
+	card_style.content_margin_bottom = 32.0
 	card.add_theme_stylebox_override("panel", card_style)
-
 	if is_deleted:
-		card.modulate.a = DELETED_ALPHA
+		card.modulate.a = 0.4
 
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 12)
@@ -405,12 +248,6 @@ func _create_card(data: Dictionary, index: int) -> void:
 	var title_lbl := Label.new()
 	title_lbl.text = data.get("title", "Sin título")
 	title_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
-	var ts := LabelSettings.new()
-	ts.font_size = 40
-	ts.font_color = NEON_YELLOW if not is_deleted else Color(0.6, 0.6, 0.6)
-	ts.outline_size = 2
-	ts.outline_color = Color.BLACK
-	title_lbl.label_settings = ts
 	info_vbox.add_child(title_lbl)
 
 	# Story excerpt
@@ -420,15 +257,16 @@ func _create_card(data: Dictionary, index: int) -> void:
 	story_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
 	var ss := LabelSettings.new()
 	ss.font_size = 30
-	ss.font_color = Color(0.7, 0.7, 0.8)
+	ss.font_color = Color("#264e76ff")
 	story_lbl.label_settings = ss
 	info_vbox.add_child(story_lbl)
 
 	# Badge row (sips + timer + minigame + passives)
-	var badge_hbox := HBoxContainer.new()
-	badge_hbox.add_theme_constant_override("separation", 10)
-	badge_hbox.mouse_filter = Control.MOUSE_FILTER_PASS
-	info_vbox.add_child(badge_hbox)
+	var badge_grid := GridContainer.new()
+	badge_grid.columns = 4
+	badge_grid.add_theme_constant_override("separation", 10)
+	badge_grid.mouse_filter = Control.MOUSE_FILTER_PASS
+	info_vbox.add_child(badge_grid)
 
 	# Sips badges
 	var sips_arr: Array = data.get("sips", [])
@@ -437,10 +275,10 @@ func _create_card(data: Dictionary, index: int) -> void:
 		badge.text = "🍺×%s" % str(sip.get("amount", 0))
 		badge.mouse_filter = Control.MOUSE_FILTER_PASS
 		var bs := LabelSettings.new()
-		bs.font_size = 28
-		bs.font_color = NEON_GREEN
+		bs.font_size = 48
+		bs.font_color = Color("#264e76ff")
 		badge.label_settings = bs
-		badge_hbox.add_child(badge)
+		badge_grid.add_child(badge)
 
 	# Timer badge
 	var timer_val: int = int(data.get("timer", 0))
@@ -449,10 +287,10 @@ func _create_card(data: Dictionary, index: int) -> void:
 		timer_lbl.text = "⏱ %ds" % timer_val
 		timer_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
 		var tls := LabelSettings.new()
-		tls.font_size = 28
-		tls.font_color = Color(0.9, 0.6, 0.2)
+		tls.font_size = 48
+		tls.font_color = Color("#264e76ff")
 		timer_lbl.label_settings = tls
-		badge_hbox.add_child(timer_lbl)
+		badge_grid.add_child(timer_lbl)
 
 	# Minigame badge
 	var mg_data: Dictionary = data.get("minigame", {})
@@ -463,10 +301,10 @@ func _create_card(data: Dictionary, index: int) -> void:
 		mg_lbl.text = "🎮 %s (%d)" % [mg_type, mg_rounds]
 		mg_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
 		var mls := LabelSettings.new()
-		mls.font_size = 28
-		mls.font_color = Color(0.4, 0.7, 1.0)
+		mls.font_size = 48
+		mls.font_color = Color("#264e76ff")
 		mg_lbl.label_settings = mls
-		badge_hbox.add_child(mg_lbl)
+		badge_grid.add_child(mg_lbl)
 
 	# Passive badges
 	var pasive_arr: Array = data.get("pasive", [])
@@ -479,10 +317,10 @@ func _create_card(data: Dictionary, index: int) -> void:
 			p_lbl.text = "🗣️ ×%d" % int(pas.get("count", 1))
 		p_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
 		var pls := LabelSettings.new()
-		pls.font_size = 28
-		pls.font_color = Color(0.8, 0.5, 1.0)
+		pls.font_size = 48
+		pls.font_color = Color("#264e76ff")
 		p_lbl.label_settings = pls
-		badge_hbox.add_child(p_lbl)
+		badge_grid.add_child(p_lbl)
 
 	# --- Right: Action buttons ---
 	var btn_vbox := VBoxContainer.new()
@@ -495,292 +333,86 @@ func _create_card(data: Dictionary, index: int) -> void:
 		var restore_btn := Button.new()
 		restore_btn.text = "♻"
 		restore_btn.custom_minimum_size = Vector2(60, 60)
-		_style_button(restore_btn, NEON_GREEN)
+		restore_btn.add_theme_stylebox_override("normal", _make_btn_style(Color("#99C1B9")))
 		restore_btn.pressed.connect(_on_restore.bind(_current_tab, id))
 		btn_vbox.add_child(restore_btn)
 	else:
 		var edit_btn := Button.new()
 		edit_btn.text = "✏"
 		edit_btn.custom_minimum_size = Vector2(60, 60)
-		_style_button(edit_btn, NEON_YELLOW)
+		edit_btn.add_theme_stylebox_override("normal", _make_btn_style(Color("#99C1B9")))
 		edit_btn.pressed.connect(_on_edit.bind(_current_tab, id, data))
 		btn_vbox.add_child(edit_btn)
 
 		var del_btn := Button.new()
 		del_btn.text = "🗑"
 		del_btn.custom_minimum_size = Vector2(60, 60)
-		_style_button(del_btn, Color(0.9, 0.3, 0.3))
+		del_btn.add_theme_stylebox_override("normal", _make_btn_style(Color("#D88C9A")))
 		del_btn.pressed.connect(_on_delete_request.bind(_current_tab, id))
 		btn_vbox.add_child(del_btn)
 
 	_list_container.add_child(card)
 
 	# Stagger animation
-	card.modulate.a = 0.0 if not is_deleted else 0.0
+	card.modulate.a = 0.0
 	card.position.x = 80
 	var tween := create_tween()
 	tween.set_parallel(true)
-	var target_alpha := DELETED_ALPHA if is_deleted else 1.0
+	var target_alpha := 0.4 if is_deleted else 1.0
 	tween.tween_property(card, "modulate:a", target_alpha, 0.3).set_delay(index * 0.04)
 	tween.tween_property(card, "position:x", 0.0, 0.3).set_delay(index * 0.04) \
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 
 
 ## ======================================================================
-##  FORM OVERLAY
+##  DYNAMIC FORM ROWS
 ## ======================================================================
 
-func _build_form_overlay() -> void:
-	_form_overlay = Control.new()
-	_form_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_form_overlay.visible = false
-	add_child(_form_overlay)
-
-	# Dimmer
-	var dimmer := ColorRect.new()
-	dimmer.color = Color(0, 0, 0, 0.7)
-	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_form_overlay.add_child(dimmer)
-
-	# SafeZone margin wrapper for form
-	var form_safe_margin := MarginContainer.new()
-	form_safe_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	form_safe_margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	form_safe_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	SafeZoneManager.apply_to_margin(form_safe_margin, 60, 20, 16, 16)
-	_form_overlay.add_child(form_safe_margin)
-
-	# Panel
-	_form_panel = PanelContainer.new()
-	_form_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_form_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
-	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = DARKER_BG
-	panel_style.set_corner_radius_all(20)
-	panel_style.border_color = Color(NEON_GREEN, 0.5)
-	panel_style.set_border_width_all(2)
-	panel_style.set_content_margin_all(20)
-	panel_style.shadow_size = 10
-	panel_style.shadow_color = Color(NEON_GREEN, 0.15)
-	_form_panel.add_theme_stylebox_override("panel", panel_style)
-	form_safe_margin.add_child(_form_panel)
-
-	_form_scroll = ScrollContainer.new()
-	_form_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	_form_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_form_panel.add_child(_form_scroll)
-
-	var form_vbox := VBoxContainer.new()
-	form_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	form_vbox.add_theme_constant_override("separation", 14)
-	_form_scroll.add_child(form_vbox)
-
-	# Form title
-	_form_title_label = Label.new()
-	_form_title_label.text = "Nuevo Reto"
-	var fts := LabelSettings.new()
-	fts.font_size = 50
-	fts.font_color = NEON_YELLOW
-	fts.outline_size = 2
-	fts.outline_color = Color.BLACK
-	_form_title_label.label_settings = fts
-	_form_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	form_vbox.add_child(_form_title_label)
-
-	# Title
-	form_vbox.add_child(_make_form_label("Título *"))
-	_title_input = LineEdit.new()
-	_title_input.placeholder_text = "Nombre del reto"
-	_title_input.custom_minimum_size.y = 52
-	_style_line_edit(_title_input)
-	form_vbox.add_child(_title_input)
-
-	# Story
-	form_vbox.add_child(_make_form_label("Historia"))
-	_story_input = TextEdit.new()
-	_story_input.placeholder_text = "Contexto narrativo..."
-	_story_input.custom_minimum_size.y = 100
-	_story_input.set_line_wrapping_mode(1)
-	_style_text_edit(_story_input)
-	form_vbox.add_child(_story_input)
-
-	# Action
-	form_vbox.add_child(_make_form_label("Acción *"))
-	_action_input = TextEdit.new()
-	_action_input.placeholder_text = "Lo que deben hacer los jugadores..."
-	_action_input.custom_minimum_size.y = 120
-	_action_input.set_line_wrapping_mode(1)
-	_style_text_edit(_action_input)
-	form_vbox.add_child(_action_input)
-
-	# Timer
-	form_vbox.add_child(_make_form_label("Timer (seg) — opcional"))
-	_timer_spin = SpinBox.new()
-	_timer_spin.min_value = 0
-	_timer_spin.max_value = 600
-	_timer_spin.step = 5
-	_timer_spin.value = 0
-	_timer_spin.custom_minimum_size.y = 52
-	_timer_spin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_timer_spin.add_theme_font_size_override("font_size", 32)
-	var timer_line_edit := _timer_spin.get_line_edit()
-	if timer_line_edit:
-		timer_line_edit.add_theme_font_size_override("font_size", 32)
-	form_vbox.add_child(_timer_spin)
-
-	# Sips section
-	form_vbox.add_child(_make_form_label("Sorbos 🍺"))
-	_sips_container = VBoxContainer.new()
-	_sips_container.add_theme_constant_override("separation", 8)
-	form_vbox.add_child(_sips_container)
-
-	var add_sip_btn := Button.new()
-	add_sip_btn.text = "+ Agregar Sorbo"
-	add_sip_btn.custom_minimum_size.y = 50
-	_style_button(add_sip_btn, NEON_GREEN)
-	add_sip_btn.pressed.connect(_on_add_sip_row)
-	form_vbox.add_child(add_sip_btn)
-
-	# Pasive section
-	form_vbox.add_child(_make_form_label("Pasiva 🗣️"))
-	_pasive_container = VBoxContainer.new()
-	_pasive_container.add_theme_constant_override("separation", 8)
-	form_vbox.add_child(_pasive_container)
-
-	var add_pasive_btn := Button.new()
-	add_pasive_btn.text = "+ Agregar Pasiva"
-	add_pasive_btn.custom_minimum_size.y = 50
-	_style_button(add_pasive_btn, NEON_YELLOW)
-	add_pasive_btn.pressed.connect(_on_add_pasive_row)
-	form_vbox.add_child(add_pasive_btn)
-
-	# Minigame section
-	form_vbox.add_child(_make_form_label("Minijuego 🎮"))
-	var mg_row := HBoxContainer.new()
-	mg_row.add_theme_constant_override("separation", 8)
-	form_vbox.add_child(mg_row)
-
-	_minigame_option = OptionButton.new()
-	_minigame_option.custom_minimum_size = Vector2(280, 56)
-	_minigame_option.add_theme_font_size_override("font_size", 28)
-	for i in MINIGAME_LABELS.size():
-		_minigame_option.add_item(MINIGAME_LABELS[i], i)
-	var mg_popup := _minigame_option.get_popup()
-	if mg_popup:
-		mg_popup.add_theme_font_size_override("font_size", 32)
-	_minigame_option.item_selected.connect(_on_minigame_type_changed)
-	mg_row.add_child(_minigame_option)
-
-	_minigame_rounds_row = HBoxContainer.new()
-	_minigame_rounds_row.add_theme_constant_override("separation", 6)
-	_minigame_rounds_row.visible = false
-	mg_row.add_child(_minigame_rounds_row)
-
-	var rounds_lbl := Label.new()
-	rounds_lbl.text = "Rondas:"
-	var rls := LabelSettings.new()
-	rls.font_size = 30
-	rls.font_color = Color(0.7, 0.7, 0.8)
-	rounds_lbl.label_settings = rls
-	_minigame_rounds_row.add_child(rounds_lbl)
-
-	_minigame_rounds_spin = SpinBox.new()
-	_minigame_rounds_spin.min_value = 1
-	_minigame_rounds_spin.max_value = 10
-	_minigame_rounds_spin.value = 3
-	_minigame_rounds_spin.custom_minimum_size = Vector2(130, 56)
-	_minigame_rounds_spin.add_theme_font_size_override("font_size", 32)
-	var mg_spin_le := _minigame_rounds_spin.get_line_edit()
-	if mg_spin_le:
-		mg_spin_le.add_theme_font_size_override("font_size", 32)
-	_minigame_rounds_row.add_child(_minigame_rounds_spin)
-
-	# Spacer
-	var spacer := Control.new()
-	spacer.custom_minimum_size.y = 20
-	form_vbox.add_child(spacer)
-
-	# Buttons
-	var btn_hbox := HBoxContainer.new()
-	btn_hbox.add_theme_constant_override("separation", 12)
-	form_vbox.add_child(btn_hbox)
-
-	_cancel_btn = Button.new()
-	_cancel_btn.text = "Cancelar"
-	_cancel_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_cancel_btn.custom_minimum_size.y = 60
-	_style_button(_cancel_btn, Color(0.5, 0.5, 0.5))
-	_cancel_btn.pressed.connect(_on_form_cancel)
-	btn_hbox.add_child(_cancel_btn)
-
-	_save_btn = Button.new()
-	_save_btn.text = "💾 Guardar"
-	_save_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_save_btn.custom_minimum_size.y = 60
-	_style_button(_save_btn, NEON_GREEN)
-	_save_btn.pressed.connect(_on_form_save)
-	btn_hbox.add_child(_save_btn)
-
-
-func _make_form_label(text: String) -> Label:
-	var lbl := Label.new()
-	lbl.text = text
-	var ls := LabelSettings.new()
-	ls.font_size = 34
-	ls.font_color = Color(0.8, 0.85, 0.9)
-	lbl.label_settings = ls
-	return lbl
-
-
 func _add_sip_row(amount: int = 1, condition: String = "", target: String = "SELF") -> void:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 6)
-	row.custom_minimum_size.y = 56
+	var group := VBoxContainer.new()
+	group.add_theme_constant_override("separation", 4)
+
+	# Row 1: Amount + Target + Delete
+	var top_row := HBoxContainer.new()
+	top_row.add_theme_constant_override("separation", 6)
+	group.add_child(top_row)
 
 	var spin := SpinBox.new()
 	spin.min_value = 0
 	spin.max_value = 999
 	spin.value = amount
 	spin.custom_minimum_size = Vector2(130, 56)
+	spin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	spin.tooltip_text = "Cantidad"
-	spin.add_theme_font_size_override("font_size", 32)
-	var spin_line_edit := spin.get_line_edit()
-	if spin_line_edit:
-		spin_line_edit.add_theme_font_size_override("font_size", 32)
-	row.add_child(spin)
-
-	var cond_input := LineEdit.new()
-	cond_input.placeholder_text = "Condición..."
-	cond_input.text = condition
-	cond_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	cond_input.custom_minimum_size.y = 50
-	_style_line_edit(cond_input)
-	row.add_child(cond_input)
+	top_row.add_child(spin)
 
 	var target_btn := OptionButton.new()
 	target_btn.custom_minimum_size = Vector2(220, 56)
-	target_btn.add_theme_font_size_override("font_size", 28)
+	target_btn.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD
 	for i in TARGET_LABELS.size():
 		target_btn.add_item(TARGET_LABELS[i], i)
-	var popup := target_btn.get_popup()
-	if popup:
-		popup.add_theme_font_size_override("font_size", 32)
 	var target_idx := TARGET_KEYS.find(target)
 	if target_idx >= 0:
 		target_btn.select(target_idx)
 	else:
 		target_btn.select(0)
-	row.add_child(target_btn)
+	top_row.add_child(target_btn)
 
 	var del_btn := Button.new()
 	del_btn.text = "✕"
 	del_btn.custom_minimum_size = Vector2(50, 50)
-	_style_button(del_btn, Color(0.8, 0.3, 0.3))
-	del_btn.pressed.connect(func(): row.queue_free())
-	row.add_child(del_btn)
+	del_btn.pressed.connect(func(): group.queue_free())
+	top_row.add_child(del_btn)
 
-	_sips_container.add_child(row)
+	# Row 2: Condition (full width)
+	var cond_input := LineEdit.new()
+	cond_input.placeholder_text = "Condición..."
+	cond_input.text = condition
+	cond_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cond_input.custom_minimum_size.y = 50
+	group.add_child(cond_input)
+
+	_sips_container.add_child(group)
 
 
 func _add_pasive_row(type_key: String = "X_PLAYER_TURN", count: int = 1) -> void:
@@ -790,17 +422,14 @@ func _add_pasive_row(type_key: String = "X_PLAYER_TURN", count: int = 1) -> void
 
 	var type_btn := OptionButton.new()
 	type_btn.custom_minimum_size = Vector2(280, 56)
-	type_btn.add_theme_font_size_override("font_size", 28)
 	for i in PASIVE_LABELS.size():
 		type_btn.add_item(PASIVE_LABELS[i], i)
-	var popup := type_btn.get_popup()
-	if popup:
-		popup.add_theme_font_size_override("font_size", 32)
 	var type_idx := PASIVE_KEYS.find(type_key)
 	if type_idx >= 0:
 		type_btn.select(type_idx)
 	else:
 		type_btn.select(0)
+	type_btn.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD
 	row.add_child(type_btn)
 
 	var count_spin := SpinBox.new()
@@ -811,11 +440,6 @@ func _add_pasive_row(type_key: String = "X_PLAYER_TURN", count: int = 1) -> void
 	count_spin.custom_minimum_size = Vector2(120, 56)
 	count_spin.tooltip_text = "Turnos"
 	count_spin.prefix = "x"
-	count_spin.add_theme_font_size_override("font_size", 32)
-	var spin_le := count_spin.get_line_edit()
-	if spin_le:
-		spin_le.add_theme_font_size_override("font_size", 32)
-	# Hide count for ANY_TURN (permanent)
 	count_spin.visible = (type_key != "ANY_TURN")
 	row.add_child(count_spin)
 
@@ -827,139 +451,10 @@ func _add_pasive_row(type_key: String = "X_PLAYER_TURN", count: int = 1) -> void
 	var del_btn := Button.new()
 	del_btn.text = "✕"
 	del_btn.custom_minimum_size = Vector2(50, 50)
-	_style_button(del_btn, Color(0.8, 0.3, 0.3))
 	del_btn.pressed.connect(func(): row.queue_free())
 	row.add_child(del_btn)
 
 	_pasive_container.add_child(row)
-
-
-func _on_add_pasive_row() -> void:
-	_add_pasive_row()
-
-
-## ======================================================================
-##  CONFIRM DIALOG
-## ======================================================================
-
-func _build_confirm_dialog() -> void:
-	_confirm_overlay = Control.new()
-	_confirm_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_confirm_overlay.visible = false
-	add_child(_confirm_overlay)
-
-	var dim := ColorRect.new()
-	dim.color = Color(0, 0, 0, 0.75)
-	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_confirm_overlay.add_child(dim)
-
-	# SafeZone margin wrapper for confirm dialog
-	var confirm_safe_margin := MarginContainer.new()
-	confirm_safe_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	confirm_safe_margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	confirm_safe_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	SafeZoneManager.apply_to_margin(confirm_safe_margin, 20, 20, 16, 16)
-	_confirm_overlay.add_child(confirm_safe_margin)
-
-	var center := CenterContainer.new()
-	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	confirm_safe_margin.add_child(center)
-
-	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(700, 280)
-	var ps := StyleBoxFlat.new()
-	ps.bg_color = DARKER_BG
-	ps.set_corner_radius_all(20)
-	ps.border_color = Color(0.9, 0.3, 0.3, 0.7)
-	ps.set_border_width_all(2)
-	ps.set_content_margin_all(30)
-	panel.add_theme_stylebox_override("panel", ps)
-	center.add_child(panel)
-
-	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 20)
-	panel.add_child(vbox)
-
-	_confirm_label = Label.new()
-	_confirm_label.text = "¿Eliminar este reto?"
-	_confirm_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var cls := LabelSettings.new()
-	cls.font_size = 42
-	cls.font_color = Color.WHITE
-	_confirm_label.label_settings = cls
-	vbox.add_child(_confirm_label)
-
-	var sub := Label.new()
-	sub.text = "Se marcará como eliminado, no se borrará permanentemente."
-	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	sub.autowrap_mode = TextServer.AUTOWRAP_WORD
-	var sls := LabelSettings.new()
-	sls.font_size = 30
-	sls.font_color = Color(0.6, 0.6, 0.7)
-	sub.label_settings = sls
-	vbox.add_child(sub)
-
-	var btn_row := HBoxContainer.new()
-	btn_row.add_theme_constant_override("separation", 16)
-	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.add_child(btn_row)
-
-	_confirm_no = Button.new()
-	_confirm_no.text = "Cancelar"
-	_confirm_no.custom_minimum_size = Vector2(200, 56)
-	_style_button(_confirm_no, Color(0.5, 0.5, 0.5))
-	_confirm_no.pressed.connect(_on_confirm_no)
-	btn_row.add_child(_confirm_no)
-
-	_confirm_yes = Button.new()
-	_confirm_yes.text = "🗑 Eliminar"
-	_confirm_yes.custom_minimum_size = Vector2(200, 56)
-	_style_button(_confirm_yes, Color(0.9, 0.3, 0.3))
-	_confirm_yes.pressed.connect(_on_confirm_yes)
-	btn_row.add_child(_confirm_yes)
-
-
-## ======================================================================
-##  TOAST
-## ======================================================================
-
-func _build_toast() -> void:
-	_toast_label = Label.new()
-	_toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_toast_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	_toast_label.offset_top = 30
-	_toast_label.offset_bottom = 90
-	_toast_label.offset_left = 60
-	_toast_label.offset_right = -60
-	_toast_label.visible = false
-	var tls := LabelSettings.new()
-	tls.font_size = 36
-	tls.font_color = DARK_BG
-	_toast_label.label_settings = tls
-	add_child(_toast_label)
-
-	var toast_bg := StyleBoxFlat.new()
-	toast_bg.bg_color = NEON_GREEN
-	toast_bg.set_corner_radius_all(12)
-	toast_bg.set_content_margin_all(14)
-	_toast_label.add_theme_stylebox_override("normal", toast_bg)
-
-
-func _show_toast(message: String) -> void:
-	_toast_label.text = message
-	_toast_label.visible = true
-	_toast_label.modulate.a = 0.0
-	_toast_label.position.y = -60
-
-	var tween := create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(_toast_label, "modulate:a", 1.0, 0.25)
-	tween.tween_property(_toast_label, "position:y", 30.0, 0.3) \
-		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	tween.chain().tween_interval(1.5)
-	tween.chain().tween_property(_toast_label, "modulate:a", 0.0, 0.4)
-	tween.chain().tween_callback(func(): _toast_label.visible = false)
 
 
 ## ======================================================================
@@ -995,13 +490,10 @@ func _on_new_challenge() -> void:
 	_story_input.text = ""
 	_action_input.text = ""
 	_timer_spin.value = 0
-	# Clear sips
 	for child in _sips_container.get_children():
 		child.queue_free()
-	# Clear pasives
 	for child in _pasive_container.get_children():
 		child.queue_free()
-	# Reset minigame
 	_minigame_option.select(0)
 	_minigame_rounds_spin.value = 3
 	_minigame_rounds_row.visible = false
@@ -1079,6 +571,10 @@ func _on_add_sip_row() -> void:
 	_add_sip_row()
 
 
+func _on_add_pasive_row() -> void:
+	_add_pasive_row()
+
+
 func _on_minigame_type_changed(index: int) -> void:
 	_minigame_rounds_row.visible = index > 0
 
@@ -1133,15 +629,18 @@ func _on_form_save() -> void:
 
 	# Sips
 	var sips_arr: Array = []
-	for row in _sips_container.get_children():
-		if not row is HBoxContainer:
+	for group in _sips_container.get_children():
+		if not group is VBoxContainer:
 			continue
-		var hrow: HBoxContainer = row as HBoxContainer
-		if hrow.get_child_count() < 3:
+		var vgroup: VBoxContainer = group as VBoxContainer
+		if vgroup.get_child_count() < 2:
 			continue
-		var amount_spin: SpinBox = hrow.get_child(0) as SpinBox
-		var cond_edit: LineEdit = hrow.get_child(1) as LineEdit
-		var target_opt: OptionButton = hrow.get_child(2) as OptionButton
+		var top_row: HBoxContainer = vgroup.get_child(0) as HBoxContainer
+		var cond_edit: LineEdit = vgroup.get_child(1) as LineEdit
+		if top_row == null or cond_edit == null or top_row.get_child_count() < 2:
+			continue
+		var amount_spin: SpinBox = top_row.get_child(0) as SpinBox
+		var target_opt: OptionButton = top_row.get_child(1) as OptionButton
 
 		var sip_data := {
 			"amount": int(amount_spin.value),
@@ -1190,77 +689,31 @@ func _on_form_save() -> void:
 
 
 ## ======================================================================
-##  STYLE HELPERS
+##  TOAST
 ## ======================================================================
 
-func _style_button(btn: Button, color: Color, active: bool = false) -> void:
-	pass
-	btn.add_theme_font_size_override("font_size", 32)
+func _show_toast(message: String) -> void:
+	_toast_label.text = message
+	_toast_label.visible = true
+	_toast_label.modulate.a = 0.0
+	_toast_label.position.y = -60
 
-	var normal := StyleBoxFlat.new()
-	normal.bg_color = Color(color, 0.2)
-	normal.border_color = Color(color, 0.7 if active else 0.4)
-	normal.set_border_width_all(2)
-	normal.set_corner_radius_all(12)
-	normal.set_content_margin_all(10)
-	btn.add_theme_stylebox_override("normal", normal)
-
-	var hover := StyleBoxFlat.new()
-	hover.bg_color = Color(color, 0.35)
-	hover.border_color = color
-	hover.set_border_width_all(2)
-	hover.set_corner_radius_all(12)
-	hover.set_content_margin_all(10)
-	btn.add_theme_stylebox_override("hover", hover)
-
-	var pressed := StyleBoxFlat.new()
-	pressed.bg_color = Color(color, 0.5)
-	pressed.border_color = color
-	pressed.set_border_width_all(2)
-	pressed.set_corner_radius_all(12)
-	pressed.set_content_margin_all(10)
-	btn.add_theme_stylebox_override("pressed", pressed)
-
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_color_override("font_hover_color", Color.WHITE)
-	btn.add_theme_color_override("font_pressed_color", Color.WHITE)
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(_toast_label, "modulate:a", 1.0, 0.25)
+	tween.tween_property(_toast_label, "position:y", 30.0, 0.3) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.chain().tween_interval(1.5)
+	tween.chain().tween_property(_toast_label, "modulate:a", 0.0, 0.4)
+	tween.chain().tween_callback(func(): _toast_label.visible = false)
 
 
-func _style_line_edit(le: LineEdit) -> void:
-	pass
-	le.add_theme_font_size_override("font_size", 32)
-
-	var s := StyleBoxFlat.new()
-	s.bg_color = Color(0.1, 0.1, 0.18)
-	s.border_color = Color(NEON_GREEN, 0.4)
-	s.set_border_width_all(2)
-	s.set_corner_radius_all(10)
-	s.set_content_margin_all(10)
-	le.add_theme_stylebox_override("normal", s)
-
-	var focus := s.duplicate() as StyleBoxFlat
-	focus.border_color = NEON_GREEN
-	le.add_theme_stylebox_override("focus", focus)
-
-	le.add_theme_color_override("font_color", Color.WHITE)
-	le.add_theme_color_override("font_placeholder_color", Color(0.5, 0.5, 0.6))
-
-
-func _style_text_edit(te: TextEdit) -> void:
-	pass
-	te.add_theme_font_size_override("font_size", 32)
-
-	var s := StyleBoxFlat.new()
-	s.bg_color = Color(0.1, 0.1, 0.18)
-	s.border_color = Color(NEON_GREEN, 0.4)
-	s.set_border_width_all(2)
-	s.set_corner_radius_all(10)
-	s.set_content_margin_all(10)
-	te.add_theme_stylebox_override("normal", s)
-
-	var focus := s.duplicate() as StyleBoxFlat
-	focus.border_color = NEON_GREEN
-	te.add_theme_stylebox_override("focus", focus)
-
-	te.add_theme_color_override("font_color", Color.WHITE)
-	te.add_theme_color_override("font_placeholder_color", Color(0.5, 0.5, 0.6))
+func _make_btn_style(color: Color) -> StyleBoxTexture:
+	var style := StyleBoxTexture.new()
+	style.texture = BTN_TEX
+	style.texture_margin_left = 32.0
+	style.texture_margin_top = 32.0
+	style.texture_margin_right = 32.0
+	style.texture_margin_bottom = 32.0
+	style.modulate_color = color
+	return style

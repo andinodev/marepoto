@@ -18,31 +18,38 @@ extends Control
 
 # Game UI refs
 @onready var game_safe_margin: MarginContainer = $GameUI/SafeMargin
-@onready var turn_label: Label = $GameUI/SafeMargin/GameContent/TopBar/MarginContainer/HBox/TurnLabel
-@onready var back_to_menu_btn: Button = $GameUI/SafeMargin/GameContent/TopBar/MarginContainer/HBox/BackToMenuBtn
-@onready var spin_btn: Button = $GameUI/SafeMargin/GameContent/SpinBtn
+@onready var back_to_menu_btn: Button = $GameUI/SafeMargin/GameContent/CloseBar/BackToMenuBtn
+@onready var spin_btn: Button = $GameUI/SafeMargin/GameContent/HBoxContainer/PlayBar/MarginContainer/SpinBtn
+@onready var sun_burst_spin_btn: ColorRect = $GameUI/SafeMargin/GameContent/HBoxContainer/PlayBar/SunBurstShader
 
 # Challenge modal refs
-@onready var challenge_player: RichTextLabel = $ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox/ChallengePlayer
+@onready var challenge_player: RichTextLabel = $ChallengeModal/VBox/Panel/MarginContainer/VBox/SipsContainer/VBoxContainer/ChallengePlayer
 @onready var challenge_title: Label = $ChallengeModal/VBox/ChallengeTitle
 @onready var challenge_story: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/ChallengeStory
 @onready var challenge_action: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/ChallengeAction
-@onready var sips_label: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/HBox/SipsContainer/SipsLabel
+@onready var sips_label: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/SipsContainer/VBoxContainer/MarginContainer/SipsLabel
 @onready var timer_container: HBoxContainer = $ChallengeModal/VBox/Panel/MarginContainer/VBox/TimerContainer
 @onready var timer_label: Label = $ChallengeModal/VBox/Panel/MarginContainer/VBox/TimerContainer/TimerLabel
 @onready var timer_btn: Button = $ChallengeModal/VBox/Panel/MarginContainer/VBox/TimerContainer/TimerBtn
 @onready var done_btn: Button = $ChallengeModal/VBox/Panel/MarginContainer/VBox/DoneBtn
 
-const TICK_ICON: Texture2D = preload("res://sprites/gui/Icons/64px/tickV2_icon_64px.png")
+# Minigame UI refs
+@onready var loser_label: Label = $MinigameUI/Container/VBox/LoserLbl
+@onready var winner_label: Label = $MinigameUI/Container/VBox/WinnerLbl
+@onready var minigame_success_button: Button = $MinigameUI/Container/VBox/Button
+
+
+const TICK_ICON: Texture2D = preload("res://sprites/gui/Icons/128px/tickV2_icon_128px.png")
 const M_TICK_ICON: Texture2D = preload("res://sprites/gui/Icons/128px/tickV2_icon_128px.png")
 const M_PLAY_ICON: Texture2D = preload("res://sprites/gui/Icons/128px/adventure_icon_128px.png")
-const WARNING_ICON: Texture2D = preload("res://sprites/gui/Icons/64px/-Group-!_icon_64px.png")
+const WARNING_ICON: Texture2D = preload("res://sprites/gui/Icons/128px/-Group-!_icon_128px.png")
 const REMOVE_ICON: Texture2D = preload("res://sprites/gui/Icons/64px/xRounded_icon_64px.png")
 const ChallengeManagerScene := preload("res://scenes/ChallengeManager.tscn")
 const BANNER_TEX: Texture2D = preload("res://sprites/ui/PNG/Double/banner_classic_curtain.png")
 const MODAL_PANEL_TEX: Texture2D = preload("res://sprites/ui/PNG/Double/panel_brown_corners_a.png")
 const PassiveIconScript := preload("res://scripts/PassiveIcon.gd")
 const HockeyMinigameScript := preload("res://scripts/HockeyMinigame.gd")
+const FingerMinigameScript := preload("res://scripts/FingerMinigame.gd")
 
 var _challenge_timer: Timer
 var _timer_seconds: int = 0
@@ -53,7 +60,7 @@ var _current_challenge: Dictionary = {}
 var _current_challenge_is_all: bool = false
 var _current_winner_name: String = ""
 var _current_j2_name: String = ""
-var _hockey_minigame: Control = null
+var _current_minigame: Control = null
 var _minigame_played: bool = false
 
 func _ready() -> void:
@@ -99,7 +106,7 @@ func _handle_back() -> void:
 	if _challenge_manager != null:
 		return
 	# Block back during minigame
-	if _hockey_minigame != null:
+	if _current_minigame != null:
 		return
 	get_viewport().set_input_as_handled()
 	match GameManager.state:
@@ -305,9 +312,12 @@ func _on_state_changed(new_state: int) -> void:
 	if new_state == GameManager.State.CHALLENGE_VIEW:
 		challenge_modal.visible = true
 		spin_btn.visible = false
+		sun_burst_spin_btn.visible = false
+
 	elif new_state == GameManager.State.PLAYING:
 		challenge_modal.visible = false
 		spin_btn.visible = true
+		sun_burst_spin_btn.visible = true
 		if not game_ui.visible:
 			_slide_transition(setup_ui, game_ui, -1) # slide left
 	elif new_state == GameManager.State.SETUP:
@@ -322,7 +332,6 @@ func _on_state_changed(new_state: int) -> void:
 
 	if new_state == GameManager.State.PLAYING:
 		roulette.build_segments()
-		turn_label.text = "MAREPOTO"
 
 
 func _slide_transition(from_ui: Control, to_ui: Control, direction: int) -> void:
@@ -427,14 +436,17 @@ func _on_start_game() -> void:
 
 func _on_spin() -> void:
 	spin_btn.disabled = true
+	sun_burst_spin_btn.visible = false
+	spin_btn.material.set("shader_parameter/shine_color", Color("#000000"))
 	back_to_menu_btn.disabled = true
-	turn_label.text = "Buscando imputado"
 	$AnimationPlayer.play("anim_spin")
 	roulette.spin()
 
 
 func _on_spin_completed(winner_name: String, winner_color: Color, is_all: bool) -> void:
 	spin_btn.disabled = false
+	spin_btn.material.set("shader_parameter/shine_color", Color("#ff7ab3"))
+	sun_burst_spin_btn.visible = true
 	back_to_menu_btn.disabled = false
 	$AnimationPlayer.play("RESET")
 	_decrement_passive_icons(winner_name, is_all)
@@ -472,14 +484,17 @@ func _show_challenge(winner_name: String, winner_color: Color, is_all: bool) -> 
 
 
 	if is_all:
-		challenge_player.text = "👥 ¡TODOS!"
+		challenge_player.text = "[b]Turno de:[/b] ¡TODOS!"
 	else:
-		challenge_player.text = "🗣️ [b]%s[/b]" % winner_name
+		challenge_player.text = "[b]Turno de:[/b] %s" % winner_name
 
 	var title_text: String = challenge.get("title", "")
 	challenge_title.text = "🔥 %s" % title_text
 	challenge_title.label_settings.outline_color = winner_color
-	challenge_title.add_theme_color_override("modulate", winner_color)
+	var title_style := challenge_title.get_theme_stylebox("normal").duplicate() as StyleBoxTexture
+	title_style.modulate_color = winner_color
+	challenge_title.add_theme_stylebox_override("normal", title_style)
+
 	var story_text: String = challenge.get("story", "")
 	story_text = story_text.replace("{J1}", j1_name).replace("{J2}", j2_name)
 	challenge_story.text = story_text
@@ -561,136 +576,75 @@ func _on_challenge_done() -> void:
 
 func _launch_minigame(minigame_data: Dictionary) -> void:
 	var mg_type: String = str(minigame_data.get("type", ""))
-	if mg_type != "HOCKEY":
-		return
-
-	var rounds: int = int(minigame_data.get("rounds", 3))
 
 	# Get player colors
 	var p1_color := _get_player_color(_current_winner_name, false)
 	var p2_color := _get_player_color(_current_j2_name, false)
 
-	# Create minigame
-	_hockey_minigame = Control.new()
-	_hockey_minigame.set_script(HockeyMinigameScript)
-	_hockey_minigame.player1_name = _current_winner_name
-	_hockey_minigame.player2_name = _current_j2_name
-	_hockey_minigame.player1_color = p1_color
-	_hockey_minigame.player2_color = p2_color
-	_hockey_minigame.rounds_to_win = rounds
-	_hockey_minigame.game_finished.connect(_on_minigame_finished)
-	_hockey_minigame.z_index = 50
-	add_child(_hockey_minigame)
+	if mg_type == "HOCKEY":
+		var rounds: int = int(minigame_data.get("rounds", 3))
+		_current_minigame = Control.new()
+		_current_minigame.set_script(HockeyMinigameScript)
+		_current_minigame.player1_name = _current_winner_name
+		_current_minigame.player2_name = _current_j2_name
+		_current_minigame.player1_color = p1_color
+		_current_minigame.player2_color = p2_color
+		_current_minigame.rounds_to_win = rounds
+	elif mg_type == "FINGER":
+		_current_minigame = Control.new()
+		_current_minigame.set_script(FingerMinigameScript)
+		_current_minigame.player1_name = _current_winner_name
+		_current_minigame.player2_name = _current_j2_name
+		_current_minigame.player1_color = p1_color
+		_current_minigame.player2_color = p2_color
+	else:
+		return
+
+	_current_minigame.game_finished.connect(_on_minigame_finished)
+	_current_minigame.z_index = 50
+	add_child(_current_minigame)
 
 
 func _on_minigame_finished(winner_idx: int) -> void:
-	if _hockey_minigame == null:
+	if _current_minigame == null:
 		return
 
 	var winner_name: String = _current_winner_name if winner_idx == 0 else _current_j2_name
 	var loser_name: String = _current_j2_name if winner_idx == 0 else _current_winner_name
-	var winner_color: Color = _hockey_minigame.player1_color if winner_idx == 0 else _hockey_minigame.player2_color
+	var winner_color: Color = _current_minigame.player1_color if winner_idx == 0 else _current_minigame.player2_color
 
 	# Remove minigame
-	_hockey_minigame.queue_free()
-	_hockey_minigame = null
+	_current_minigame.queue_free()
+	_current_minigame = null
 
 	# Show result overlay
 	_show_minigame_result(winner_name, loser_name, winner_color)
 
 
 func _show_minigame_result(winner_name: String, loser_name: String, winner_color: Color) -> void:
-	var overlay := Control.new()
-	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	overlay.z_index = 60
-
-	# Dim background
-	var dim := ColorRect.new()
-	dim.color = Color(0, 0, 0, 0.85)
-	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	overlay.add_child(dim)
-
-	# Content VBox
-	var vbox := VBoxContainer.new()
-	vbox.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	vbox.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	vbox.grow_vertical = Control.GROW_DIRECTION_BOTH
-	vbox.custom_minimum_size = Vector2(600, 400)
-	vbox.offset_left = -300
-	vbox.offset_right = 300
-	vbox.offset_top = -200
-	vbox.offset_bottom = 200
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.add_theme_constant_override("separation", 24)
-	overlay.add_child(vbox)
+	$MinigameUI.visible = true
 
 	# Winner label
-	var winner_lbl := Label.new()
-	winner_lbl.text = "🏆 %s" % winner_name
-	winner_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var wls := LabelSettings.new()
-	wls.font_size = 56
-	wls.font_color = winner_color
-	wls.outline_size = 6
-	wls.outline_color = Color(0, 0, 0, 0.8)
-	winner_lbl.label_settings = wls
-	vbox.add_child(winner_lbl)
-
-	# VS
-	var vs_lbl := Label.new()
-	vs_lbl.text = "GANADOR"
-	vs_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var vls := LabelSettings.new()
-	vls.font_size = 32
-	vls.font_color = Color(0.6, 0.6, 0.6)
-	vs_lbl.label_settings = vls
-	vbox.add_child(vs_lbl)
+	winner_label.text = "🏆 %s" % winner_name
 
 	# Loser label
-	var loser_lbl := Label.new()
-	loser_lbl.text = "💀 %s" % loser_name
-	loser_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var lls := LabelSettings.new()
-	lls.font_size = 48
-	lls.font_color = Color(0.9, 0.2, 0.2)
-	lls.outline_size = 5
-	lls.outline_color = Color(0, 0, 0, 0.8)
-	loser_lbl.label_settings = lls
-	vbox.add_child(loser_lbl)
-
-	# Spacer
-	var spacer := Control.new()
-	spacer.custom_minimum_size.y = 20
-	vbox.add_child(spacer)
-
-	# Continue button
-	var btn := Button.new()
-	btn.text = "Continuar"
-	btn.custom_minimum_size = Vector2(300, 70)
-	btn.add_theme_font_size_override("font_size", 36)
-	var btn_style := StyleBoxFlat.new()
-	btn_style.bg_color = Color(winner_color, 0.3)
-	btn_style.border_color = winner_color
-	btn_style.set_border_width_all(2)
-	btn_style.set_corner_radius_all(16)
-	btn_style.set_content_margin_all(12)
-	btn.add_theme_stylebox_override("normal", btn_style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	vbox.add_child(btn)
-
-	add_child(overlay)
+	loser_label.text = "💀 %s" % loser_name
 
 	# Animate entrance
-	overlay.modulate.a = 0.0
+	$MinigameUI.modulate.a = 0.0
 	var tween := create_tween()
-	tween.tween_property(overlay, "modulate:a", 1.0, 0.4)
+	tween.tween_property($MinigameUI, "modulate:a", 1.0, 0.4)
+
+	# Disconnect any previous connections to prevent stacking
+	for conn in minigame_success_button.pressed.get_connections():
+		minigame_success_button.pressed.disconnect(conn["callable"])
 
 	# Connect continue button
-	btn.pressed.connect(func():
+	minigame_success_button.pressed.connect(func():
 		var tw := create_tween()
-		tw.tween_property(overlay, "modulate:a", 0.0, 0.25)
+		tw.tween_property($MinigameUI, "modulate:a", 0.0, 0.25)
 		tw.tween_callback(func():
-			overlay.queue_free()
+			$MinigameUI.visible = false
 			_minigame_played = true
 			_on_challenge_done()
 		)

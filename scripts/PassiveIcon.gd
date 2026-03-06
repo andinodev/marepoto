@@ -17,7 +17,7 @@ var _icon_rect: TextureRect
 
 const ICON_SIZE := 64
 const RING_WIDTH := 36.0
-const DEFAULT_ICON_PATH := "res://icon.svg"
+const DEFAULT_ICON_PATH := ""
 
 
 func _ready() -> void:

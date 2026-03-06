@@ -59,14 +59,19 @@ func _setup_fonts() -> void:
 ## ---------- Player Management ----------
 
 func add_player(player_name: String) -> bool:
-	if player_name.strip_edges().is_empty():
+	var clean_name := player_name.strip_edges()
+	if clean_name.is_empty():
 		return false
 	if players.size() >= PLAYER_LIMIT:
 		return false
+	# Check for duplicate names (case-insensitive)
+	for p in players:
+		if p["name"].to_lower() == clean_name.to_lower():
+			return false
 
 	var player := {
 		"id": players.size(),
-		"name": player_name.strip_edges(),
+		"name": clean_name,
 		"color": PLAYER_COLORS[players.size() % PLAYER_COLORS.size()],
 	}
 	players.append(player)
