@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://bx87t61phtpof"]
+
+[ext_resource type="Theme" uid="uid://conjmxjlhmf8a" path="res://sprites/gui/gui_theme.tres" id="1_7t8me"]
+[ext_resource type="Texture2D" uid="uid://bmslwodwe7b5r" path="res://sprites/gui/Buttons/button_white.png" id="2_a8wm8"]
+[ext_resource type="Texture2D" uid="uid://ck86hk4xhkfof" path="res://sprites/select_game/Píxel.png" id="3_5lay4"]
+[ext_resource type="Shader" uid="uid://dcmp30kd0bjyl" path="res://shaders/Defeat.gdshader" id="3_eveh7"]
+[ext_resource type="Texture2D" uid="uid://c0w17cfhui448" path="res://sprites/gui/Icons/128px/close_icon_128px.png" id="4_r3qro"]
+[ext_resource type="Texture2D" uid="uid://bnu3ctxgr48y7" path="res://sprites/select_game/Pixel card.png" id="4_ys4p5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7d7vp"]
+texture = ExtResource("2_a8wm8")
+texture_margin_left = 128.0
+texture_margin_top = 32.0
+texture_margin_right = 128.0
+texture_margin_bottom = 32.0
+modulate_color = Color(1, 0.8634428, 1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eveh7"]
+texture = ExtResource("2_a8wm8")
+texture_margin_left = 128.0
+texture_margin_top = 32.0
+texture_margin_right = 128.0
+texture_margin_bottom = 32.0
+modulate_color = Color(1, 1, 0.54004896, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5lay4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ys4p5"]
+shader = ExtResource("3_eveh7")
+shader_parameter/shake_speed = 3.50000011875
+shader_parameter/shake_amount = 1.8330000870675
+shader_parameter/desaturation = 0.0
+shader_parameter/drip_speed = 0.14100000343762
+shader_parameter/drip_amount = 0.00400000019
+shader_parameter/darken = 0.3
+shader_parameter/gloom_color = Color(0.4, 0.1, 0.1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7d7vp"]
+content_margin_top = 32.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6obfu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0huyh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w7lsa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45lmm"]
+
+[node name="GameSelectionUI" type="Control" unique_id=1283311095]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_7t8me")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=908104428]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.101961, 0.14902, 0.901961)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=656323176]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=200357782]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.133333, 0.772549, 0.368627, 1)
+theme_override_font_sizes/font_size = 96
+text = "ELIGE TU DESTINO"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1079547735]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="ButtonHBox" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1439211896]
+layout_mode = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="MarepotoBtn" type="Button" parent="VBoxContainer/MarginContainer/ButtonHBox" unique_id=511919189]
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 2
+theme_override_font_sizes/font_size = 68
+theme_override_styles/normal = SubResource("StyleBoxTexture_7d7vp")
+text = "MAREPOTO"
+icon = ExtResource("3_5lay4")
+alignment = 0
+icon_alignment = 2
+expand_icon = true
+
+[node name="TsunamiBtn" type="Button" parent="VBoxContainer/MarginContainer/ButtonHBox" unique_id=688662064]
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 2
+theme_override_font_sizes/font_size = 68
+theme_override_styles/normal = SubResource("StyleBoxTexture_eveh7")
+text = "TUSUNAMI"
+icon = ExtResource("4_ys4p5")
+alignment = 0
+icon_alignment = 2
+expand_icon = true
+
+[node name="CloseBar" type="PanelContainer" parent="." unique_id=1147641029]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_bottom = 166.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxTexture_5lay4")
+
+[node name="BackToMenuBtn" type="Button" parent="CloseBar" unique_id=1611833051]
+material = SubResource("ShaderMaterial_ys4p5")
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxEmpty_7d7vp")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_6obfu")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_0huyh")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_w7lsa")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_45lmm")
+icon = ExtResource("4_r3qro")
+icon_alignment = 1

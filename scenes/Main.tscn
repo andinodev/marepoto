@@ -25,6 +25,8 @@
 [ext_resource type="FontFile" uid="uid://c6lvpfg1p86tj" path="res://fonts/Roboto-VariableFont_wdth,wght.ttf" id="23_ebg2g"]
 [ext_resource type="Shader" uid="uid://dcmp30kd0bjyl" path="res://shaders/Defeat.gdshader" id="24_xa025"]
 [ext_resource type="Texture2D" uid="uid://tks8kejatkmb" path="res://sprites/gui/Icons/128px/tickV2_icon_128px.png" id="25_36rkl"]
+[ext_resource type="PackedScene" uid="uid://bx87t61phtpof" path="res://scenes/GameSelectionUI.tscn" id="26_fs0b5"]
+[ext_resource type="PackedScene" uid="uid://dop5r4gb2deta" path="res://scenes/minigames/TsunamiManager.tscn" id="27_fs0b5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ft6cd"]
 texture = ExtResource("6_yxlcp")
@@ -116,7 +118,7 @@ shader_parameter/edge_fade_end = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_36rkl"]
 shader = ExtResource("22_ebg2g")
-shader_parameter/sweep_speed = 0.22900000761762002
+shader_parameter/sweep_speed = 0.22900000761762
 shader_parameter/sweep_width = 0.13200000464006
 shader_parameter/shine_intensity = 0.8
 shader_parameter/pause_ratio = 0.5600000266
@@ -836,3 +838,11 @@ size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxTexture_dg70y")
 icon = ExtResource("25_36rkl")
 icon_alignment = 1
+
+[node name="GameSelectionUI" parent="." unique_id=1283311095 instance=ExtResource("26_fs0b5")]
+visible = false
+layout_mode = 1
+
+[node name="TsunamiManager" parent="." unique_id=1925104766 instance=ExtResource("27_fs0b5")]
+visible = false
+layout_mode = 1

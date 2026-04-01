@@ -1,4 +1,3 @@
-
 {
   "player": [
     {
@@ -110,7 +109,9 @@
       "story": "La tierra está más seca que galleta de soda, weón. Los espíritus del carrete necesitan una danza de la lluvia pa' salvar la noche... pero no cualquier bailecito, necesitan un PERREO RITUAL contra la pared. {J1}, la tribu te necesita.",
       "action": "Dale perreo intenso contra la pared por 15 segundos. Todos votan: si no te movís rico, tomai 3 copetes por bailarín penca.",
       "timer": 15,
-      "sips": [{ "amount": 3, "condition": "No se mueve rico", "target": "SELF" }]
+      "sips": [
+        { "amount": 3, "condition": "No se mueve rico", "target": "SELF" }
+      ]
     },
     {
       "id": 105,
@@ -130,12 +131,8 @@
       "title": "El Perkin",
       "story": "{J1} iba caminando tranqui y cayó en una trampa cuática. Quedó colgando de una liana cuando {J2} apareció como héroe de película y lo/la salvó. Ahora le debe la vida, y en este carrete eso se paga con servidumbre total.",
       "action": "Erís el perkin de {J2} por 2 rondas. Sirvele el copete, abanícalo, hazle masajitos... lo que pida. Cada vez que no obezcai, te mandai 5 sorbos.",
-      "sips": [
-        { "amount": 5, "condition": "Si desobedece", "target": "SELF" }
-      ],
-      "pasive": [
-        { "type": "X_TURN", "count": 2 }
-      ]
+      "sips": [{ "amount": 5, "condition": "Si desobedece", "target": "SELF" }],
+      "pasive": [{ "type": "X_TURN", "count": 2 }]
     },
     {
       "id": 107,
@@ -174,9 +171,7 @@
           "target": "SPECIFIC"
         }
       ],
-      "pasive": [
-        { "type": "X_PLAYER_TURN", "count": 1 }
-      ]
+      "pasive": [{ "type": "X_PLAYER_TURN", "count": 1 }]
     },
     {
       "id": 111,
@@ -186,9 +181,7 @@
       "sips": [
         { "amount": 1, "condition": "Si olvida el acento", "target": "SELF" }
       ],
-      "pasive": [
-        { "type": "X_PLAYER_TURN", "count": 1 }
-      ]
+      "pasive": [{ "type": "X_PLAYER_TURN", "count": 1 }]
     },
     {
       "id": 112,
@@ -357,7 +350,12 @@
       "action": "¿Hai hecho algo que rompa la ley? ¿Qué fue, weón? Cuenta la firme o tomai 5 sorbos.",
       "sips": [
         { "amount": 5, "condition": "Si no responde", "target": "SELF" },
-      { "amount": 5, "condition": "Si cometio algun crimen de lesa humanidad", "target": "SELF" }]
+        {
+          "amount": 5,
+          "condition": "Si cometio algun crimen de lesa humanidad",
+          "target": "SELF"
+        }
+      ]
     },
     {
       "id": 307,
@@ -818,9 +816,7 @@
       "sips": [
         { "amount": 2, "condition": "Cada vez que use manos", "target": "SELF" }
       ],
-      "pasive": [
-        { "type": "X_PLAYER_TURN", "count": 1 }
-      ]
+      "pasive": [{ "type": "X_PLAYER_TURN", "count": 1 }]
     },
     {
       "id": 511,
@@ -834,9 +830,7 @@
           "target": "SELF"
         }
       ],
-      "pasive": [
-        { "type": "X_PLAYER_TURN", "count": 1 }
-      ]
+      "pasive": [{ "type": "X_PLAYER_TURN", "count": 1 }]
     },
     {
       "id": 512,
@@ -844,19 +838,17 @@
       "story": "Los espíritus del arte corporal eligieron a {J1} como lienzo humano. El weón o weona de la derecha tiene el marcador listo y las ganas de dibujar. No hay vuelta atrás: bigote, monóculo, lo que se le ocurra.",
       "action": "Dejá que el weón/weona de tu derecha te dibuje un bigote o monóculo con marcador. Te lo dejái todo el juego, sin alegar.",
       "sips": [],
-      "pasive": [
-        { "type": "ANY_TURN" }
-      ]
+      "pasive": [{ "type": "ANY_TURN" }]
     },
     {
       "id": 513,
       "title": "Susurros",
       "story": "Un silencio mortal cayó sobre el carrete. Los espíritus le robaron la voz a {J1} y ahora solo puede comunicarse susurrando. Cualquier grito, risa fuerte o voz normal... tiene consecuencias.",
       "action": "Tenís que hablar susurrando hasta tu próximo turno. Si alzái la voz, tomai un sorbo cada vez.",
-      "sips": [{ "amount": 1, "condition": "Si alza la voz", "target": "SELF" }],
-      "pasive": [
-        { "type": "X_PLAYER_TURN", "count": 1 }
-      ]
+      "sips": [
+        { "amount": 1, "condition": "Si alza la voz", "target": "SELF" }
+      ],
+      "pasive": [{ "type": "X_PLAYER_TURN", "count": 1 }]
     },
     {
       "id": 514,
@@ -866,9 +858,7 @@
       "sips": [
         { "amount": 3, "condition": "Si toca el suelo", "target": "SELF" }
       ],
-      "pasive": [
-        { "type": "X_PLAYER_TURN", "count": 1 }
-      ]
+      "pasive": [{ "type": "X_PLAYER_TURN", "count": 1 }]
     },
     {
       "id": 515,
@@ -882,9 +872,7 @@
           "target": "SPECIFIC"
         }
       ],
-      "pasive": [
-        { "type": "X_TURN", "count": 3 }
-      ]
+      "pasive": [{ "type": "X_TURN", "count": 3 }]
     },
     {
       "id": 516,
@@ -900,9 +888,7 @@
       "story": "La evolución le jugó una broma pesada a {J1}: le achicaron los brazos como T-Rex. Ahora tiene que tomar con los codos pegados a las costillas, como dinosaurio, por el resto del juego. ¡Sin trampa!",
       "action": "Tomái con los codos pegados a las costillas (como T-Rex) por el resto del juego, sin estirar los brazos.",
       "sips": [],
-      "pasive": [
-        { "type": "ANY_TURN" }
-      ]
+      "pasive": [{ "type": "ANY_TURN" }]
     },
     {
       "id": 518,
@@ -969,6 +955,19 @@
       ],
       "minigame": {
         "type": "HOCKEY",
+        "rounds": 3
+      }
+    },
+    {
+      "id": 602,
+      "title": "El Último en sacar el dedo",
+      "story": "Los espíritus del carrete quieren ver sangre. {J1} y {J2} nos van a deleitar con un duelo épico, mostrando quién tiene mejores reflejos.",
+      "action": "Al finalizar la cuenta regresiva, el primero en sacar el dedo de la pantalla gana. El perdedor se manda 5 sorbos al seco por lento.",
+      "sips": [
+        { "amount": 5, "condition": "Al perdedor", "target": "SPECIFIC" }
+      ],
+      "minigame": {
+        "type": "FINGER",
         "rounds": 3
       }
     }
@@ -1156,9 +1155,7 @@
           "target": "SPECIFIC"
         }
       ],
-      "pasive": [
-        { "type": "ANY_TURN" }
-      ]
+      "pasive": [{ "type": "ANY_TURN" }]
     },
     {
       "id": 225,

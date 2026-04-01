@@ -51,6 +51,10 @@ const PassiveIconScript := preload("res://scripts/PassiveIcon.gd")
 const HockeyMinigameScript := preload("res://scripts/HockeyMinigame.gd")
 const FingerMinigameScript := preload("res://scripts/FingerMinigame.gd")
 
+@onready var _game_selection_ui: Control = $GameSelectionUI
+@onready var _game_selection_buttons = $GameSelectionUI/VBoxContainer/MarginContainer/ButtonHBox
+@onready var _tsunami_ui: TsunamiManager = $TsunamiManager
+
 var _challenge_timer: Timer
 var _timer_seconds: int = 0
 var _timer_running: bool = false
@@ -88,6 +92,26 @@ func _ready() -> void:
 	# _apply_neon_theme()
 	_apply_safe_zone()
 	_on_state_changed(GameManager.State.SETUP)
+	
+	# Connect selection buttons if they exist in scene
+	if _game_selection_buttons:
+		var marepoto_btn = _game_selection_buttons.get_node("MarepotoBtn") as Button
+		var tsunami_btn = _game_selection_buttons.get_node("TsunamiBtn") as Button
+		var back_btn = _game_selection_ui.get_node("CloseBar/BackToMenuBtn") as Button
+		
+		marepoto_btn.pressed.connect(_start_marepoto)
+		tsunami_btn.pressed.connect(_start_tusunami)
+		back_btn.pressed.connect(_on_back_to_menu)
+	
+	if _tsunami_ui:
+		var back_btn = _tsunami_ui.get_node("CloseBar/BackToMenuBtn") as Button
+		back_btn.pressed.connect(_on_back_to_menu)
+
+func _start_marepoto():
+	GameManager.start_game()
+
+func _start_tusunami():
+	GameManager.start_tusunami(true)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -112,6 +136,10 @@ func _handle_back() -> void:
 	match GameManager.state:
 		GameManager.State.CHALLENGE_VIEW:
 			_on_challenge_done()
+		GameManager.State.GAME_SELECTION:
+			_on_back_to_menu()
+		GameManager.State.PLAYING_TUSUNAMI:
+			_on_back_to_menu()
 		GameManager.State.PLAYING:
 			if not roulette.is_spinning():
 				_on_back_to_menu()
@@ -319,11 +347,25 @@ func _on_state_changed(new_state: int) -> void:
 		spin_btn.visible = true
 		sun_burst_spin_btn.visible = true
 		if not game_ui.visible:
-			_slide_transition(setup_ui, game_ui, -1) # slide left
+			var from = _game_selection_ui if (_game_selection_ui and _game_selection_ui.visible) else setup_ui
+			_slide_transition(from, game_ui, -1) # slide left
+	
+	elif new_state == GameManager.State.GAME_SELECTION:
+		_show_game_selection()
+		
+	elif new_state == GameManager.State.PLAYING_TUSUNAMI:
+		_show_tsunami_game()
+
 	elif new_state == GameManager.State.SETUP:
-		if game_ui.visible and not _is_transitioning:
-			_slide_transition(game_ui, setup_ui, 1) # slide right
+		var any_game_visible = game_ui.visible or (_game_selection_ui and _game_selection_ui.visible) or (_tsunami_ui and _tsunami_ui.visible)
+		if any_game_visible and not _is_transitioning:
+			var from = game_ui
+			if _game_selection_ui and _game_selection_ui.visible: from = _game_selection_ui
+			elif _tsunami_ui and _tsunami_ui.visible: from = _tsunami_ui
+			
+			_slide_transition(from, setup_ui, 1) # slide right
 		else:
+			_hide_minigames()
 			setup_ui.visible = _challenge_manager == null
 			game_ui.visible = false
 
@@ -428,7 +470,7 @@ func _refresh_player_list() -> void:
 func _on_start_game() -> void:
 	if GameManager.get_player_count() >= 2:
 		_clear_passive_icons()
-		GameManager.start_game()
+		GameManager.start_game_selection()
 
 
 ## ---------- Game ----------
@@ -455,7 +497,36 @@ func _on_spin_completed(winner_name: String, winner_color: Color, is_all: bool) 
 
 func _on_back_to_menu() -> void:
 	_clear_passive_icons()
+	if _tsunami_ui and _tsunami_ui.has_method("reset_game_ui"):
+		_tsunami_ui.reset_game_ui()
+	# Don't call _hide_minigames() here, it will be handled by the state change transition
 	GameManager.return_to_setup()
+
+
+## ---------- Game Selection & Tusunami ----------
+
+func _show_game_selection() -> void:
+	_slide_transition(setup_ui, _game_selection_ui, -1)
+
+
+func _show_tsunami_game() -> void:
+	if _tsunami_ui == null:
+		push_error("Main.gd: No se encontró el nodo TsunamiManager en la escena.")
+		return
+		
+	# Ensure the manager is initialized (it might need a reset if reused)
+	if _tsunami_ui.has_method("reset_game_ui"):
+		_tsunami_ui.reset_game_ui()
+	
+	var from = _game_selection_ui if (_game_selection_ui and _game_selection_ui.visible) else setup_ui
+	_slide_transition(from, _tsunami_ui, -1)
+
+
+func _hide_minigames() -> void:
+	if _tsunami_ui:
+		_tsunami_ui.visible = false
+	if _game_selection_ui:
+		_game_selection_ui.visible = false
 
 
 ## ---------- Challenge Modal ----------

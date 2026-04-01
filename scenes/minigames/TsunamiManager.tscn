@@ -1,0 +1,505 @@
+[gd_scene format=3 uid="uid://dop5r4gb2deta"]
+
+[ext_resource type="Script" uid="uid://byic3gx7uqj2q" path="res://scripts/minigames/TsunamiManager.gd" id="1_0na5i"]
+[ext_resource type="Shader" uid="uid://dfmcmxoqmdqm4" path="res://shaders/sunburst.gdshader" id="2_sau4b"]
+[ext_resource type="Theme" uid="uid://conjmxjlhmf8a" path="res://sprites/gui/gui_theme.tres" id="3_i512e"]
+[ext_resource type="Texture2D" uid="uid://fp774d518g4x" path="res://sprites/cards/carta verde.png" id="3_w0825"]
+[ext_resource type="Texture2D" uid="uid://bs6aa2ibbgkp8" path="res://sprites/gui/Headers/notebook_white.png" id="4_ia2u4"]
+[ext_resource type="Texture2D" uid="uid://dxjf88sl0bkjd" path="res://sprites/gui/Containers/container_default.png" id="5_s1t1g"]
+[ext_resource type="Texture2D" uid="uid://bmslwodwe7b5r" path="res://sprites/gui/Buttons/button_white.png" id="6_ed86i"]
+[ext_resource type="Texture2D" uid="uid://crjq4v67yragx" path="res://sprites/gui/Panels/panel_pink.png" id="7_enpdu"]
+[ext_resource type="Shader" uid="uid://dcmp30kd0bjyl" path="res://shaders/Defeat.gdshader" id="8_eywvc"]
+[ext_resource type="Texture2D" uid="uid://c7o6lgqpuykbb" path="res://sprites/cards/carta roja.png" id="8_lh64f"]
+[ext_resource type="FontFile" uid="uid://c6lvpfg1p86tj" path="res://fonts/Roboto-VariableFont_wdth,wght.ttf" id="9_vwn8h"]
+[ext_resource type="Texture2D" uid="uid://dq223i7dcxtnj" path="res://sprites/cards/carta azul.png" id="9_xorhi"]
+[ext_resource type="Texture2D" uid="uid://tks8kejatkmb" path="res://sprites/gui/Icons/128px/tickV2_icon_128px.png" id="10_re3ge"]
+[ext_resource type="Texture2D" uid="uid://c0w17cfhui448" path="res://sprites/gui/Icons/128px/close_icon_128px.png" id="11_2inrl"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qyjbt"]
+texture = ExtResource("3_w0825")
+expand_margin_left = 32.0
+expand_margin_top = 128.0
+expand_margin_right = 32.0
+expand_margin_bottom = 128.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lh64f"]
+texture = ExtResource("3_w0825")
+expand_margin_left = 32.0
+expand_margin_top = 128.0
+expand_margin_right = 32.0
+expand_margin_bottom = 128.0
+modulate_color = Color(0.25565878, 0.25565878, 0.25565878, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w0825"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qyjbt"]
+shader = ExtResource("8_eywvc")
+shader_parameter/shake_speed = 3.50000011875
+shader_parameter/shake_amount = 1.8330000870675
+shader_parameter/desaturation = 0.0
+shader_parameter/drip_speed = 0.14100000343762
+shader_parameter/drip_amount = 0.00400000019
+shader_parameter/darken = 0.3
+shader_parameter/gloom_color = Color(0.4, 0.1, 0.1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lh64f"]
+content_margin_top = 32.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xorhi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0r64a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q55nm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x45w3"]
+
+[sub_resource type="Shader" id="Shader_2inrl"]
+code = "shader_type canvas_item;
+
+// --- Colores ---
+uniform vec4 ray_color_base : source_color = vec4(1.0, 0.8, 0.0, 1.0); // Color principal (ej: amarillo cálido)
+uniform vec4 ray_color_pulse : source_color = vec4(1.0, 1.0, 0.8, 1.0); // Color del pulsar (más claro/blanco)
+uniform vec4 bg_color : source_color = vec4(0.0, 0.0, 0.0, 0.0); // Color de fondo (transparente por defecto)
+
+// --- Parámetros de la forma ---
+uniform int num_rays = 12; // Cantidad de rayos
+uniform float center_x = 0.5; // Centro X en coordenadas UV (0.0 a 1.0)
+uniform float center_y = 0.5; // Centro Y en coordenadas UV (0.0 a 1.0)
+uniform float ray_softness = 0.5; // Suavidad de los bordes del rayo (0.0 = bordes duros)
+
+// --- Parámetros de Animación ---
+uniform float rotation_speed = 0.5; // Velocidad de giro (positivo = horario, negativo = antihorario)
+uniform float pulse_speed = 3.0; // Velocidad del parpadeo/pulsar
+uniform float pulse_intensity = 1.0; // Qué tanto afecta el color del pulso (0.0 = nada, 1.0 = todo)
+
+void fragment() {
+	// 1. Coordenadas centradas y corregidas por aspect ratio
+	// TEXTURE_PIXEL_SIZE nos da el tamaño del pixel (1/width, 1/height)
+	// Relación de aspecto: width / height
+	float aspect_ratio = TEXTURE_PIXEL_SIZE.y / TEXTURE_PIXEL_SIZE.x;
+	vec2 uv = UV - vec2(center_x, center_y);
+	uv.x *= aspect_ratio; // Corregir el estiramiento horizontal
+	
+	// 2. Ángulo polar
+	// atan() da un rango de -PI a PI
+	float angle = atan(uv.y, uv.x);
+	
+	// 3. ANIMACIÓN 1: Rotar en el centro
+	// Sumamos el tiempo multiplicado por la velocidad para rotar
+	float rotated_angle = angle + (TIME * rotation_speed);
+	
+	// 4. Calcular los rayos (Sunburst)
+	// Multiplicamos el ángulo por la cantidad de rayos.
+	// Usamos cos() para obtener ondas de -1 a 1.
+	float ray_wave = cos(rotated_angle * float(num_rays));
+	
+	// Convertimos la onda en franjas (0.0 a 1.0)
+	// smoothstep suaviza los bordes para combatir el aliasing
+	float rays = smoothstep(-ray_softness, ray_softness, ray_wave);
+	
+	// 5. ANIMACIÓN 2: Pulsar / Cambiar a un color más claro
+	// sin() genera un oscilador de -1 a 1. Lo normalizamos a 0.0 - 1.0.
+	float pulse = (sin(TIME * pulse_speed) + 1.0) * 0.5;
+	
+	// Mezclamos el color base con el color de pulso según la variable pulse
+	vec4 current_ray_color = mix(ray_color_base, ray_color_pulse, pulse * pulse_intensity);
+	
+	// 6. Resultado final
+	// Mezclar el color de fondo con el color del rayo donde corresponde
+	COLOR = mix(bg_color, current_ray_color, rays);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1y242"]
+shader = SubResource("Shader_2inrl")
+shader_parameter/ray_color_base = Color(0, 0.6384022, 0.42310548, 0.5019608)
+shader_parameter/ray_color_pulse = Color(0.30631703, 0.99999994, 0.7578376, 0.156)
+shader_parameter/bg_color = Color(0, 0, 0, 0)
+shader_parameter/num_rays = 12
+shader_parameter/center_x = 0.5
+shader_parameter/center_y = 0.5
+shader_parameter/ray_softness = 0.0
+shader_parameter/rotation_speed = 0.5
+shader_parameter/pulse_speed = 3.0
+shader_parameter/pulse_intensity = 1.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dyvlq"]
+content_margin_bottom = 50.0
+texture = ExtResource("4_ia2u4")
+texture_margin_left = 200.0
+texture_margin_top = 98.0
+texture_margin_right = 200.0
+modulate_color = Color(4.1873755e-06, 0.60818696, 0.41232702, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_w3cxo"]
+font_size = 68
+font_color = Color(0.1254902, 0.1254902, 0.1254902, 1)
+outline_size = 64
+outline_color = Color(0, 0.60784316, 0.4117647, 1)
+shadow_size = 5
+shadow_color = Color(0.98, 0.8, 0.082, 0.2)
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rmiwf"]
+texture = ExtResource("5_s1t1g")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 64.0
+region_rect = Rect2(0, 56, 879, 249)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_17ki3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x45w3"]
+texture = ExtResource("8_lh64f")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+expand_margin_top = 32.0
+expand_margin_bottom = 32.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xorhi"]
+texture = ExtResource("8_lh64f")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+expand_margin_top = 32.0
+expand_margin_bottom = 32.0
+modulate_color = Color(0.68235296, 0.68235296, 0.68235296, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dr5cn"]
+texture = ExtResource("8_lh64f")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+expand_margin_top = 32.0
+expand_margin_bottom = 32.0
+modulate_color = Color(0.68235296, 0.68235296, 0.68235296, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_86qku"]
+texture = ExtResource("9_xorhi")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+expand_margin_top = 32.0
+expand_margin_bottom = 32.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0r64a"]
+texture = ExtResource("9_xorhi")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+expand_margin_top = 32.0
+expand_margin_bottom = 32.0
+modulate_color = Color(0.68235296, 0.68235296, 0.68235296, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q55nm"]
+texture = ExtResource("9_xorhi")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+expand_margin_top = 32.0
+expand_margin_bottom = 32.0
+modulate_color = Color(0.68235296, 0.68235296, 0.68235296, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ww63q"]
+shader = ExtResource("2_sau4b")
+shader_parameter/ray_color_base = Color(0.9607843, 0.27058825, 0.7254902, 1)
+shader_parameter/ray_color_pulse = Color(0.97083575, 0.38458744, 0.7537555, 1)
+shader_parameter/bg_color = Color(0.14901961, 0.14901961, 0.20392157, 0.8666667)
+shader_parameter/num_rays = 12
+shader_parameter/center_x = 0.5
+shader_parameter/center_y = 0.5
+shader_parameter/ray_softness = 0.0
+shader_parameter/rotation_speed = 0.5
+shader_parameter/pulse_speed = 3.0
+shader_parameter/pulse_intensity = 1.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6b570"]
+texture = ExtResource("7_enpdu")
+texture_margin_top = 33.0
+texture_margin_bottom = 33.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m1l36"]
+shader = ExtResource("8_eywvc")
+shader_parameter/shake_speed = 3.034000096615
+shader_parameter/shake_amount = 1.92800009158
+shader_parameter/desaturation = 0.0
+shader_parameter/drip_speed = 1.84700008447262
+shader_parameter/drip_amount = 0.0
+shader_parameter/darken = 0.3970000188575
+shader_parameter/gloom_color = Color(0.4, 0.1, 0.1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_klqsr"]
+font = ExtResource("9_vwn8h")
+font_size = 70
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b6f17"]
+texture = ExtResource("6_ed86i")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.6, 0.75686276, 0.7254902, 1)
+
+[node name="TsunamiManager" type="Control" unique_id=1925104766]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_i512e")
+script = ExtResource("1_0na5i")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1419212168]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0509804, 0.0509804, 0.101961, 0.94902)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=474361973]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1383268627]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer" unique_id=767173270]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/CenterContainer" unique_id=1216190837]
+layout_mode = 2
+theme_override_constants/h_separation = 40
+theme_override_constants/v_separation = 40
+columns = 3
+
+[node name="DeckButton" type="Button" parent="MarginContainer/VBoxContainer/CenterContainer" unique_id=292321719]
+visible = false
+custom_minimum_size = Vector2(250, 350)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_qyjbt")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_qyjbt")
+theme_override_styles/hover = SubResource("StyleBoxTexture_qyjbt")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_lh64f")
+text = "SURVIVAL MODE
+CLICK PARA ROBAR"
+
+[node name="FooterHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1308378901]
+layout_mode = 2
+alignment = 1
+
+[node name="SipLabel" type="Label" parent="MarginContainer/VBoxContainer/FooterHBox" unique_id=896050718]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980392, 0.8, 0.0823529, 1)
+theme_override_font_sizes/font_size = 80
+text = "Sorbos Acumulados: 0"
+
+[node name="CloseBar" type="PanelContainer" parent="." unique_id=1236791461]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_bottom = 166.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxTexture_w0825")
+
+[node name="BackToMenuBtn" type="Button" parent="CloseBar" unique_id=629079831]
+material = SubResource("ShaderMaterial_qyjbt")
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lh64f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_xorhi")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_0r64a")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_q55nm")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_x45w3")
+icon = ExtResource("11_2inrl")
+icon_alignment = 1
+
+[node name="PredictionModal" type="Control" parent="." unique_id=636022012]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="PredictionModal" unique_id=639536288]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.701961)
+
+[node name="ColorRect2" type="ColorRect" parent="PredictionModal/Dim" unique_id=992809673]
+material = SubResource("ShaderMaterial_1y242")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_i512e")
+color = Color(0, 0, 0, 0.7411765)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PredictionModal" unique_id=1060890946]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -420.5
+offset_bottom = 420.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="PredictionModal/VBoxContainer" unique_id=992724491]
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("3_i512e")
+theme_type_variation = &"HeaderLarge"
+theme_override_styles/normal = SubResource("StyleBoxTexture_dyvlq")
+text = "Adivina el color"
+label_settings = SubResource("LabelSettings_w3cxo")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PredictionModal/VBoxContainer" unique_id=667580788]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxTexture_rmiwf")
+
+[node name="HSeparator" type="HSeparator" parent="PredictionModal/VBoxContainer/PanelContainer" unique_id=921917361]
+layout_mode = 2
+theme_override_constants/separation = 378
+theme_override_styles/separator = SubResource("StyleBoxEmpty_17ki3")
+
+[node name="ButtonHBox" type="HBoxContainer" parent="PredictionModal/VBoxContainer/PanelContainer" unique_id=1339540562]
+layout_mode = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="RedBtn" type="Button" parent="PredictionModal/VBoxContainer/PanelContainer/ButtonHBox" unique_id=1042948614]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_x45w3")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xorhi")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dr5cn")
+
+[node name="BlueBtn" type="Button" parent="PredictionModal/VBoxContainer/PanelContainer/ButtonHBox" unique_id=1944894691]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxTexture_86qku")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_0r64a")
+theme_override_styles/hover = SubResource("StyleBoxTexture_q55nm")
+
+[node name="CenterContainer" type="CenterContainer" parent="PredictionModal" unique_id=1779622400]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 681.0
+grow_horizontal = 2
+
+[node name="FailModal" type="Control" parent="." unique_id=1010277691]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="FailModal" unique_id=1842523130]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.701961)
+
+[node name="Sunburst" type="ColorRect" parent="FailModal/Dim" unique_id=1907590778]
+material = SubResource("ShaderMaterial_ww63q")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_i512e")
+color = Color(0, 0, 0, 1)
+
+[node name="Container" type="PanelContainer" parent="FailModal" unique_id=1055236393]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -289.0
+offset_right = 540.0
+offset_bottom = 289.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_6b570")
+
+[node name="VBox" type="VBoxContainer" parent="FailModal/Container" unique_id=1234026135]
+layout_mode = 2
+alignment = 1
+
+[node name="LoserLbl" type="Label" parent="FailModal/Container/VBox" unique_id=1181341756]
+material = SubResource("ShaderMaterial_m1l36")
+layout_mode = 2
+size_flags_vertical = 6
+theme = ExtResource("3_i512e")
+theme_override_colors/font_color = Color(0.1254902, 0.1254902, 0.1254902, 1)
+text = "💀 Tomas X Sorbos"
+label_settings = SubResource("LabelSettings_klqsr")
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="FailModal/Container/VBox" unique_id=1267442491]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_styles/normal = SubResource("StyleBoxTexture_b6f17")
+icon = ExtResource("10_re3ge")
+icon_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="FailModal" unique_id=2063334983]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 681.0
+grow_horizontal = 2

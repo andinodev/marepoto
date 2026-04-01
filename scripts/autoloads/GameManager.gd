@@ -9,7 +9,7 @@ signal players_changed()
 signal turn_changed(player: Dictionary)
 signal game_started
 
-enum State {SETUP, PLAYING, CHALLENGE_VIEW}
+enum State {SETUP, GAME_SELECTION, PLAYING, PLAYING_TUSUNAMI, CHALLENGE_VIEW}
 
 const PLAYER_COLORS: Array[Color] = [
 	# 16 player colors — OKLCH-designed, harmonious with UI palette
@@ -129,6 +129,23 @@ func start_game() -> void:
 	current_player_index = 0
 	state = State.PLAYING
 	game_started.emit()
+
+
+func start_tusunami(randomize_start: bool = true) -> void:
+	if players.size() < 2:
+		return
+	if randomize_start:
+		current_player_index = randi() % players.size()
+	else:
+		current_player_index = 0
+	state = State.PLAYING_TUSUNAMI
+	game_started.emit()
+
+
+func start_game_selection() -> void:
+	if players.size() < 2:
+		return
+	state = State.GAME_SELECTION
 
 
 func return_to_setup() -> void:
