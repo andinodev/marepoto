@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://dcmp30kd0bjyl" path="res://shaders/Defeat.gdshader" id="3_eveh7"]
 [ext_resource type="Texture2D" uid="uid://c0w17cfhui448" path="res://sprites/gui/Icons/128px/close_icon_128px.png" id="4_r3qro"]
 [ext_resource type="Texture2D" uid="uid://bnu3ctxgr48y7" path="res://sprites/select_game/Pixel card.png" id="4_ys4p5"]
+[ext_resource type="Script" uid="uid://c6f3m7fvh2m3j" path="res://scripts/minigames/GameSelectionUI.gd" id="5_new"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7d7vp"]
 texture = ExtResource("2_a8wm8")
@@ -56,6 +57,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_7t8me")
+script = ExtResource("5_new")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=908104428]
 layout_mode = 1
@@ -66,34 +68,37 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.101961, 0.101961, 0.14902, 0.901961)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=656323176]
+[node name="SafeMargin" type="MarginContainer" parent="." unique_id=1147641029]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SafeMargin" unique_id=656323176]
+layout_mode = 2
 theme_override_constants/separation = 100
 alignment = 1
 
-[node name="Title" type="Label" parent="VBoxContainer" unique_id=200357782]
+[node name="Title" type="Label" parent="SafeMargin/VBoxContainer" unique_id=200357782]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.133333, 0.772549, 0.368627, 1)
 theme_override_font_sizes/font_size = 96
 text = "ELIGE TU DESTINO"
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1079547735]
+[node name="MarginContainer" type="MarginContainer" parent="SafeMargin/VBoxContainer" unique_id=1079547735]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 
-[node name="ButtonHBox" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1439211896]
+[node name="ButtonHBox" type="VBoxContainer" parent="SafeMargin/VBoxContainer/MarginContainer" unique_id=1439211896]
 layout_mode = 2
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="MarepotoBtn" type="Button" parent="VBoxContainer/MarginContainer/ButtonHBox" unique_id=511919189]
+[node name="MarepotoBtn" type="Button" parent="SafeMargin/VBoxContainer/MarginContainer/ButtonHBox" unique_id=511919189]
 custom_minimum_size = Vector2(400, 300)
 layout_mode = 2
 theme_override_font_sizes/font_size = 68
@@ -104,7 +109,7 @@ alignment = 0
 icon_alignment = 2
 expand_icon = true
 
-[node name="TsunamiBtn" type="Button" parent="VBoxContainer/MarginContainer/ButtonHBox" unique_id=688662064]
+[node name="TsunamiBtn" type="Button" parent="SafeMargin/VBoxContainer/MarginContainer/ButtonHBox" unique_id=688662064]
 custom_minimum_size = Vector2(400, 300)
 layout_mode = 2
 theme_override_font_sizes/font_size = 68
@@ -115,20 +120,14 @@ alignment = 0
 icon_alignment = 2
 expand_icon = true
 
-[node name="CloseBar" type="PanelContainer" parent="." unique_id=1147641029]
+[node name="CloseBar" type="PanelContainer" parent="SafeMargin" unique_id=1147641029]
 custom_minimum_size = Vector2(400, 0)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -400.0
-offset_bottom = 166.0
-grow_horizontal = 0
+layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 8
+size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxTexture_5lay4")
 
-[node name="BackToMenuBtn" type="Button" parent="CloseBar" unique_id=1611833051]
+[node name="BackToMenuBtn" type="Button" parent="SafeMargin/CloseBar" unique_id=1611833051]
 material = SubResource("ShaderMaterial_ys4p5")
 layout_mode = 2
 size_flags_horizontal = 4

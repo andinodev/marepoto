@@ -52,7 +52,7 @@ const HockeyMinigameScript := preload("res://scripts/HockeyMinigame.gd")
 const FingerMinigameScript := preload("res://scripts/FingerMinigame.gd")
 
 @onready var _game_selection_ui: Control = $GameSelectionUI
-@onready var _game_selection_buttons = $GameSelectionUI/VBoxContainer/MarginContainer/ButtonHBox
+@onready var _game_selection_buttons = $GameSelectionUI/SafeMargin/VBoxContainer/MarginContainer/ButtonHBox
 @onready var _tsunami_ui: TsunamiManager = $TsunamiManager
 
 var _challenge_timer: Timer
@@ -97,14 +97,14 @@ func _ready() -> void:
 	if _game_selection_buttons:
 		var marepoto_btn = _game_selection_buttons.get_node("MarepotoBtn") as Button
 		var tsunami_btn = _game_selection_buttons.get_node("TsunamiBtn") as Button
-		var back_btn = _game_selection_ui.get_node("CloseBar/BackToMenuBtn") as Button
+		var back_btn = _game_selection_ui.get_node("SafeMargin/CloseBar/BackToMenuBtn") as Button
 		
 		marepoto_btn.pressed.connect(_start_marepoto)
 		tsunami_btn.pressed.connect(_start_tusunami)
 		back_btn.pressed.connect(_on_back_to_menu)
 	
 	if _tsunami_ui:
-		var back_btn = _tsunami_ui.get_node("CloseBar/BackToMenuBtn") as Button
+		var back_btn = _tsunami_ui.get_node("SafeMargin/CloseBar/BackToMenuBtn") as Button
 		back_btn.pressed.connect(_on_back_to_menu)
 
 func _start_marepoto():

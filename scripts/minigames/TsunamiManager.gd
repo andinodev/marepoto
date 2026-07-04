@@ -16,8 +16,8 @@ const BACK_COLOR := Color("#22c55e")
 @onready var prediction_modal: Control = $PredictionModal
 @onready var prediction_dim: ColorRect = $PredictionModal/Dim
 @onready var prediction_container: VBoxContainer = $PredictionModal/VBoxContainer
-@onready var red_btn: Button = $PredictionModal/VBoxContainer/PanelContainer/ButtonHBox/RedBtn
-@onready var blue_btn: Button = $PredictionModal/VBoxContainer/PanelContainer/ButtonHBox/BlueBtn
+@onready var red_btn: Button = $PredictionModal/VBoxContainer/PanelContainer/VBoxContainer/ButtonHBox/RedBtn
+@onready var blue_btn: Button = $PredictionModal/VBoxContainer/PanelContainer/VBoxContainer/ButtonHBox/BlueBtn
 @onready var fail_modal: Control = $FailModal
 @onready var fail_label: Label = $FailModal/Container/VBox/LoserLbl
 @onready var fail_button: Button = $FailModal/Container/VBox/Button
@@ -40,6 +40,10 @@ func _ready() -> void:
 	red_btn.pressed.connect(func(): _on_prediction_made(RED_COLOR))
 	blue_btn.pressed.connect(func(): _on_prediction_made(BLUE_COLOR))
 	fail_button.pressed.connect(_on_fail_button_pressed)
+	
+	# Apply Safe Zone
+	_on_safe_area_changed(0, 0, 0, 0) # Initial apply
+	SafeZoneManager.safe_area_changed.connect(_on_safe_area_changed)
 	
 	reset_game_ui()
 	
@@ -240,3 +244,7 @@ func _animate_modal_out(modal: Control, dim: Control, container: Control) -> voi
 	
 	await tween.finished
 	modal.visible = false
+
+
+func _on_safe_area_changed(_t: int, _b: int, _l: int, _r: int) -> void:
+	SafeZoneManager.apply_to_margin($SafeMargin)

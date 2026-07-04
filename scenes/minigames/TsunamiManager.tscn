@@ -148,16 +148,14 @@ texture_margin_right = 32.0
 texture_margin_bottom = 64.0
 region_rect = Rect2(0, 56, 879, 249)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_17ki3"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s62rl"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x45w3"]
 texture = ExtResource("8_lh64f")
 texture_margin_left = 32.0
-texture_margin_top = 32.0
 texture_margin_right = 32.0
-texture_margin_bottom = 32.0
-expand_margin_top = 32.0
-expand_margin_bottom = 32.0
+expand_margin_top = 64.0
+expand_margin_bottom = 64.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xorhi"]
 texture = ExtResource("8_lh64f")
@@ -182,11 +180,9 @@ modulate_color = Color(0.68235296, 0.68235296, 0.68235296, 1)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_86qku"]
 texture = ExtResource("9_xorhi")
 texture_margin_left = 32.0
-texture_margin_top = 32.0
 texture_margin_right = 32.0
-texture_margin_bottom = 32.0
-expand_margin_top = 32.0
-expand_margin_bottom = 32.0
+expand_margin_top = 64.0
+expand_margin_bottom = 64.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0r64a"]
 texture = ExtResource("9_xorhi")
@@ -207,6 +203,8 @@ texture_margin_bottom = 32.0
 expand_margin_top = 32.0
 expand_margin_bottom = 32.0
 modulate_color = Color(0.68235296, 0.68235296, 0.68235296, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bjdpl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ww63q"]
 shader = ExtResource("2_sau4b")
@@ -317,8 +315,7 @@ theme_override_colors/font_color = Color(0.980392, 0.8, 0.0823529, 1)
 theme_override_font_sizes/font_size = 80
 text = "Sorbos Acumulados: 0"
 
-[node name="CloseBar" type="PanelContainer" parent="." unique_id=1236791461]
-custom_minimum_size = Vector2(400, 0)
+[node name="SafeMargin" type="MarginContainer" parent="." unique_id=1361877165]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -326,11 +323,15 @@ anchor_right = 1.0
 offset_left = -400.0
 offset_bottom = 166.0
 grow_horizontal = 0
+
+[node name="CloseBar" type="PanelContainer" parent="SafeMargin" unique_id=1236791461]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxTexture_w0825")
 
-[node name="BackToMenuBtn" type="Button" parent="CloseBar" unique_id=629079831]
+[node name="BackToMenuBtn" type="Button" parent="SafeMargin/CloseBar" unique_id=629079831]
 material = SubResource("ShaderMaterial_qyjbt")
 layout_mode = 2
 size_flags_horizontal = 4
@@ -343,7 +344,6 @@ icon = ExtResource("11_2inrl")
 icon_alignment = 1
 
 [node name="PredictionModal" type="Control" parent="." unique_id=636022012]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -399,17 +399,22 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxTexture_rmiwf")
 
-[node name="HSeparator" type="HSeparator" parent="PredictionModal/VBoxContainer/PanelContainer" unique_id=921917361]
+[node name="VBoxContainer" type="VBoxContainer" parent="PredictionModal/VBoxContainer/PanelContainer" unique_id=628517206]
 layout_mode = 2
-theme_override_constants/separation = 378
-theme_override_styles/separator = SubResource("StyleBoxEmpty_17ki3")
 
-[node name="ButtonHBox" type="HBoxContainer" parent="PredictionModal/VBoxContainer/PanelContainer" unique_id=1339540562]
+[node name="HSeparator" type="HSeparator" parent="PredictionModal/VBoxContainer/PanelContainer/VBoxContainer" unique_id=921917361]
 layout_mode = 2
-theme_override_constants/separation = 25
+size_flags_vertical = 0
+theme_override_constants/separation = 33
+theme_override_styles/separator = SubResource("StyleBoxEmpty_s62rl")
+
+[node name="ButtonHBox" type="HBoxContainer" parent="PredictionModal/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1339540562]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 136
 alignment = 1
 
-[node name="RedBtn" type="Button" parent="PredictionModal/VBoxContainer/PanelContainer/ButtonHBox" unique_id=1042948614]
+[node name="RedBtn" type="Button" parent="PredictionModal/VBoxContainer/PanelContainer/VBoxContainer/ButtonHBox" unique_id=1042948614]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -417,12 +422,18 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_x45w3")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_xorhi")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dr5cn")
 
-[node name="BlueBtn" type="Button" parent="PredictionModal/VBoxContainer/PanelContainer/ButtonHBox" unique_id=1944894691]
+[node name="BlueBtn" type="Button" parent="PredictionModal/VBoxContainer/PanelContainer/VBoxContainer/ButtonHBox" unique_id=1944894691]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxTexture_86qku")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_0r64a")
 theme_override_styles/hover = SubResource("StyleBoxTexture_q55nm")
+
+[node name="HSeparator2" type="HSeparator" parent="PredictionModal/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1127104366]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 33
+theme_override_styles/separator = SubResource("StyleBoxEmpty_bjdpl")
 
 [node name="CenterContainer" type="CenterContainer" parent="PredictionModal" unique_id=1779622400]
 layout_mode = 1
